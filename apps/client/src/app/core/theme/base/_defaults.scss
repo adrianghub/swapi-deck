@@ -1,0 +1,33 @@
+@use '_typography' as typography;
+@use '_palettes' as palettes;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: typography.$font-family-inter;
+}
+
+body {
+  height: 100vh;
+  background-color: palettes.$whitish;
+}
+
+main {
+  height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+svg {
+  width: inherit;
+}

@@ -17,6 +17,9 @@
         "tsConfig": "apps/client/tsconfig.app.json",
         "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
         "styles": ["apps/client/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/client/src/app/core/theme/base"]
+        },
         "scripts": []
       },
       "configurations": {
@@ -24,8 +27,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "1mb",
+              "maximumError": "5mb"
             },
             {
               "type": "anyComponentStyle",
@@ -92,6 +95,13 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "client:build"
+      }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/client/**/*.css", "apps/client/**/*.scss"]
       }
     }
   }

@@ -1,0 +1,63 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "typography" as typography;
+@use "_palettes" as palettes;
+
+$theme-primary: mat.define-palette(
+  palettes.$mat-primary,
+  main,
+  lighter,
+  darker
+);
+$theme-accent: mat.define-palette(palettes.$mat-accent, main, lighter, darker);
+$theme-warn: mat.define-palette(palettes.$mat-warn, main, lighter, darker);
+
+$inter-typography: mat.define-typography-config(
+  $font-family: typography.$font-family-inter,
+);
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $theme-primary,
+      accent: $theme-accent,
+      warn: $theme-warn,
+    ),
+    typography: $inter-typography,
+    density: 0,
+  )
+);
+
+@function mat-set-background($theme, $backgroundColor) {
+  $palette-color: map-get($theme, color);
+  $background: map-get($palette-color, background);
+  $background: map_merge(
+    $background,
+    (
+      background: $backgroundColor,
+    )
+  );
+  $palette-color: map_merge(
+    $palette-color,
+    (
+      background: $background,
+    )
+  );
+  @return map_merge(
+    $theme,
+    (
+      color: $palette-color,
+    )
+  );
+}
+
+// Background
+$theme: mat-set-background($theme, palettes.$whitish);
+
+// Typography
+@include typography.typography-classes();
+
+// Theme init
+@include mat.core();
+@include mat.core-theme($theme);
+@include mat.all-component-themes($theme);

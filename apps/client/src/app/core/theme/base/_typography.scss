@@ -1,0 +1,84 @@
+// Font family
+$font-family-inter: 'Inter', sans-serif;
+
+$typography-types: (
+  'light': 300,
+  'regular': 400,
+  'normal': 500,
+  'semi-bold': 600,
+  'bold': 700,
+);
+
+// Typography mixins
+@mixin typography-classes() {
+  @each $type, $weight in $typography-types {
+    .#{$type} {
+      &-headline {
+        // H1
+        &-xlarge {
+          @include create-typography-config(36px, 44px, $weight);
+        }
+
+        // H1/H2
+        &-large {
+          @include create-typography-config(32px, 40px, $weight);
+        }
+
+        // H2
+        &-medium {
+          @include create-typography-config(28px, 36px, $weight);
+        }
+
+        // H2/H3
+        &-small {
+          @include create-typography-config(24px, 32px, $weight);
+        }
+      }
+
+      &-title {
+        // H4
+        &-large {
+          @include create-typography-config(22px, 28px, $weight);
+        }
+
+        // H5
+        &-medium {
+          @include create-typography-config(16px, 24px, $weight, 0.15px);
+        }
+
+        // H6
+        &-small {
+          @include create-typography-config(14px, 20px, $weight, 0.1px);
+        }
+      }
+
+      // P/SPAN
+      &-body {
+        &-large {
+          @include create-typography-config(16px, 24px, $weight, 0.15px);
+        }
+
+        &-medium {
+          @include create-typography-config(14px, 20px, $weight, 0.25px);
+        }
+
+        &-small {
+          @include create-typography-config(12px, 16px, $weight, 0.4px);
+        }
+      }
+    }
+  }
+}
+
+@mixin create-typography-config(
+  $fontSize,
+  $lineHeight,
+  $fontWeight,
+  $letterSpacing: 0
+) {
+  font-family: $font-family-inter;
+  font-size: $fontSize;
+  line-height: $lineHeight;
+  font-weight: $fontWeight;
+  letter-spacing: $letterSpacing;
+}

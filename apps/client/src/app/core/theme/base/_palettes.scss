@@ -1,0 +1,51 @@
+// Theme text
+$theme-text: #03001c;
+
+// Other colors config
+$whitish: #f8f8f8;
+$blackish: #03001c;
+$dark-gray: #32323d;
+$light-gray: #d6d5d9;
+
+// Material palettes
+$mat-primary: (
+  main: $dark-gray,
+  lighter: $light-gray,
+  darker: $blackish,
+  contrast: (
+    main: $light-gray,
+    lighter: $theme-text,
+    darker: $light-gray,
+  ),
+);
+
+$mat-accent: (
+  main: $dark-gray,
+  lighter: $light-gray,
+  darker: $light-gray,
+  contrast: (
+    main: $light-gray,
+    lighter: $dark-gray,
+    darker: $dark-gray,
+  ),
+);
+
+$mat-warn: (
+  main: #ba1a1a,
+  lighter: #eababa,
+  darker: #a30f0f,
+  contrast: (
+    main: $whitish,
+    lighter: $theme-text,
+    darker: $light-gray,
+  ),
+);
+
+// Neutral palettes
+$grey-variant: (
+  90: #f7fafc,
+  80: #f0f5fa,
+  70: #c4c8cc,
+  60: #939699,
+  50: #7b7d80,
+);
