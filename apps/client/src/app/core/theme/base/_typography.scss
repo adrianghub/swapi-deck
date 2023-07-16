@@ -1,3 +1,5 @@
+@use '_palettes' as palettes;
+
 // Font family
 $font-family-inter: 'Inter', sans-serif;
 
@@ -81,4 +83,5 @@ $typography-types: (
   line-height: $lineHeight;
   font-weight: $fontWeight;
   letter-spacing: $letterSpacing;
+  color: palettes.$theme-text;
 }

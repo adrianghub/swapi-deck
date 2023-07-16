@@ -1,7 +1,6 @@
-@use "sass:map";
-@use "@angular/material" as mat;
-@use "typography" as typography;
-@use "_palettes" as palettes;
+@use '@angular/material' as mat;
+@use 'typography' as typography;
+@use '_palettes' as palettes;
 
 $theme-primary: mat.define-palette(
   palettes.$mat-primary,

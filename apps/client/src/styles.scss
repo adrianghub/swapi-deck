@@ -1,3 +1,7 @@
+// theme config
 @use './app/core/theme/theme';
 @use './app/core/theme/base/defaults';
-@use './app/core/theme/vendors';
+@use './app/core/theme/base/reset';
+
+// vendors
+@import 'nord/src/sass/nord';

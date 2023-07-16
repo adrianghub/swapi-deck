@@ -1,11 +1,12 @@
-// Theme text
-$theme-text: #03001c;
+@import 'nord/src/sass/nord';
 
 // Other colors config
-$whitish: #f8f8f8;
-$blackish: #03001c;
-$dark-gray: #32323d;
-$light-gray: #d6d5d9;
+$whitish: $nord6;
+$blackish: $nord0;
+$dark-gray: $nord2;
+$light-gray: $nord5;
+
+$theme-text: $nord1;
 
 // Material palettes
 $mat-primary: (
@@ -31,9 +32,9 @@ $mat-accent: (
 );
 
 $mat-warn: (
-  main: #ba1a1a,
-  lighter: #eababa,
-  darker: #a30f0f,
+  main: $nord11,
+  lighter: lighter($nord11, 10%),
+  darker: darker($nord11, 10%),
   contrast: (
     main: $whitish,
     lighter: $theme-text,
