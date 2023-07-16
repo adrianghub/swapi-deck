@@ -1,0 +1,8 @@
+{
+  "misc": {
+    "appName": "SWAPI Deck",
+    "mainMenu": {
+      "newGame": "New game"
+    }
+  }
+}
