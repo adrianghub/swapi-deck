@@ -7,14 +7,10 @@ import { Router } from '@angular/router';
       {{ 'misc.appName' | translate }}
     </h1>
     <div class="main-menu">
-      <sdeck-button class="regular-title-large">
-        {{ 'misc.mainMenu.newGame' | translate }}
-      </sdeck-button>
-
       <sdeck-button
         type="primary"
         [label]="'misc.mainMenu.actions.newGame' | translate"
-        (click)="router.navigateByUrl('game/wizard')"
+        (click)="router.navigateByUrl('wizard/names')"
       />
     </div>`,
   styleUrls: ['./main-menu.page.scss'],

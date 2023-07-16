@@ -34,11 +34,12 @@ type InputType = 'text';
           [formControl]="control"
           [placeholder]="placeholder ?? ''"
           [attr.aria-label]="label ?? ''"
+          [readonly]="readonly"
         />
 
         <sdeck-button
           *ngIf="control.value"
-          icon="x"
+          prefixIcon="x"
           size="small"
           class="clear"
           (clicked)="control.reset(); cleared.emit($event)"
@@ -71,6 +72,7 @@ export class InputComponent implements OnInit {
   @Input() icon?: string;
   @Input() placeholder?: string;
   @Input() hint?: string;
+  @Input() readonly = false;
 
   @Output() changed = new EventEmitter<string | null>();
   @Output() cleared = new EventEmitter<Event>();

@@ -7,7 +7,9 @@
       }
     },
     "validationError": {
-      "required": "This field is required."
+      "required": "This field is required.",
+      "minlength": "Minimum length is 3 characters.",
+      "maxlength": "Maximum length is 16 characters."
     }
   },
   "game": {
@@ -15,6 +17,16 @@
       "tab": {
         "usernames": "First step - Usernames",
         "cardsType": "Second step - Type of cards"
+      },
+      "actions": {
+        "mainMenu": "Main menu",
+        "previousStep": "Previous step",
+        "nextStep": "Next step",
+        "startGame": "Start game"
+      },
+      "names": {
+        "player1": "Player 1 username",
+        "player2": "Player 2 username"
       }
     }
   }

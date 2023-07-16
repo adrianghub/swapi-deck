@@ -51,8 +51,8 @@
 
 .mat-mdc-button[disabled][disabled] {
   --mdc-text-button-disabled-label-text-color: #{mat.get-color-from-palette(
-      palettes.$mat-accent,
-      lighter
+      palettes.$grey-variant,
+      60
     )};
   --mdc-text-button-label-text-color: #{mat.get-color-from-palette(
       palettes.$mat-accent,
@@ -60,6 +60,7 @@
     )};
   background-color: mat.get-color-from-palette(palettes.$grey-variant, 90);
   border: 2px solid mat.get-color-from-palette(palettes.$mat-accent, lighter);
+  pointer-events: none;
 }
 
 .mat-mdc-button.icon-only {

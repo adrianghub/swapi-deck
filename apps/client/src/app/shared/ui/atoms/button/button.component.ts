@@ -24,9 +24,20 @@ import { buttonSizes, iconSizes } from './button.config';
     (click)="onClick()"
   >
     <div [ngClass]="{ content: label }">
-      <i-feather *ngIf="icon" [name]="icon" [style]="iconCssVariables" />
+      <i-feather
+        *ngIf="prefixIcon"
+        [name]="prefixIcon"
+        [style]="iconCssVariables"
+      />
 
       <span>{{ label }}</span>
+
+      <i-feather
+        *ngIf="suffixIcon"
+        [name]="suffixIcon"
+        [style]="iconCssVariables"
+        class="suffix-icon"
+      />
     </div>
   </button>`,
   styleUrls: ['./button.component.scss'],
@@ -37,7 +48,8 @@ export class ButtonComponent {
   @Input() type: ButtonType = 'primary';
   @Input() size: ButtonSize = 'medium';
   @Input() label?: string;
-  @Input() icon?: string;
+  @Input() prefixIcon?: string;
+  @Input() suffixIcon?: string;
   @Input() disabled = false;
   @Input() active = false;
 

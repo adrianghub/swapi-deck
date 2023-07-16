@@ -1,26 +1,26 @@
 import { Routes } from '@angular/router';
-import { GameWizardLayout } from './layouts/game-wizard/game-wizard.layout';
+import { GameWizardPage } from './pages/game-wizard.page';
 import { GameWizardNamesTab } from './tabs/game-names/game-wizard-names.tab';
 import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-type.tab';
 
-export const gameRoutes: Routes = [
+export const gameWizardRoutes: Routes = [
   {
     path: '',
-    component: GameWizardLayout,
+    component: GameWizardPage,
     children: [
       {
-        path: 'wizard',
+        path: 'names',
         component: GameWizardNamesTab,
       },
       {
-        path: 'type',
+        path: 'cards-type',
         component: GameWizardCardsTypeTab,
       },
     ],
   },
   {
     path: '**',
-    redirectTo: 'wizard',
+    redirectTo: 'names',
     pathMatch: 'prefix',
   },
 ];

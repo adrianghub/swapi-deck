@@ -12,9 +12,11 @@ export const appRoutes: Route[] = [
         component: MainMenuPage,
       },
       {
-        path: 'game',
+        path: 'wizard',
         loadChildren: () =>
-          import('./modules/game/game.module').then((m) => m.GameModule),
+          import('./modules/game-wizard/game-wizard.module').then(
+            (m) => m.GameWizardModule
+          ),
       },
     ],
   },

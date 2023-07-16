@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: fit-content;
+  height: calc(100% - 141px);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
