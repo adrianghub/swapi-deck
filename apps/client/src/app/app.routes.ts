@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
 import { GameLayoutComponent } from './core/layouts/game-layout/game-layout.component';
-import { MainMenuPage } from './core/pages/main-menu/main-menu.page';
+import { GameBoardPage } from './modules/game-board/pages/game-board.page';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: MainMenuPage,
+    component: GameBoardPage,
   },
   {
     path: 'game',

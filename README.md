@@ -15,7 +15,7 @@
   - [ ] Add main menu
   - [ ] Add game wizard
   - [ ] Add game board
-  - [ ] Fetch cards from API
+  - [x] Fetch cards from API
   - [ ] Add unit tests
   - [ ] Add e2e tests
 - Features
