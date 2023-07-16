@@ -1,0 +1,19 @@
+:host,
+.form-field {
+  width: 100%;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.icon {
+  margin: 0 8px;
+}
+
+.clear {
+  position: absolute;
+  right: -5px;
+}

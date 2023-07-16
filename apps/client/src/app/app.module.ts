@@ -8,25 +8,26 @@ import { NgxsModule } from '@ngxs/store';
 import { AppComponent } from './app.component';
 import { appRoutes } from './app.routes';
 import { CoreModule } from './core/core.module';
-import { Module, configTranslateModule } from './core/module.abstract';
-import { GameBoardModule } from './modules/game-board/game-board.module';
+import {
+  CustomTranslateModule,
+  configTranslateModule,
+} from './core/module.abstract';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    CoreModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     TranslateModule.forRoot(configTranslateModule(['misc'])),
-    CoreModule,
-    GameBoardModule,
     NgxsModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule extends Module {
+export class AppModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {
     super(translateService);
   }

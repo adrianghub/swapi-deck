@@ -2,7 +2,20 @@
   "misc": {
     "appName": "SWAPI Deck",
     "mainMenu": {
-      "newGame": "New game"
+      "actions": {
+        "newGame": "New game"
+      }
+    },
+    "validationError": {
+      "required": "This field is required."
+    }
+  },
+  "game": {
+    "wizard": {
+      "tab": {
+        "usernames": "First step - Usernames",
+        "cardsType": "Second step - Type of cards"
+      }
     }
   }
 }

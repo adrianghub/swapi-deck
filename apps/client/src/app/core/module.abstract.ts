@@ -4,7 +4,7 @@ import { TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from './i18n/multi-loader';
 
 @Injectable()
-export abstract class Module {
+export abstract class CustomTranslateModule {
   protected constructor(protected translateService: TranslateService) {
     this.langReload();
   }

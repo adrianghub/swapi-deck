@@ -1,15 +1,22 @@
 import { Route } from '@angular/router';
-import { GameLayoutComponent } from './core/layouts/game-layout/game-layout.component';
-import { GameBoardPage } from './modules/game-board/pages/game-board.page';
+import { BaseLayout } from './core/layouts/base.layout';
+import { MainMenuPage } from './core/pages/main-menu/main-menu.page';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: GameBoardPage,
-  },
-  {
-    path: 'game',
-    component: GameLayoutComponent,
+    component: BaseLayout,
+    children: [
+      {
+        path: '',
+        component: MainMenuPage,
+      },
+      {
+        path: 'game',
+        loadChildren: () =>
+          import('./modules/game/game.module').then((m) => m.GameModule),
+      },
+    ],
   },
   {
     path: '**',

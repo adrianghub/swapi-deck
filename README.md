@@ -13,7 +13,7 @@
   - [x] UI lib
 - Core
   - [ ] Add main menu
-  - [ ] Add game wizard
+  - [x] Add game wizard
   - [ ] Add game board
   - [x] Fetch cards from API
   - [ ] Add unit tests
@@ -21,7 +21,7 @@
 - Features
   - [ ] Select usernames
   - [ ] Choose type of cards
-  - [ ] Add pagination
+  - [x] Add pagination
   - [ ] Select card
   - [ ] Add game results modal
   - [ ] Reset game state

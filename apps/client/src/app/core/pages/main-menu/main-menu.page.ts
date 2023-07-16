@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sdeck-main-menu',
@@ -6,10 +7,18 @@ import { Component } from '@angular/core';
       {{ 'misc.appName' | translate }}
     </h1>
     <div class="main-menu">
-      <p class="regular-title-large">
+      <sdeck-button class="regular-title-large">
         {{ 'misc.mainMenu.newGame' | translate }}
-      </p>
+      </sdeck-button>
+
+      <sdeck-button
+        type="primary"
+        [label]="'misc.mainMenu.actions.newGame' | translate"
+        (click)="router.navigateByUrl('game/wizard')"
+      />
     </div>`,
   styleUrls: ['./main-menu.page.scss'],
 })
-export class MainMenuPage {}
+export class MainMenuPage {
+  protected router = inject(Router);
+}

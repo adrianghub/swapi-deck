@@ -1,0 +1,72 @@
+@use '@angular/material' as mat;
+@use '_palettes' as palettes;
+
+.mat-mdc-button-base {
+  --mdc-shape-small: 4px;
+}
+
+.mat-mdc-button {
+  transition: background-color 0.1s ease-in-out;
+
+  &:focus-visible:not([disabled]):not(.icon-only) {
+    outline-offset: 4px;
+    outline: 2px solid mat.get-color-from-palette(palettes.$mat-primary, main);
+  }
+
+  &.mat-primary {
+    --mdc-text-button-label-text-color: mat.get-color-from-palette(
+      palettes.$mat-primary,
+      main
+    );
+    background-color: palettes.$whitish;
+    border: 2px solid mat.get-color-from-palette(palettes.$mat-primary, main);
+
+    &:hover:not(.active) {
+      background-color: darken(palettes.$whitish, 5%);
+    }
+
+    &:active:not(.icon-only) {
+      --mdc-text-button-label-text-color: #{palettes.$whitish};
+      background-color: mat.get-color-from-palette(palettes.$mat-primary, main);
+      border: 2px solid mat.get-color-from-palette(palettes.$mat-primary, main);
+    }
+  }
+
+  &.mat-accent,
+  &.active {
+    --mdc-text-button-label-text-color: #{palettes.$whitish};
+    background-color: mat.get-color-from-palette(palettes.$mat-accent, main);
+    border: 2px solid mat.get-color-from-palette(palettes.$mat-accent, main);
+  }
+
+  &.mat-accent {
+    &:hover {
+      background-color: lighten(
+        mat.get-color-from-palette(palettes.$mat-accent, main),
+        15%
+      );
+    }
+  }
+}
+
+.mat-mdc-button[disabled][disabled] {
+  --mdc-text-button-disabled-label-text-color: #{mat.get-color-from-palette(
+      palettes.$mat-accent,
+      lighter
+    )};
+  --mdc-text-button-label-text-color: #{mat.get-color-from-palette(
+      palettes.$mat-accent,
+      lighter
+    )};
+  background-color: mat.get-color-from-palette(palettes.$grey-variant, 90);
+  border: 2px solid mat.get-color-from-palette(palettes.$mat-accent, lighter);
+}
+
+.mat-mdc-button.icon-only {
+  display: inline-flex;
+  align-items: center;
+  min-width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+}
