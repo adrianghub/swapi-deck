@@ -21,6 +21,7 @@
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
     "@ngx-translate/core": "^15.0.0",
+    "@ngxs/store": "^3.8.1",
     "axios": "^1.0.0",
     "nord": "^0.2.1",
     "reflect-metadata": "^0.1.13",
