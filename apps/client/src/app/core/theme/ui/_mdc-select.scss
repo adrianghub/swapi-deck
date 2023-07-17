@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@use '_palettes' as palettes;
+
+.mat-mdc-select .mat-mdc-select-arrow {
+  display: none;
+}

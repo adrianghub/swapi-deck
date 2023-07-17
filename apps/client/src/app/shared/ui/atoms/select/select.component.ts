@@ -1,4 +1,4 @@
-import { KeyValuePipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,71 +11,54 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { IconsModule } from 'apps/client/src/app/core/icons/icons.module';
 import { ButtonComponent } from '../button/button.component';
 
-type InputType = 'text';
-
 @Component({
   standalone: true,
-  selector: 'sdeck-input',
+  selector: 'sdeck-select',
   template: `
     <mat-form-field class="form-field" appearance="outline">
       <mat-label>{{ label }}</mat-label>
 
-      <i-feather matPrefix *ngIf="icon" [name]="icon" class="icon"></i-feather>
-
       <div class="wrapper">
-        <input
-          matInput
-          [type]="type"
+        <mat-select
           [formControl]="control"
           [placeholder]="placeholder ?? ''"
           [attr.aria-label]="label ?? ''"
-          [readonly]="readonly"
-        />
-
-        <sdeck-button
-          *ngIf="control.value"
-          prefixIcon="x"
-          size="small"
-          class="clear"
-          (clicked)="control.reset(); cleared.emit($event)"
-        />
+        >
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{ 'misc.select.option.' + option | translate }}
+          </mat-option>
+        </mat-select>
       </div>
 
       <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-
-      <mat-error *ngIf="(control.errors | keyvalue)?.[0] as error">
-        <span>{{ 'misc.validationError.' + error.key | translate }}</span>
-      </mat-error>
     </mat-form-field>
   `,
-  styleUrls: ['./input.component.scss'],
+  styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
-    KeyValuePipe,
+    CommonModule,
     TranslateModule,
-    MatInputModule,
+    MatSelectModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     ButtonComponent,
     IconsModule,
+    TranslateModule,
   ],
 })
-export class InputComponent<T> implements OnInit {
-  @Input() type: InputType = 'text';
-  @Input({ required: true }) control!: FormControl<T | null>;
+export class SelectComponent<T> implements OnInit {
+  @Input({ required: true }) control!: FormControl<T>;
+  @Input({ required: true }) options: T[] = [];
   @Input() label?: string;
-  @Input() icon?: string;
   @Input() placeholder?: string;
   @Input() hint?: string;
-  @Input() readonly = false;
 
-  @Output() changed = new EventEmitter<T | null>();
+  @Output() changed = new EventEmitter<T>();
   @Output() cleared = new EventEmitter<Event>();
 
   constructor(private destroyRef: DestroyRef) {}

@@ -15,11 +15,9 @@ export interface PlayersNamesValues {
 @Component({
   selector: 'sdeck-game-names',
   template: `
-    <sdeck-game-wizard-layout>
-      <h2 class="semi-bold-headline-medium headline">
-        What areaokawodkaodka adoawkoak oa oawkdwao?
-      </h2>
-
+    <sdeck-game-wizard-layout
+      [headline]="'game.wizard.names.headline' | translate"
+    >
       <form [formGroup]="playersForm" class="input-container">
         <sdeck-input
           [control]="playerOne"
@@ -92,6 +90,9 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     playerTwo: false,
   };
 
+  protected router = inject(Router);
+  protected gameWizardFacade = inject(GameWizardFacade);
+
   ngOnInit() {
     this.subs.push(
       this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
@@ -140,7 +141,4 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
 
     this.setReadOnly(player, false);
   }
-
-  protected router = inject(Router);
-  protected gameWizardFacade = inject(GameWizardFacade);
 }

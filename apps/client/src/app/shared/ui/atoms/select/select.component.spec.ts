@@ -1,29 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
-import { InputComponent } from './input.component';
+import { SelectComponent } from './select.component';
 
-describe('InputComponent', () => {
-  let component: InputComponent<string>;
-  let fixture: ComponentFixture<InputComponent<string>>;
+describe('SelectComponent', () => {
+  let component: SelectComponent<string>;
+  let fixture: ComponentFixture<SelectComponent<string>>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        CommonModule,
-        TranslateModule,
         MatInputModule,
         MatFormFieldModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
       ],
     });
-    fixture = TestBed.createComponent(InputComponent<string>);
+    fixture = TestBed.createComponent(SelectComponent<string>);
     component = fixture.componentInstance;
 
     component.control = new FormControl();

@@ -1,10 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'sdeck-game-wizard-layout',
   template: `
     <div class="container">
+      <h2 class="semi-bold-headline-medium headline">
+        {{ headline }}
+      </h2>
+
       <ng-content />
     </div>
 
@@ -15,5 +19,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./game-wizard.layout.scss'],
 })
 export class GameWizardLayout {
+  @Input({ required: true }) headline!: string;
+
   protected router = inject(Router);
 }

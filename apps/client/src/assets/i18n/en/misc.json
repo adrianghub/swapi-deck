@@ -10,6 +10,12 @@
       "required": "This field is required.",
       "minlength": "Minimum length is 3 characters.",
       "maxlength": "Maximum length is 16 characters."
+    },
+    "select": {
+      "option": {
+        "people": "People",
+        "starships": "Starships"
+      }
     }
   },
   "game": {
@@ -25,8 +31,15 @@
         "startGame": "Start game"
       },
       "names": {
+        "headline": "How would you like to call your players?",
         "player1": "Player 1 username",
         "player2": "Player 2 username"
+      },
+      "cardType": {
+        "headline": "What type of cards would you like to play with?",
+        "select": {
+          "label": "Type of cards"
+        }
       }
     }
   }

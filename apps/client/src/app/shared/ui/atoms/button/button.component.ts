@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -42,7 +42,7 @@ import { buttonSizes, iconSizes } from './button.config';
   </button>`,
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MatButtonModule, IconsModule],
+  imports: [NgIf, NgClass, MatButtonModule, IconsModule],
 })
 export class ButtonComponent {
   @Input() type: ButtonType = 'primary';

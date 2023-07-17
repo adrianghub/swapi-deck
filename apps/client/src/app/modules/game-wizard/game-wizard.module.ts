@@ -9,6 +9,7 @@ import { NgxsModule } from '@ngxs/store';
 import { LayoutHeaderComponent } from '../../core/layouts/components/layout-header/layout-header.component';
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
+import { SelectComponent } from '../../shared/ui/atoms/select/select.component';
 import { MatTabRouterLinkActiveDirective } from './directives/routerLinkActive.directive';
 import { gameWizardRoutes } from './game-wizard.routes';
 import { GameWizardLayout } from './layout/game-wizard/game-wizard.layout';
@@ -35,9 +36,10 @@ import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-type
     InputComponent,
     TranslateModule,
     MatTabsModule,
+    ReactiveFormsModule,
     LayoutHeaderComponent,
     ButtonComponent,
-    ReactiveFormsModule,
+    SelectComponent,
   ],
   providers: [GameWizardFacade],
 })
