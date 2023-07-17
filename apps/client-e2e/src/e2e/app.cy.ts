@@ -1,13 +1,10 @@
-import { getGreeting } from '../support/app.po';
+import { getAppName } from '../support/app.po';
 
 describe('client', () => {
   beforeEach(() => cy.visit('/'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
+  it('should display app name', () => {
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome client');
+    getAppName().contains('SWAPI Deck');
   });
 });
