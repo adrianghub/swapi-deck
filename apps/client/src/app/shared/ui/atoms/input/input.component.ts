@@ -1,12 +1,15 @@
 import { KeyValuePipe, NgIf } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +32,7 @@ type InputType = 'text';
 
       <div class="wrapper">
         <input
+          #input
           matInput
           [type]="type"
           [formControl]="control"
@@ -66,7 +70,9 @@ type InputType = 'text';
     IconsModule,
   ],
 })
-export class InputComponent<T> implements OnInit {
+export class InputComponent<T> implements OnInit, AfterViewInit {
+  @ViewChild('input') inputRef!: ElementRef;
+
   @Input() type: InputType = 'text';
   @Input({ required: true }) control!: FormControl<T | null>;
   @Input() label?: string;
@@ -74,6 +80,7 @@ export class InputComponent<T> implements OnInit {
   @Input() placeholder?: string;
   @Input() hint?: string;
   @Input() readonly = false;
+  @Input() focus = false;
 
   @Output() changed = new EventEmitter<T | null>();
   @Output() cleared = new EventEmitter<Event>();
@@ -86,5 +93,13 @@ export class InputComponent<T> implements OnInit {
       .subscribe((value) => {
         this.changed.emit(value);
       });
+  }
+
+  ngAfterViewInit() {
+    if (this.focus) {
+      setTimeout(() => {
+        this.inputRef.nativeElement.focus();
+      }, 0);
+    }
   }
 }

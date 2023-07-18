@@ -11,6 +11,7 @@ import { MainMenuPage } from './pages/main-menu/main-menu.page';
 
 import { MatDividerModule } from '@angular/material/divider';
 import { ButtonComponent } from '../shared/ui/atoms/button/button.component';
+import { GameWizardFacade } from '../modules/game-wizard/store/game-wizard.facade';
 
 @NgModule({
   declarations: [MainMenuPage, BaseLayout],
@@ -21,6 +22,7 @@ import { ButtonComponent } from '../shared/ui/atoms/button/button.component';
     MatDividerModule,
     ButtonComponent,
   ],
+  providers: [GameWizardFacade],
 })
 export class CoreModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {

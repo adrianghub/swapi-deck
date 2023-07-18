@@ -4,7 +4,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
 @Component({
   selector: 'sdeck-game-wizard-page',
   template: `
-    <sdeck-layout-header />
+    <sdeck-layout-header [center]="true" />
 
     <nav mat-tab-nav-bar [tabPanel]="tabPanel">
       <a mat-tab-link routerLink="names" routerLinkActive>

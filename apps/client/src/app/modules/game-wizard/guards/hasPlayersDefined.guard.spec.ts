@@ -7,8 +7,12 @@ import { hasPlayersDefinedGuard } from './hasPlayersDefined.guard';
 describe('hasPlayersDefinedGuard', () => {
   const gameWizardMock = {
     players$: of({
-      playerOne: 'Player 1',
-      playerTwo: 'Player 2',
+      playerOne: {
+        name: 'Player 1',
+      },
+      playerTwo: {
+        name: 'Player 2',
+      },
     }),
   };
 

@@ -21,14 +21,15 @@ export interface PlayersNamesValues {
       <form [formGroup]="playersForm" class="input-container">
         <sdeck-input
           [control]="playerOne"
-          [label]="'game.wizard.names.player1' | translate"
+          [label]="'game.wizard.names.playerOne' | translate"
           [readonly]="isReadOnly('playerOne')"
           (cleared)="unsetPlayerName('playerOne')"
+          [focus]="true"
         ></sdeck-input>
 
         <sdeck-input
           [control]="playerTwo"
-          [label]="'game.wizard.names.player2' | translate"
+          [label]="'game.wizard.names.playerTwo' | translate"
           [readonly]="isReadOnly('playerTwo')"
           (cleared)="unsetPlayerName('playerTwo')"
         ></sdeck-input>
@@ -90,15 +91,19 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     playerTwo: false,
   };
 
+  currentPlayers: PlayersPayload | undefined;
+
+  private gameWizardFacade = inject(GameWizardFacade);
   protected router = inject(Router);
-  protected gameWizardFacade = inject(GameWizardFacade);
 
   ngOnInit() {
     this.subs.push(
       this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
         if (players?.playerOne && players?.playerTwo) {
-          this.playerOne.setValue(players.playerOne);
-          this.playerTwo.setValue(players.playerTwo);
+          this.playerOne.setValue(players.playerOne.name);
+          this.playerTwo.setValue(players.playerTwo.name);
+
+          this.currentPlayers = players;
 
           this.setReadOnly('playerOne', true);
           this.setReadOnly('playerTwo', true);
@@ -107,13 +112,19 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     );
   }
 
-  goToNextStep($event: MouseEvent) {
+  protected goToNextStep($event: MouseEvent) {
     $event.stopPropagation();
 
     if (!this.playersForm.invalid) {
       const players: PlayersPayload = {
-        playerOne: this.playerOne.value.trim(),
-        playerTwo: this.playerTwo.value.trim(),
+        playerOne: {
+          ...this.currentPlayers?.playerOne,
+          name: this.playerOne.value.trim(),
+        },
+        playerTwo: {
+          ...this.currentPlayers?.playerTwo,
+          name: this.playerTwo.value.trim(),
+        },
       };
 
       this.gameWizardFacade.updatePlayersNames(players);
@@ -122,21 +133,21 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     }
   }
 
-  isReadOnly(player: keyof PlayersNamesValues): boolean {
+  protected isReadOnly(player: keyof PlayersNamesValues): boolean {
     return this.readonlyFields[player];
   }
 
-  setReadOnly(player: keyof PlayersNamesValues, value: boolean): void {
+  private setReadOnly(player: keyof PlayersNamesValues, value: boolean): void {
     this.readonlyFields = {
       ...this.readonlyFields,
       [player]: value,
     };
   }
 
-  unsetPlayerName(player: keyof PlayersNamesValues) {
+  protected unsetPlayerName(player: keyof PlayersNamesValues) {
     const payload: PlayersPayload = {} as PlayersPayload;
 
-    payload[player] = '';
+    payload[player].name = '';
     this.gameWizardFacade.updatePlayersNames(payload);
 
     this.setReadOnly(player, false);

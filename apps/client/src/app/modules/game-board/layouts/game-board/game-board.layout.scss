@@ -1,7 +1,10 @@
 :host {
   display: block;
   width: 100%;
-  padding: 32px 16px;
   margin: 0 auto;
-  overflow: auto;
+}
+
+.players {
+  display: flex;
+  gap: 16px;
 }

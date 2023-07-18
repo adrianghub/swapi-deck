@@ -1,0 +1,47 @@
+@use '_palettes' as palettes;
+@use '@angular/material' as mat;
+
+.wrapper {
+  display: flex;
+}
+
+.headline {
+  margin-bottom: 32px;
+}
+
+.main-content {
+  flex: 2;
+}
+
+.cards-board {
+  padding-top: 16px;
+  height: 80vh;
+  border-right: 1px solid mat.get-color-from-palette(palettes.$grey-variant, 70);
+  overflow-y: auto;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cards-pagination {
+  margin: 16px 0;
+  display: flex;
+  gap: 8px;
+}
+
+.aside {
+  flex: 1;
+  padding: 16px;
+}
+
+.section {
+  display: flex;
+  margin-bottom: 64px;
+}
+
+.section-small-space {
+  margin-bottom: 48px;
+}

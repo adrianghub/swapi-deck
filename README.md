@@ -12,17 +12,17 @@
   - [x] state management
   - [x] UI lib
 - Core
-  - [ ] Add main menu
+  - [x] Add main menu
   - [x] Add game wizard
-  - [ ] Add game board
+  - [x] Add game board
   - [x] Fetch cards from API
   - [ ] Add unit tests
   - [ ] Add e2e tests
 - Features
-  - [ ] Select usernames
-  - [ ] Choose type of cards
+  - [x] Select usernames
+  - [x] Choose type of cards
   - [x] Add pagination
   - [ ] Select card
   - [ ] Add game results modal
-  - [ ] Reset game state
+  - [x] Reset game state
   - [ ] Add leaderboard

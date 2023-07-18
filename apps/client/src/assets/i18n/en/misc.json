@@ -3,7 +3,8 @@
     "appName": "SWAPI Deck",
     "mainMenu": {
       "actions": {
-        "newGame": "New game"
+        "newGame": "New game",
+        "continue": "Continue"
       }
     },
     "validationError": {
@@ -32,13 +33,21 @@
       },
       "names": {
         "headline": "How would you like to call your players?",
-        "player1": "Player 1 username",
-        "player2": "Player 2 username"
+        "playerOne": "First player's username",
+        "playerTwo": "Second player's username"
       },
       "cardType": {
         "headline": "What type of cards would you like to play with?",
         "select": {
           "label": "Type of cards"
+        }
+      }
+    },
+    "board": {
+      "cards": {
+        "type": {
+          "people": "People",
+          "starships": "Starships"
         }
       }
     }

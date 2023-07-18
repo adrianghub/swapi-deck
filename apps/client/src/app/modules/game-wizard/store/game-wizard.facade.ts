@@ -23,4 +23,8 @@ export class GameWizardFacade {
   updateCardsType(payload: CardsType): void {
     this.store.dispatch(new UpdateCardsType(payload));
   }
+
+  resetGameState(): void {
+    this.store.reset({});
+  }
 }

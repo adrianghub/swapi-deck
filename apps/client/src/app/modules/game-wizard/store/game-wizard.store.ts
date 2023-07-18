@@ -3,8 +3,14 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CardsType } from '../../../shared/models/game.model';
 
 export interface PlayersPayload {
-  playerOne: string;
-  playerTwo: string;
+  playerOne: {
+    name: string;
+    score?: number;
+  }
+  playerTwo: {
+    name: string;
+    score?: number;
+  }
 }
 
 export class UpdatePlayersNames {

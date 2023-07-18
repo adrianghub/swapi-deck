@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, tap } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
+import { SwapiParamsType } from '../models/swapi.model';
 import { GameBoardRepository } from './game-board.repository';
 
 export interface SwapiMeta {
@@ -14,7 +15,7 @@ export interface SwapiMeta {
 export class LoadPeopleCards {
   static readonly type = '[Game Board] Load People Cards';
 
-  constructor(public url?: string) {}
+  constructor(public params: SwapiParamsType) {}
 }
 
 export class LoadStarshipsCards {
@@ -49,6 +50,11 @@ export class GameBoardState {
   }
 
   @Selector([GameBoardState])
+  static starshipsCards(state: GameBoardModel) {
+    return state.starshipsCards;
+  }
+
+  @Selector([GameBoardState])
   static loading(state: GameBoardModel) {
     return state.loading;
   }
@@ -64,15 +70,19 @@ export class GameBoardState {
       loading: true,
     });
 
-    const page = action?.url?.split('page=')[1];
+    let page = 1;
 
-    return this.gameBoardRepository.getSwapiPeople(action?.url).pipe(
+    if (action?.params?.param === 'url') {
+      page = parseInt(action.params.url.split('page=')[1]);
+    }
+
+    return this.gameBoardRepository.getSwapiData(action.params).pipe(
       tap((res) => {
         ctx.patchState({
           peopleCards: res.results,
           meta: {
             ...res,
-            page: page ? parseInt(page) : 1,
+            page,
           },
           loading: false,
         });

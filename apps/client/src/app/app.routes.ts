@@ -18,6 +18,13 @@ export const appRoutes: Route[] = [
             (m) => m.GameWizardModule
           ),
       },
+      {
+        path: 'game-board',
+        loadChildren: () =>
+          import('./modules/game-board/game-board.module').then(
+            (m) => m.GameBoardModule
+          ),
+      },
     ],
   },
   {

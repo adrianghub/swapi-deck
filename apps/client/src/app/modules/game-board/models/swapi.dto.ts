@@ -6,7 +6,6 @@ export interface SwapiApiDto<T> {
 }
 
 export interface SwapiStarshipDto extends SwapiBaseDto {
-  name: string;
   model: string;
   manufacturer: string;
   cost_in_credits: string;
@@ -27,7 +26,6 @@ export interface SwapiStarshipDto extends SwapiBaseDto {
 }
 
 export interface SwapiPersonDto extends SwapiBaseDto {
-  name: string;
   height: string;
   mass: string;
   hair_color: string;
@@ -42,7 +40,8 @@ export interface SwapiPersonDto extends SwapiBaseDto {
   starships: string[];
 }
 
-interface SwapiBaseDto {
+export interface SwapiBaseDto {
+  name: string;
   created: string;
   edited: string;
   url: string;
