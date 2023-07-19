@@ -36,6 +36,10 @@ import { ButtonComponent } from '../button/button.component';
       </div>
 
       <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
+      <mat-error *ngIf="(control.errors | keyvalue)?.[0] as error">
+        <span>{{ 'misc.validationError.' + error.key | translate }}</span>
+      </mat-error>
     </mat-form-field>
   `,
   styleUrls: ['./select.component.scss'],

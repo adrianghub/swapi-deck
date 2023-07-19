@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { take } from 'rxjs';
@@ -16,7 +16,6 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
         [control]="cardsTypeControl"
         [options]="cardsTypes"
         [label]="'game.wizard.cardType.select.label' | translate"
-        (changed)="updateCardsType($event!)"
       />
 
       <ng-container actions>
@@ -30,8 +29,8 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.startGame' | translate"
-          (click)="router.navigateByUrl('game-board')"
-          suffixIcon="arrow-right"
+          (click)="goToNextStep($event)"
+          [disabled]="cardsTypeControl.invalid"
         />
       </ng-container>
     </sdeck-game-wizard-layout>
@@ -41,7 +40,10 @@ export class GameWizardCardsTypeTab implements OnInit {
   protected router = inject(Router);
   protected gameWizardFacade = inject(GameWizardFacade);
 
-  cardsTypeControl = new FormControl<CardsType | null>(null);
+  cardsTypeControl = new FormControl<CardsType | null>(
+    null,
+    Validators.required
+  );
   cardsTypes = cardsTypes;
 
   ngOnInit() {
@@ -50,7 +52,13 @@ export class GameWizardCardsTypeTab implements OnInit {
     });
   }
 
-  updateCardsType(cardsType: CardsType): void {
-    this.gameWizardFacade.updateCardsType(cardsType);
+  goToNextStep($event: Event): void {
+    $event.stopPropagation();
+
+    if (!this.cardsTypeControl.invalid && this.cardsTypeControl.value) {
+      this.gameWizardFacade.updateCardsType(this.cardsTypeControl.value);
+
+      this.router.navigateByUrl('game-board');
+    }
   }
 }

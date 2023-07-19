@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgxsModule } from '@ngxs/store';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LayoutHeaderComponent } from '../../core/layouts/components/layout-header/layout-header.component';
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
@@ -15,6 +16,7 @@ import { gameBoardRoutes } from './game-board.routes';
 import { GameBoardLayout } from './layouts/game-board/game-board.layout';
 import { GameBoardPage } from './pages/game-board.page';
 import { CardsSection } from './sections/cards/cards.section';
+import { CardsSkeletonComponent } from './sections/cards/components/cards-skeleton/cards-skeleton.component';
 import { PeopleCardComponent } from './sections/cards/components/people-card/people-card.section';
 import { StarshipCardComponent } from './sections/cards/components/starship-card/starship-card.section';
 import { GameBoardFacade } from './store/game-board.facade';
@@ -28,6 +30,7 @@ import { GameBoardState } from './store/game-board.store';
     CardsSection,
     PeopleCardComponent,
     StarshipCardComponent,
+    CardsSkeletonComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +44,7 @@ import { GameBoardState } from './store/game-board.store';
     MatCardModule,
     LayoutHeaderComponent,
     ButtonComponent,
+    NgxSkeletonLoaderModule,
   ],
   providers: [GameBoardRepository, GameBoardFacade, GameWizardFacade],
 })

@@ -1,0 +1,9 @@
+:host {
+  width: 100%;
+}
+
+.cards-skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
