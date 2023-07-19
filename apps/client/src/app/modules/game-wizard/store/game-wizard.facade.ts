@@ -4,20 +4,20 @@ import { Observable } from 'rxjs';
 import { CardsType } from '../../../shared/models/game.model';
 import {
   GameWizardState,
-  PlayersPayload,
+  Players,
   UpdateCardsType,
-  UpdatePlayersNames,
+  UpdatePlayers,
 } from './game-wizard.store';
 
 @Injectable()
 export class GameWizardFacade {
   private store = inject(Store);
 
-  @Select(GameWizardState.players) players$!: Observable<PlayersPayload>;
+  @Select(GameWizardState.players) players$!: Observable<Players>;
   @Select(GameWizardState.cardsType) cardsType$!: Observable<CardsType>;
 
-  updatePlayersNames(payload: PlayersPayload): void {
-    this.store.dispatch(new UpdatePlayersNames(payload));
+  updatePlayers(payload: Players): void {
+    this.store.dispatch(new UpdatePlayers(payload));
   }
 
   updateCardsType(payload: CardsType): void {

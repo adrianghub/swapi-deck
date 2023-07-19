@@ -1,0 +1,29 @@
+<h2 *ngIf="data.labels.title" mat-dialog-title class="semi-bold-title-large">
+  <span>{{ data.labels.title! | translate }}</span>
+</h2>
+
+<div class="template" mat-dialog-content>
+  <ng-container
+    *ngTemplateOutlet="data.templateRef; context: { $implicit: data }"
+  />
+</div>
+
+<div mat-dialog-actions>
+  <div class="buttons">
+    <sdeck-button
+      [mat-dialog-close]="data.result"
+      [disabled]="data.options.disabled"
+      data-test-id="dialog-submit"
+    >
+      {{ data.labels.submit | translate }}
+    </sdeck-button>
+
+    <sdeck-button
+      color="accent"
+      [mat-dialog-close]=""
+      data-test-id="dialog-cancel"
+    >
+      {{ 'misc.dialog.cancel' | translate }}
+    </sdeck-button>
+  </div>
+</div>

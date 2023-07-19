@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
+import { numberOfPlayers } from 'apps/client/src/app/shared/constants/game.constants';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { Observable, map, take } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
-import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 
 @Component({
   selector: 'sdeck-cards',
-  template: `
-    <ng-container *ngIf="loading$ | async; else cards">
+  template: `<ng-container *ngIf="loading$ | async; else cards">
       <sdeck-cards-skeleton />
     </ng-container>
 
@@ -25,25 +25,23 @@ import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
           *ngIf="isStarshipType(card)"
           [card]="card"
           (click)="selectCard(card)"
+          [class.selected]="isSelected(card) | async"
         />
       </ng-container>
-    </ng-template>
-  `,
+    </ng-template> `,
   styleUrls: ['./cards.section.scss'],
 })
 export class CardsSection extends Subscribable {
   @Input({ required: true }) cards$!: Observable<
     (SwapiStarshipDto | SwapiPersonDto)[]
   >;
-  @Input() selectedCards$!: Observable<
-    Map<string, SwapiPersonDto | SwapiStarshipDto>
-  >;
   @Input({ required: true }) loading$!: Observable<boolean>;
   @Input({ required: true }) type!: CardsType;
+  @Input({ required: true }) selectedCards$!: Observable<
+    Map<string, SwapiPersonDto | SwapiStarshipDto>
+  >;
 
   @Output() selected = new EventEmitter<SwapiPersonDto | SwapiStarshipDto>();
-
-  private maxSelectedCards = 2;
 
   protected isPersonType(
     card: SwapiStarshipDto | SwapiPersonDto
@@ -61,8 +59,8 @@ export class CardsSection extends Subscribable {
     this.subs.push(
       this.selectedCards$.pipe(take(1)).subscribe((selectedCards) => {
         if (
-          selectedCards.size < this.maxSelectedCards ||
-          selectedCards.has(card.url)
+          selectedCards?.size < numberOfPlayers ||
+          !selectedCards?.has(card.url)
         ) {
           this.selected.emit(card);
         }
@@ -75,7 +73,7 @@ export class CardsSection extends Subscribable {
   ): Observable<boolean> {
     return this.selectedCards$.pipe(
       take(1),
-      map((selectedCards) => selectedCards.has(card.url))
+      map((selectedCards) => selectedCards?.has(card.url))
     );
   }
 }

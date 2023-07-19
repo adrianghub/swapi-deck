@@ -2,21 +2,19 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CardsType } from '../../../shared/models/game.model';
 
-export interface PlayersPayload {
-  playerOne: {
-    name: string;
-    score?: number;
-  }
-  playerTwo: {
-    name: string;
-    score?: number;
-  }
+interface PlayerState {
+  name: string;
+  score?: number;
+}
+export interface Players {
+  playerOne: PlayerState;
+  playerTwo: PlayerState;
 }
 
-export class UpdatePlayersNames {
-  static readonly type = '[Game Wizard] Update Players Names';
+export class UpdatePlayers {
+  static readonly type = '[Game Wizard] Update Players';
 
-  constructor(public payload: PlayersPayload) {}
+  constructor(public payload: Players) {}
 }
 
 export class UpdateCardsType {
@@ -26,13 +24,22 @@ export class UpdateCardsType {
 }
 
 export interface GameWizardModel {
-  players?: PlayersPayload;
+  players?: Players;
   cardsType?: CardsType;
 }
 
 @State<GameWizardModel>({
   name: 'gameWizard',
-  defaults: {},
+  defaults: {
+    players: {
+      playerOne: {
+        name: 'maciek',
+      },
+      playerTwo: {
+        name: 'adam',
+      },
+    },
+  },
 })
 @Injectable()
 export class GameWizardState {
@@ -46,10 +53,10 @@ export class GameWizardState {
     return state.cardsType;
   }
 
-  @Action(UpdatePlayersNames)
+  @Action(UpdatePlayers)
   updatePlayersNames(
     ctx: StateContext<GameWizardModel>,
-    action: UpdatePlayersNames
+    action: UpdatePlayers
   ) {
     ctx.patchState({
       players: action.payload,

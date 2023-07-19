@@ -7,6 +7,7 @@ import {
   GameBoardState,
   LoadPeopleCards,
   SwapiMeta,
+  UpdatePlayerTurn,
   UpdateSelectedCards,
 } from './game-board.store';
 
@@ -30,11 +31,21 @@ export class GameBoardFacade {
     Map<string, SwapiPersonDto | SwapiStarshipDto>
   >;
 
+  @Select(GameBoardState.isSecondPlayerTurn)
+  isSecondPlayerTurn$!: Observable<boolean>;
+
   loadCards(params: SwapiParamsType): void {
     this.store.dispatch(new LoadPeopleCards(params));
   }
 
-  updateSelectedCards(card: SwapiPersonDto | SwapiStarshipDto): void {
-    this.store.dispatch(new UpdateSelectedCards(card));
+  updateSelectedCards(
+    card: SwapiPersonDto | SwapiStarshipDto,
+    playerName: string
+  ): void {
+    this.store.dispatch(new UpdateSelectedCards(card, playerName));
+  }
+
+  updatePlayerTurn(): void {
+    this.store.dispatch(new UpdatePlayerTurn());
   }
 }

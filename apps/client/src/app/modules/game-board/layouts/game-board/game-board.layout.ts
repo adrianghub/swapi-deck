@@ -1,5 +1,5 @@
-import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facade';
 import { Component, inject } from '@angular/core';
+import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facade';
 
 @Component({
   selector: 'sdeck-game-board-layout',

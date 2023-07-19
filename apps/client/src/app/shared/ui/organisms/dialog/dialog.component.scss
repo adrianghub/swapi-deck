@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+@use '_palettes' as palettes;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px;
+}
+
+.template {
+  overflow: auto;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  atq-button {
+    flex: 1 1 50%;
+    width: 100%;
+
+    &:only-of-type {
+      width: 240px;
+      flex: unset;
+      margin: 0 auto;
+    }
+  }
+
+  atq-button + atq-button {
+    margin-left: 16px;
+  }
+}

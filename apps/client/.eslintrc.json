@@ -24,7 +24,14 @@
         "@angular-eslint/component-class-suffix": [
           "error",
           {
-            "suffixes": ["Layout", "Page", "Section", "Tab", "Component"]
+            "suffixes": [
+              "Layout",
+              "Page",
+              "Section",
+              "Tab",
+              "Dialog",
+              "Component"
+            ]
           }
         ],
         "@angular-eslint/no-output-on-prefix": "off",
