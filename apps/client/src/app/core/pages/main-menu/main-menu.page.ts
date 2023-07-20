@@ -29,7 +29,7 @@ export class MainMenuPage {
   protected gameWizardFacade = inject(GameWizardFacade);
 
   startNewGame() {
-    this.gameWizardFacade.resetGameState();
+    this.gameWizardFacade.resetWizardState();
 
     this.router.navigateByUrl('wizard/names');
   }

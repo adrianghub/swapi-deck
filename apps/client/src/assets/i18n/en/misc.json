@@ -49,6 +49,13 @@
           "people": "People",
           "starships": "Starships"
         }
+      },
+      "dialog": {
+        "results": {
+          "title": "Battle results",
+          "submit": "Play again",
+          "cancel": "Quit game"
+        }
       }
     }
   }

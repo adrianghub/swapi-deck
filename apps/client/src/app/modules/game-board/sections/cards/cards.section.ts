@@ -4,6 +4,7 @@ import { numberOfPlayers } from 'apps/client/src/app/shared/constants/game.const
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { Observable, map, take } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
+import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 
 @Component({
   selector: 'sdeck-cards',
@@ -15,14 +16,14 @@ import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
       <ng-container *ngFor="let card of cards$ | async as cards">
         <sdeck-people-card
           class="card"
-          *ngIf="isPersonType(card)"
+          *ngIf="isSwapiPerson(card)"
           [card]="card"
           (click)="selectCard(card)"
           [class.selected]="isSelected(card) | async"
         />
         <sdeck-starship-card
           class="card"
-          *ngIf="isStarshipType(card)"
+          *ngIf="isSwapiStarship(card)"
           [card]="card"
           (click)="selectCard(card)"
           [class.selected]="isSelected(card) | async"
@@ -43,18 +44,6 @@ export class CardsSection extends Subscribable {
 
   @Output() selected = new EventEmitter<SwapiPersonDto | SwapiStarshipDto>();
 
-  protected isPersonType(
-    card: SwapiStarshipDto | SwapiPersonDto
-  ): card is SwapiPersonDto {
-    return this.type === 'people' && 'height' in card;
-  }
-
-  protected isStarshipType(
-    card: SwapiStarshipDto | SwapiPersonDto
-  ): card is SwapiStarshipDto {
-    return this.type === 'starships' && !('height' in card);
-  }
-
   protected selectCard(card: SwapiStarshipDto | SwapiPersonDto) {
     this.subs.push(
       this.selectedCards$.pipe(take(1)).subscribe((selectedCards) => {
@@ -67,6 +56,9 @@ export class CardsSection extends Subscribable {
       })
     );
   }
+
+  isSwapiPerson = isSwapiPerson;
+  isSwapiStarship = isSwapiStarship;
 
   protected isSelected(
     card: SwapiStarshipDto | SwapiPersonDto

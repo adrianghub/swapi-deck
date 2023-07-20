@@ -16,19 +16,6 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-
-  atq-button {
-    flex: 1 1 50%;
-    width: 100%;
-
-    &:only-of-type {
-      width: 240px;
-      flex: unset;
-      margin: 0 auto;
-    }
-  }
-
-  atq-button + atq-button {
-    margin-left: 16px;
-  }
+  justify-content: center;
+  gap: 32px;
 }

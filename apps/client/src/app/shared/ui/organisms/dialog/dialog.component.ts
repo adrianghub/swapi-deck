@@ -10,11 +10,13 @@ export interface DialogData<I, R> {
   templateRef: TemplateRef<unknown>;
   input$: Observable<I>;
   labels: {
-    title?: string;
-    subtitle?: string;
+    title: string;
     submit: string;
+    cancel: string;
   };
   submitColor?: ThemePalette;
+  cancelCallbackFn: () => void;
+  submitCallbackFn: () => void;
   result: R;
   options: {
     disabled: boolean;

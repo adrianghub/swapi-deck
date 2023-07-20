@@ -53,8 +53,7 @@ export class ButtonComponent {
   @Input() disabled = false;
   @Input() active = false;
 
-  @Output()
-  clicked = new EventEmitter<Event>();
+  @Output() clicked = new EventEmitter<Event>();
 
   protected get buttonCssVariables(): string {
     if (this.label) {
@@ -76,6 +75,8 @@ export class ButtonComponent {
   }
 
   protected onClick(): void {
-    this.clicked.emit();
+    if (!this.disabled) {
+      this.clicked.emit();
+    }
   }
 }

@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 import { CardsType } from '../../../shared/models/game.model';
 import {
   GameWizardState,
-  Players,
+  PlayerPosition,
+  PlayersState,
   UpdateCardsType,
+  UpdatePlayerScore,
   UpdatePlayers,
 } from './game-wizard.store';
 
@@ -13,18 +15,22 @@ import {
 export class GameWizardFacade {
   private store = inject(Store);
 
-  @Select(GameWizardState.players) players$!: Observable<Players>;
+  @Select(GameWizardState.players) players$!: Observable<PlayersState>;
   @Select(GameWizardState.cardsType) cardsType$!: Observable<CardsType>;
 
-  updatePlayers(payload: Players): void {
-    this.store.dispatch(new UpdatePlayers(payload));
+  updatePlayers(players: PlayersState): void {
+    this.store.dispatch(new UpdatePlayers(players));
   }
 
-  updateCardsType(payload: CardsType): void {
-    this.store.dispatch(new UpdateCardsType(payload));
+  updateCardsType(cardsType: CardsType): void {
+    this.store.dispatch(new UpdateCardsType(cardsType));
   }
 
-  resetGameState(): void {
+  updatePlayerScore(playerPosition: PlayerPosition): void {
+    this.store.dispatch(new UpdatePlayerScore(playerPosition));
+  }
+
+  resetWizardState(): void {
     this.store.reset({});
   }
 }

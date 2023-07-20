@@ -4,7 +4,11 @@ import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
 
 @Component({
   selector: 'sdeck-game-results',
-  template: `<p>game-results works!</p>`,
+  template: `
+    <div *ngIf="data.input$ | async as result" class="game-results">
+      {{ result | json }}
+    </div>
+  `,
   styleUrls: ['./game-results.dialog.scss'],
 })
 export class GameResultsDialog {

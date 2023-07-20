@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   OnInit,
   TemplateRef,
@@ -6,6 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable, distinctUntilChanged, switchMap, take } from 'rxjs';
 import { Subscribable } from '../../../core/subscribable.abstract';
 import {
@@ -14,11 +16,13 @@ import {
 } from '../../../shared/constants/game.constants';
 import { CardsType } from '../../../shared/models/game.model';
 import { GameWizardFacade } from '../../game-wizard/store/game-wizard.facade';
-import { Players } from '../../game-wizard/store/game-wizard.store';
+import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
+import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import { GameBoardService } from '../services/game-board.service';
 import { GameBoardFacade } from '../store/game-board.facade';
 import { SwapiMeta } from '../store/game-board.store';
+import { determineWinner } from './game-board.utils';
 
 @Component({
   selector: 'sdeck-game-wizard-page',
@@ -27,7 +31,11 @@ import { SwapiMeta } from '../store/game-board.store';
       <!-- Cards Board Section -->
       <div class="main-content">
         <div class="cards-board">
-          <h1 class="regular-headline-medium headline">
+          <ng-container *ngIf="gameBoardFacade.errorMessage$ | async as error">
+            <p class="regular-title-large">{{ error }}</p>
+          </ng-container>
+
+          <h1 *ngIf="type" class="regular-headline-medium headline">
             {{ 'game.board.cards.type.' + type | translate }}
             <span *ngIf="meta?.count">({{ meta.count }})</span>
           </h1>
@@ -36,9 +44,9 @@ import { SwapiMeta } from '../store/game-board.store';
             [cards$]="gameCards$"
             [loading$]="gameBoardFacade.loading$"
             [type]="type"
-            class="cards"
-            (selected)="updateGameStatus($event)"
             [selectedCards$]="gameBoardFacade.selectedCards$"
+            (selected)="updateGameStatus($event)"
+            class="cards"
           />
         </div>
 
@@ -73,41 +81,45 @@ import { SwapiMeta } from '../store/game-board.store';
   `,
   styleUrls: ['./game-board.page.scss'],
 })
-export class GameBoardPage extends Subscribable implements OnInit {
-  protected type: CardsType = 'people';
+export class GameBoardPage
+  extends Subscribable
+  implements OnInit, AfterViewInit
+{
+  @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
 
-  protected meta!: SwapiMeta;
-  protected pagesTotal!: number;
+  type!: CardsType;
+  meta!: SwapiMeta;
+  pagesTotal!: number;
+  gameCards$!: Observable<SwapiStarshipDto[] | SwapiPersonDto[]>;
+  players!: PlayersState;
+  isSecondPlayerTurn!: boolean;
 
   protected gameWizardFacade = inject(GameWizardFacade);
   protected gameBoardFacade = inject(GameBoardFacade);
   private gameBoardService = inject(GameBoardService);
-
-  protected gameCards$: Observable<SwapiStarshipDto[] | SwapiPersonDto[]> =
-    this.type === 'people'
-      ? this.gameBoardFacade.peopleCards$
-      : this.gameBoardFacade.starshipsCards$;
-
-  protected players!: Players;
-
-  private isSecondPlayerTurn!: boolean;
-
-  @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
+  private router = inject(Router);
 
   ngOnInit(): void {
-    this.loadGameCards();
     this.subscribeToPlayersAndSelectedCards();
+
+    this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((type) => {
+      this.type = type;
+      this.loadGameCards(type);
+    });
   }
 
-  private loadGameCards(): void {
-    this.gameBoardFacade.loadCards({ param: 'type', type: this.type });
+  private loadGameCards(type: CardsType): void {
+    this.gameBoardFacade.loadCards({ type });
 
-    this.subs.push(
-      this.gameBoardFacade.meta$.subscribe((meta) => {
-        this.meta = meta;
-        this.countTotalPages(meta);
-      })
-    );
+    this.gameBoardFacade.meta$.subscribe((meta) => {
+      this.meta = meta;
+      this.countTotalPages(meta);
+    });
+
+    this.gameCards$ =
+      type === 'people'
+        ? this.gameBoardFacade.peopleCards$
+        : this.gameBoardFacade.starshipsCards$;
   }
 
   private subscribeToPlayersAndSelectedCards(): void {
@@ -122,9 +134,14 @@ export class GameBoardPage extends Subscribable implements OnInit {
               switchMap((cards) => {
                 if (cards?.size === numberOfPlayers) {
                   this.gameBoardService.openGameResultsDialog(
+                    this.type,
+                    Array.from(cards.values()),
                     this.gameResultsDialog,
-                    Array.from(cards.values())
+                    this.playAgain.bind(this),
+                    this.quitGame.bind(this)
                   );
+
+                  this.processGameResults(cards);
                 }
                 return this.gameBoardFacade.isSecondPlayerTurn$;
               })
@@ -151,10 +168,64 @@ export class GameBoardPage extends Subscribable implements OnInit {
       return;
     }
 
-    this.gameBoardFacade.loadCards({ param: 'url', url: next });
+    this.gameBoardFacade.loadCards({ type: this.type, url: next });
   }
 
   private countTotalPages(meta: SwapiMeta) {
     this.pagesTotal = Math.ceil(meta?.count / itemsPerPage);
+  }
+
+  private quitGame(): void {
+    this.gameWizardFacade.resetWizardState();
+    this.gameBoardFacade.resetGameState();
+
+    this.router.navigate(['/']);
+  }
+
+  private playAgain(): void {
+    this.gameBoardFacade.resetGameState();
+
+    this.router.navigate(['/wizard/cards-type']);
+  }
+
+  processGameResults(
+    selectedCards: Map<string, SwapiPerson | SwapiStarship>
+  ): void {
+    const result = determineWinner(selectedCards);
+
+    switch (Math.sign(result)) {
+      case 1:
+        this.gameWizardFacade.updatePlayerScore('playerOne');
+        break;
+      case -1:
+        this.gameWizardFacade.updatePlayerScore('playerTwo');
+        break;
+      default:
+        // console.log("It's a draw!");
+        break;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // this.gameBoardService.openGameResultsDialog(
+    //   'people',
+    //   [
+    //     {
+    //       name: '33BBY',
+    //       mass: '32',
+    //       selectedBy: 'maciek',
+    //     } as SwapiPerson,
+    //     {
+    //       name: '33BBY',
+    //       mass: '52',
+    //       selectedBy: 'adam',
+    //     } as SwapiPerson,
+    //   ],
+    //   this.gameResultsDialog,
+    //   this.playAgain.bind(this),
+    //   this.quitGame.bind(this)
+    // );
+
+    console.log('GameBoardPage.ngAfterViewInit');
   }
 }

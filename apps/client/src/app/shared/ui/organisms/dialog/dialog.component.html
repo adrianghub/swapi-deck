@@ -1,5 +1,5 @@
 <h2 *ngIf="data.labels.title" mat-dialog-title class="semi-bold-title-large">
-  <span>{{ data.labels.title! | translate }}</span>
+  {{ data.labels.title! | translate }}
 </h2>
 
 <div class="template" mat-dialog-content>
@@ -13,17 +13,17 @@
     <sdeck-button
       [mat-dialog-close]="data.result"
       [disabled]="data.options.disabled"
+      [label]="data.labels.submit | translate"
       data-test-id="dialog-submit"
-    >
-      {{ data.labels.submit | translate }}
-    </sdeck-button>
+      (click)="data.submitCallbackFn()"
+    />
 
     <sdeck-button
       color="accent"
       [mat-dialog-close]=""
+      [label]="data.labels.cancel | translate"
       data-test-id="dialog-cancel"
-    >
-      {{ 'misc.dialog.cancel' | translate }}
-    </sdeck-button>
+      (click)="data.cancelCallbackFn()"
+    />
   </div>
 </div>

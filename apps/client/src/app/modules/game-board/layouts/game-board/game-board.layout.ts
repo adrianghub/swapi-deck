@@ -6,6 +6,10 @@ import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facad
   template: ` <sdeck-layout-header>
       <ng-container actions>
         <div class="players">
+          <p class="regular-title-large">Number of wins</p>
+
+          <span class="separator"></span>
+
           <p class="regular-title-large">
             {{ (gameWizardFacade.players$ | async)?.playerOne?.name }}:
             <strong>{{

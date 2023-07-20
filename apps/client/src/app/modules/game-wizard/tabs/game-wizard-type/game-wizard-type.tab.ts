@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
@@ -36,7 +37,7 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
     </sdeck-game-wizard-layout>
   `,
 })
-export class GameWizardCardsTypeTab implements OnInit {
+export class GameWizardCardsTypeTab extends Subscribable implements OnInit {
   protected router = inject(Router);
   protected gameWizardFacade = inject(GameWizardFacade);
 
@@ -47,17 +48,22 @@ export class GameWizardCardsTypeTab implements OnInit {
   cardsTypes = cardsTypes;
 
   ngOnInit() {
-    this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((cardsType) => {
-      this.cardsTypeControl.setValue(cardsType);
-    });
+    this.subs.push(
+      this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((cardsType) => {
+        this.cardsTypeControl.setValue(cardsType);
+      }),
+      this.cardsTypeControl.valueChanges.subscribe((cardsType) => {
+        if (!this.cardsTypeControl.invalid && cardsType) {
+          this.gameWizardFacade.updateCardsType(cardsType);
+        }
+      })
+    );
   }
 
   goToNextStep($event: Event): void {
     $event.stopPropagation();
 
-    if (!this.cardsTypeControl.invalid && this.cardsTypeControl.value) {
-      this.gameWizardFacade.updateCardsType(this.cardsTypeControl.value);
-
+    if (!this.cardsTypeControl.invalid) {
       this.router.navigateByUrl('game-board');
     }
   }

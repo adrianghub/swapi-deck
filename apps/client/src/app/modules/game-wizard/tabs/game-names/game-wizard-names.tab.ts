@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
-import { Players } from '../../store/game-wizard.store';
+import { PlayersState } from '../../store/game-wizard.store';
 import { sameValueValidator } from '../../validators/sameValue.validator';
 
 export interface PlayersNamesValues {
@@ -91,7 +91,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     playerTwo: false,
   };
 
-  currentPlayers: Players | undefined;
+  currentPlayers: PlayersState | undefined;
 
   private gameWizardFacade = inject(GameWizardFacade);
   protected router = inject(Router);
@@ -116,14 +116,16 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     $event.stopPropagation();
 
     if (!this.playersForm.invalid) {
-      const players: Players = {
+      const players: PlayersState = {
         playerOne: {
           ...this.currentPlayers?.playerOne,
           name: this.playerOne.value.trim(),
+          score: 0,
         },
         playerTwo: {
           ...this.currentPlayers?.playerTwo,
           name: this.playerTwo.value.trim(),
+          score: 0,
         },
       };
 
@@ -145,11 +147,6 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
   }
 
   protected unsetPlayerName(player: keyof PlayersNamesValues) {
-    const payload: Players = {} as Players;
-
-    payload[player].name = '';
-    this.gameWizardFacade.updatePlayers(payload);
-
     this.setReadOnly(player, false);
   }
 }

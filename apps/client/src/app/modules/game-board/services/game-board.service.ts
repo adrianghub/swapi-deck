@@ -1,15 +1,11 @@
 import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, of } from 'rxjs';
+import { CardsType } from '../../../shared/models/game.model';
 import {
   DialogComponent,
   DialogData,
 } from '../../../shared/ui/organisms/dialog/dialog.component';
-import {
-  SwapiBaseDto,
-  SwapiPersonDto,
-  SwapiStarshipDto,
-} from '../models/swapi.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +13,12 @@ import {
 export class GameBoardService {
   private dialog = inject(MatDialog);
 
-  openGameResultsDialog(
+  openGameResultsDialog<T>(
+    type: CardsType,
+    selectedCards: T[],
     dialogRef: TemplateRef<MatDialog>,
-    selectedCards: SwapiBaseDto[]
+    playAgain: () => void,
+    quitGame: () => void
   ): void {
     console.log('openGameResultsDialog', selectedCards);
 
@@ -27,16 +26,19 @@ export class GameBoardService {
       .open(DialogComponent, {
         data: {
           templateRef: dialogRef,
-          input$: of(selectedCards),
+          input$: of({ selectedCards, type }),
           labels: {
-            title: 'misc.dialog.title',
-            submit: 'misc.dialog.submit',
+            title: 'game.board.dialog.results.title',
+            submit: 'game.board.dialog.results.submit',
+            cancel: 'game.board.dialog.results.cancel',
           },
           options: {
-            disabled: true,
+            disabled: false,
           },
-          result: false,
-        } as DialogData<SwapiPersonDto[] | SwapiStarshipDto[], boolean>,
+          submitCallbackFn: playAgain,
+          cancelCallbackFn: quitGame,
+          result: true,
+        } as DialogData<T, boolean>,
         width: '1000px',
         disableClose: true,
       })

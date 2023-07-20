@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { catchError, tap } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import {
   SwapiParamsType,
@@ -16,7 +16,7 @@ export interface SwapiMeta {
   page?: number;
 }
 
-export class LoadPeopleCards {
+export class LoadCards {
   static readonly type = '[Game Board] Load People Cards';
 
   constructor(public params: SwapiParamsType) {}
@@ -39,6 +39,10 @@ export class UpdatePlayerTurn {
   static readonly type = '[Game Board] Update Player Turn';
 }
 
+export class ResetGameBoardState {
+  static readonly type = '[Game Board] Reset';
+}
+
 export interface GameBoardModel {
   peopleCards?: SwapiPersonDto[];
   starshipsCards?: SwapiStarshipDto[];
@@ -48,6 +52,17 @@ export interface GameBoardModel {
   selectedCards: Map<string, SwapiPerson | SwapiStarship>;
   isSecondPlayerTurn?: boolean;
 }
+
+export const initialState = {
+  loading: false,
+  meta: {
+    next: null,
+    previous: null,
+    count: 0,
+  },
+  selectedCards: new Map(),
+  isSecondPlayerTurn: false,
+};
 
 @State<GameBoardModel>({
   name: 'gameBoard',
@@ -82,6 +97,11 @@ export class GameBoardState {
   }
 
   @Selector([GameBoardState])
+  static errorMessage(state: GameBoardModel) {
+    return state.errorMessage;
+  }
+
+  @Selector([GameBoardState])
   static meta(state: GameBoardModel) {
     return state.meta;
   }
@@ -96,38 +116,35 @@ export class GameBoardState {
     return state.isSecondPlayerTurn;
   }
 
-  @Action(LoadPeopleCards)
-  loadPeopleCards(ctx: StateContext<GameBoardModel>, action: LoadPeopleCards) {
-    ctx.patchState({
-      loading: true,
-    });
+  @Action(LoadCards)
+  loadCards(ctx: StateContext<GameBoardModel>, action: LoadCards) {
+    ctx.patchState({ loading: true });
 
-    let page = 1;
-
-    if (action?.params?.param === 'url') {
-      page = parseInt(action.params.url.split('page=')[1]);
-    }
+    const { url, type } = action.params;
+    const page = url ? parseInt(url.split('page=')[1]) : 1;
 
     return this.gameBoardRepository.getSwapiData(action.params).pipe(
       tap((res) => {
-        ctx.patchState({
-          peopleCards: res.results,
-          meta: {
-            ...res,
-            page,
-          },
+        const newState: Partial<GameBoardModel> = {
+          meta: { ...res, page },
           loading: false,
-        });
+        };
+
+        if (type === 'people') {
+          newState.peopleCards = res.results as SwapiPersonDto[];
+        } else if (type === 'starships') {
+          newState.starshipsCards = res.results as SwapiStarshipDto[];
+        }
+
+        ctx.patchState(newState);
       }),
       catchError((error) => {
         console.error(error);
-
         ctx.patchState({
           loading: false,
-          errorMessage: "Couldn't load cards",
+          errorMessage: "Couldn't load cards. Please try again.",
         });
-
-        return [];
+        return of([]);
       })
     );
   }
@@ -153,5 +170,10 @@ export class GameBoardState {
     ctx.patchState({
       isSecondPlayerTurn: !ctx.getState().isSecondPlayerTurn,
     });
+  }
+
+  @Action(ResetGameBoardState)
+  resetGameBoardState(ctx: StateContext<GameBoardModel>) {
+    ctx.setState(initialState);
   }
 }

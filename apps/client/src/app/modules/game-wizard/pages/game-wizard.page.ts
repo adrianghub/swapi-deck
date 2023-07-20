@@ -15,10 +15,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
         mat-tab-link
         routerLink="cards-type"
         routerLinkActive
-        [disabled]="
-          !(gameWizardFacade.players$ | async)?.playerOne &&
-          !(gameWizardFacade.players$ | async)?.playerTwo
-        "
+        [disabled]="(gameWizardFacade.players$ | async) === undefined"
       >
         {{ 'game.wizard.tab.cardsType' | translate }}
       </a>
@@ -31,4 +28,10 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
 })
 export class GameWizardPage {
   protected gameWizardFacade = inject(GameWizardFacade);
+
+  constructor() {
+    this.gameWizardFacade.players$.subscribe((players) => {
+      console.log(players);
+    });
+  }
 }

@@ -1,8 +1,18 @@
 # SWAPI Deck
 
+## Frontend development
+
 ### Local dev
 
+`nx serve client`
+
 ### Unit tests
+
+`nx test client`
+
+### E2E tests
+
+`nx e2e client`
 
 ## Plans for developement
 
@@ -22,7 +32,7 @@
   - [x] Select usernames
   - [x] Choose type of cards
   - [x] Add pagination
-  - [ ] Select card
-  - [ ] Add game results modal
+  - [x] Select card
+  - [x] Add game results modal
   - [x] Reset game state
   - [ ] Add leaderboard
