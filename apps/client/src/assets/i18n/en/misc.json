@@ -5,7 +5,8 @@
       "actions": {
         "newGame": "New game",
         "continue": "Continue"
-      }
+      },
+      "slogan": "May the Cards Be with You!"
     },
     "validationError": {
       "required": "This field is required.",
@@ -17,46 +18,9 @@
         "people": "People",
         "starships": "Starships"
       }
-    }
-  },
-  "game": {
-    "wizard": {
-      "tab": {
-        "usernames": "First step - Usernames",
-        "cardsType": "Second step - Type of cards"
-      },
-      "actions": {
-        "mainMenu": "Main menu",
-        "previousStep": "Previous step",
-        "nextStep": "Next step",
-        "startGame": "Start the battle!"
-      },
-      "names": {
-        "headline": "How would you like to call your players?",
-        "playerOne": "First player's username",
-        "playerTwo": "Second player's username"
-      },
-      "cardType": {
-        "headline": "What type of cards would you like to play with?",
-        "select": {
-          "label": "Type of cards"
-        }
-      }
     },
-    "board": {
-      "cards": {
-        "type": {
-          "people": "People",
-          "starships": "Starships"
-        }
-      },
-      "dialog": {
-        "results": {
-          "title": "Battle results",
-          "submit": "Play again",
-          "cancel": "Quit game"
-        }
-      }
+    "errors": {
+      "LOAD_CARDS_ERROR": "Reclaim the Galaxy, Card by Card! Overcome Obstacles, Retry and Triumph![(Couldn't load cards. Please try again.)]"
     }
   }
 }

@@ -7,7 +7,7 @@ export const hasPlayersDefinedGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return inject(GameWizardFacade).players$.pipe(
-    map((players) => !!players),
+    map((players) => !!(players.playerOne.name && players.playerTwo.name)),
     tap((players) => !players && router.navigateByUrl('wizard/names'))
   );
 };

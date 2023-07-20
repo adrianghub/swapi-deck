@@ -23,14 +23,18 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.previousStep' | translate"
-          (click)="router.navigateByUrl('wizard/names')"
+          (clicked)="router.navigateByUrl('wizard/names')"
           prefixIcon="arrow-left"
+          [disabled]="
+            (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
+            (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
+          "
         />
 
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.startGame' | translate"
-          (click)="goToNextStep($event)"
+          (clicked)="this.router.navigateByUrl('game-board')"
           [disabled]="cardsTypeControl.invalid"
         />
       </ng-container>
@@ -58,13 +62,5 @@ export class GameWizardCardsTypeTab extends Subscribable implements OnInit {
         }
       })
     );
-  }
-
-  goToNextStep($event: Event): void {
-    $event.stopPropagation();
-
-    if (!this.cardsTypeControl.invalid) {
-      this.router.navigateByUrl('game-board');
-    }
   }
 }

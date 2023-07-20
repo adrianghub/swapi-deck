@@ -15,7 +15,7 @@
       [disabled]="data.options.disabled"
       [label]="data.labels.submit | translate"
       data-test-id="dialog-submit"
-      (click)="data.submitCallbackFn()"
+      (clicked)="data.submitCallbackFn()"
     />
 
     <sdeck-button
@@ -23,7 +23,7 @@
       [mat-dialog-close]=""
       [label]="data.labels.cancel | translate"
       data-test-id="dialog-cancel"
-      (click)="data.cancelCallbackFn()"
+      (clicked)="data.cancelCallbackFn()"
     />
   </div>
 </div>

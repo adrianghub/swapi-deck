@@ -10,8 +10,9 @@ import {
 import { MainMenuPage } from './pages/main-menu/main-menu.page';
 
 import { MatDividerModule } from '@angular/material/divider';
-import { ButtonComponent } from '../shared/ui/atoms/button/button.component';
 import { GameWizardFacade } from '../modules/game-wizard/store/game-wizard.facade';
+import { ButtonComponent } from '../shared/ui/atoms/button/button.component';
+import { LayoutHeaderComponent } from './layouts/components/layout-header/layout-header.component';
 
 @NgModule({
   declarations: [MainMenuPage, BaseLayout],
@@ -21,6 +22,7 @@ import { GameWizardFacade } from '../modules/game-wizard/store/game-wizard.facad
     TranslateModule.forChild(configTranslateModule(['misc'])),
     MatDividerModule,
     ButtonComponent,
+    LayoutHeaderComponent,
   ],
   providers: [GameWizardFacade],
 })

@@ -4,24 +4,31 @@ import { GameWizardFacade } from '../../../modules/game-wizard/store/game-wizard
 
 @Component({
   selector: 'sdeck-main-menu',
-  template: `<h1 class="semi-bold-headline-large">
-      {{ 'misc.appName' | translate }}
-    </h1>
-    <div class="main-menu">
-      <sdeck-button
-        *ngIf="
-          (gameWizardFacade.players$ | async) &&
-          (gameWizardFacade.cardsType$ | async)
-        "
-        [label]="'misc.mainMenu.actions.continue' | translate"
-        (click)="router.navigateByUrl('game-board')"
-      />
+  template: `
+    <sdeck-layout-header [center]="true" />
 
-      <sdeck-button
-        [label]="'misc.mainMenu.actions.newGame' | translate"
-        (click)="startNewGame()"
-      />
-    </div>`,
+    <div class="main-menu-container">
+      <div class="main-menu">
+        <p class="regular-title-medium slogan">
+          {{ 'misc.mainMenu.slogan' | translate }}
+        </p>
+
+        <sdeck-button
+          *ngIf="
+            (gameWizardFacade.players$ | async) &&
+            (gameWizardFacade.cardsType$ | async)
+          "
+          [label]="'misc.mainMenu.actions.continue' | translate"
+          (clicked)="router.navigateByUrl('game-board')"
+        />
+
+        <sdeck-button
+          [label]="'misc.mainMenu.actions.newGame' | translate"
+          (clicked)="startNewGame()"
+        />
+      </div>
+    </div>
+  `,
   styleUrls: ['./main-menu.page.scss'],
 })
 export class MainMenuPage {

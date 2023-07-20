@@ -1,5 +1,6 @@
 @use '_typography' as typography;
 @use '_palettes' as palettes;
+@use '@angular/material' as mat;
 
 * {
   box-sizing: border-box;
@@ -31,4 +32,10 @@ a {
 
 svg {
   width: inherit;
+}
+
+.highlight-text {
+  color: mat.get-color-from-palette(palettes.$mat-primary, main);
+  font-weight: 600;
+  word-break: break-word;
 }

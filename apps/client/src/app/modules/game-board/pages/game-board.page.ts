@@ -32,7 +32,10 @@ import { determineWinner } from './game-board.utils';
       <div class="main-content">
         <div class="cards-board">
           <ng-container *ngIf="gameBoardFacade.errorMessage$ | async as error">
-            <p class="regular-title-large">{{ error }}</p>
+            <p
+              class="regular-title-large"
+              [innerHTML]="'misc.errors.' + error | translate | highlight"
+            ></p>
           </ng-container>
 
           <h1 *ngIf="type" class="regular-headline-medium headline">
@@ -54,7 +57,7 @@ import { determineWinner } from './game-board.utils';
           <sdeck-button
             [label]="'previous page' | translate"
             [disabled]="(gameBoardFacade.loading$ | async) || !meta.previous"
-            (click)="navigateToPage(meta.previous)"
+            (clicked)="navigateToPage(meta.previous)"
             prefixIcon="arrow-left"
           />
 
@@ -65,7 +68,7 @@ import { determineWinner } from './game-board.utils';
           <sdeck-button
             [label]="'next page' | translate"
             [disabled]="(gameBoardFacade.loading$ | async) || !meta.next"
-            (click)="navigateToPage(meta.next)"
+            (clicked)="navigateToPage(meta.next)"
             suffixIcon="arrow-right"
           />
         </div>
@@ -80,6 +83,7 @@ import { determineWinner } from './game-board.utils';
     </ng-template>
   `,
   styleUrls: ['./game-board.page.scss'],
+  providers: [GameBoardService],
 })
 export class GameBoardPage
   extends Subscribable
@@ -207,6 +211,7 @@ export class GameBoardPage
   }
 
   ngAfterViewInit(): void {
+    // TODO: remove before production (currently used for testing purposes)
     // this.gameBoardService.openGameResultsDialog(
     //   'people',
     //   [

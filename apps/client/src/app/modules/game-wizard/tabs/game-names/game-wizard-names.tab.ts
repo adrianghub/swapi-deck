@@ -39,14 +39,14 @@ export interface PlayersNamesValues {
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.mainMenu' | translate"
-          (click)="router.navigateByUrl('')"
+          (clicked)="router.navigateByUrl('')"
           prefixIcon="arrow-left"
         ></sdeck-button>
 
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.nextStep' | translate"
-          (click)="goToNextStep($event)"
+          (clicked)="goToNextStep()"
           suffixIcon="arrow-right"
           [disabled]="playersForm.invalid"
         ></sdeck-button>
@@ -99,7 +99,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
   ngOnInit() {
     this.subs.push(
       this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
-        if (players?.playerOne && players?.playerTwo) {
+        if (players.playerOne.name && players.playerTwo.name) {
           this.playerOne.setValue(players.playerOne.name);
           this.playerTwo.setValue(players.playerTwo.name);
 
@@ -112,9 +112,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     );
   }
 
-  protected goToNextStep($event: MouseEvent) {
-    $event.stopPropagation();
-
+  protected goToNextStep() {
     if (!this.playersForm.invalid) {
       const players: PlayersState = {
         playerOne: {
@@ -148,5 +146,14 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
 
   protected unsetPlayerName(player: keyof PlayersNamesValues) {
     this.setReadOnly(player, false);
+
+    const players = {} as PlayersState;
+
+    players[player] = {
+      name: '',
+      score: 0,
+    };
+
+    this.gameWizardFacade.updatePlayers(players);
   }
 }

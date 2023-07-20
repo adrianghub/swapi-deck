@@ -142,7 +142,7 @@ export class GameBoardState {
         console.error(error);
         ctx.patchState({
           loading: false,
-          errorMessage: "Couldn't load cards. Please try again.",
+          errorMessage: 'LOAD_CARDS_ERROR',
         });
         return of([]);
       })

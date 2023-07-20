@@ -39,13 +39,14 @@ export interface GameWizardModel {
 @State<GameWizardModel>({
   name: 'gameWizard',
   defaults: {
+    // TODO: remove before production (currently used for testing purposes)
     players: {
       playerOne: {
-        name: 'maciek',
+        name: '',
         score: 0,
       },
       playerTwo: {
-        name: 'adam',
+        name: '',
         score: 0,
       },
     },

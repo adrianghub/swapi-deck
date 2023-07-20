@@ -6,7 +6,9 @@ import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facad
   template: ` <sdeck-layout-header>
       <ng-container actions>
         <div class="players">
-          <p class="regular-title-large">Number of wins</p>
+          <p class="regular-title-large">
+            {{ 'game.board.score' | translate }}
+          </p>
 
           <span class="separator"></span>
 

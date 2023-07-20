@@ -12,7 +12,11 @@
 
 ### E2E tests
 
-`nx e2e client`
+`nx e2e client-e2e`
+
+or with headed mode
+
+`nx e2e client-e2e --watch`
 
 ## Plans for developement
 
