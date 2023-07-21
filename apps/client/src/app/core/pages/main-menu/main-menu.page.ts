@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameWizardFacade } from '../../../modules/game-wizard/store/game-wizard.facade';
+import { links } from '../../../shared/constants/game.constants';
 
 @Component({
   selector: 'sdeck-main-menu',
@@ -38,6 +39,6 @@ export class MainMenuPage {
   startNewGame() {
     this.gameWizardFacade.resetWizardState();
 
-    this.router.navigateByUrl('wizard/names');
+    this.router.navigateByUrl(links.wizard.names);
   }
 }

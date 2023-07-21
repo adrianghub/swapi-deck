@@ -8,16 +8,11 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {
-  Observable,
-  Subscription,
-  distinctUntilChanged,
-  take,
-  tap,
-} from 'rxjs';
+import { Observable, Subscription, distinctUntilChanged, take } from 'rxjs';
 import { Subscribable } from '../../../core/subscribable.abstract';
 import {
   itemsPerPage,
+  links,
   numberOfPlayers,
 } from '../../../shared/constants/game.constants';
 import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
@@ -71,16 +66,12 @@ import { determineWinner } from './game-board.utils';
 
       <!-- Cards Aside Section -->
       <div class="aside">
-        <div>
-          <p *ngIf="!winner">
-            current turn:
-            {{
-              nextTurn === 'playerOne'
-                ? players.playerTwo.name
-                : players.playerOne.name
-            }}
-          </p>
-        </div>
+        <sdeck-cards-aside
+          [nextTurn]="nextTurn"
+          [players]="players"
+          [winner]="winner"
+          [selectedCard]="selectedCard"
+        />
       </div>
     </div>
 
@@ -97,16 +88,17 @@ export class GameBoardPage
 {
   @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
 
-  type!: CardsType;
-  meta!: SwapiMeta;
-  pagesTotal!: number;
-  gameCards$!: Observable<SwapiStarshipDto[] | SwapiPersonDto[]>;
-  players!: PlayersState;
-  winner!: WinnerState;
-  nextTurn!: PlayerPosition;
+  protected type!: CardsType;
+  protected meta!: SwapiMeta;
+  protected pagesTotal!: number;
+  protected gameCards$!: Observable<SwapiStarshipDto[] | SwapiPersonDto[]>;
+  protected selectedCard!: SwapiPerson | SwapiStarship | undefined;
+  protected players!: PlayersState;
+  protected winner!: WinnerState;
+  protected nextTurn!: PlayerPosition;
 
-  protected gameWizardFacade = inject(GameWizardFacade);
   protected gameBoardFacade = inject(GameBoardFacade);
+  private gameWizardFacade = inject(GameWizardFacade);
   private gameBoardService = inject(GameBoardService);
   private router = inject(Router);
 
@@ -131,15 +123,18 @@ export class GameBoardPage
     return this.gameBoardFacade.selectedCards$
       .pipe(distinctUntilChanged())
       .subscribe((selectedCards) => {
-        if (selectedCards.size === numberOfPlayers) {
+        if (selectedCards?.size === 1) {
+          this.selectedCard = selectedCards.values().next().value;
+        }
+
+        if (selectedCards?.size === numberOfPlayers) {
           const result = determineWinner(
             selectedCards,
             this.players,
             this.handleWinner.bind(this)
           );
 
-          // draw
-          if (result === 0) {
+          if (result === 'draw') {
             this.handleDraw();
           }
 
@@ -185,27 +180,15 @@ export class GameBoardPage
   }
 
   protected updateGameStatus(card: SwapiPersonDto | SwapiStarshipDto): void {
-    this.gameBoardFacade.nextTurn$
-      .pipe(
-        take(1),
-        tap((currentPlayer) => {
-          const currentPlayerName = this.players[currentPlayer]?.name;
-          this.gameBoardFacade.updateSelectedCards(card, currentPlayerName);
-        })
-      )
-      .subscribe((currentPlayer) => {
-        const nextPlayer =
-          currentPlayer === 'playerOne' ? 'playerTwo' : 'playerOne';
-        this.gameBoardFacade.updateNextTurn(nextPlayer);
-      });
-  }
+    const currentPlayerName =
+      this.nextTurn === 'playerOne'
+        ? this.players.playerTwo.name
+        : this.players.playerOne.name;
 
-  protected navigateToPage(next: string | null) {
-    if (!next) {
-      return;
-    }
-
-    this.gameBoardFacade.loadCards({ type: this.type, url: next });
+    this.gameBoardFacade.updateSelectedCards(card, currentPlayerName);
+    const nextPlayer =
+      this.nextTurn === 'playerOne' ? 'playerTwo' : 'playerOne';
+    this.gameBoardFacade.updateNextTurn(nextPlayer);
   }
 
   private openGameResultsDialog(
@@ -243,14 +226,14 @@ export class GameBoardPage
     this.gameBoardFacade.updateNextTurn(this.winner?.position);
     this.gameWizardFacade.updateWinner(null);
 
-    this.router.navigate(['/wizard/cards-type']);
+    this.router.navigateByUrl(links.wizard.cardsType);
   }
 
   private quitGame(): void {
     this.gameWizardFacade.resetWizardState();
     this.gameBoardFacade.resetGameState();
 
-    this.router.navigate(['/']);
+    this.router.navigateByUrl(links.base);
   }
 
   private countTotalPages(meta: SwapiMeta) {
@@ -275,7 +258,7 @@ export class GameBoardPage
     //   ],
     //   this.gameResultsDialog,
     //   this.playAgain.bind(this),
-    //   this.quitGame.bind(this)
+    //   this.quitGame.bind(this),
     // );
 
     console.log('GameBoardPage.ngAfterViewInit');

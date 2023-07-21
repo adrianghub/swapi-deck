@@ -9,7 +9,7 @@ import { SwapiPerson } from '../../models/swapi.model';
       <mat-card-subtitle>{{ card.gender }}</mat-card-subtitle>
     </mat-card-header>
 
-    <div class="placeholder-box"></div>
+    <ng-content select="[placeholder]"></ng-content>
   </mat-card>`,
   styleUrls: ['./people-card.section.scss'],
 })

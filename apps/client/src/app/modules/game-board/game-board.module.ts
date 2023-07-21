@@ -30,6 +30,8 @@ import { GameBoardFacade } from './store/game-board.facade';
 import { GameBoardRepository } from './store/game-board.repository';
 import { GameBoardState } from './store/game-board.store';
 import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
+import { CardsAsideSection } from './sections/cards-aside/cards-aside.section';
+import { GameCardComponent } from './components/game-card/game-card.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { CardsPaginationComponent } from './components/cards-pagination/cards-pa
     GameResultsDialog,
     HighlightPipe,
     CardsPaginationComponent,
+    CardsAsideSection,
+    GameCardComponent
   ],
   imports: [
     CommonModule,

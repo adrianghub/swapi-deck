@@ -37,6 +37,10 @@
           "submit": "Play again",
           "cancel": "Quit game"
         }
+      },
+      "aside": {
+        "selectedBy": "Card selected by ",
+        "noCardSelected": "No cards selected."
       }
     }
   }

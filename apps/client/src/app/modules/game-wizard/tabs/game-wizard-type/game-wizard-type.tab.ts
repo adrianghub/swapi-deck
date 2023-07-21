@@ -5,7 +5,7 @@ import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
-import { cardsTypes } from './../../../../shared/constants/game.constants';
+import { cardsTypes, links } from './../../../../shared/constants/game.constants';
 
 @Component({
   selector: 'sdeck-game-names',
@@ -23,7 +23,7 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.previousStep' | translate"
-          (clicked)="router.navigateByUrl('wizard/names')"
+          (clicked)="router.navigateByUrl(links.wizard.names)"
           prefixIcon="arrow-left"
           [disabled]="
             (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
@@ -34,7 +34,7 @@ import { cardsTypes } from './../../../../shared/constants/game.constants';
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.startGame' | translate"
-          (clicked)="this.router.navigateByUrl('game-board')"
+          (clicked)="this.router.navigateByUrl(links.board.gameBoard)"
           [disabled]="cardsTypeControl.invalid"
         />
       </ng-container>
@@ -50,6 +50,7 @@ export class GameWizardCardsTypeTab extends Subscribable implements OnInit {
     Validators.required
   );
   cardsTypes = cardsTypes;
+  links = links;
 
   ngOnInit() {
     this.subs.push(

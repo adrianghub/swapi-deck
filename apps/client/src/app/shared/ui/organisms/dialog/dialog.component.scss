@@ -6,10 +6,11 @@
   flex-direction: column;
   height: 100%;
   padding: 12px;
+  background-color: palettes.$whitish;
 }
 
-.template {
-  overflow: auto;
+.header {
+  text-align: center;
 }
 
 .buttons {

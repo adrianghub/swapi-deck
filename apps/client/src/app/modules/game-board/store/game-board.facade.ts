@@ -54,8 +54,6 @@ export class GameBoardFacade {
   }
 
   updateNextTurn(nextTurn: PlayerPosition): void {
-    console.log('currentTurn', nextTurn);
-
     this.store.dispatch(new UpdateNextTurn(nextTurn));
   }
 

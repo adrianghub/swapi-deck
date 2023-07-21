@@ -1,0 +1,26 @@
+@use '_palettes' as palettes;
+
+.card-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 24px 0;
+}
+
+.winning-card {
+  border: 4px solid palettes.$yellow;
+  border-radius: 4px;
+}
+
+.winning-attribute {
+  font-size: 2.5rem;
+}
+
+.attributes {
+  margin: 24px 16px;
+}
+
+.header {
+  text-align: center;
+}

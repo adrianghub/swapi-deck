@@ -1,8 +1,1 @@
-@use '@angular/material' as mat;
-@use 'typography' as typography;
-@use '_palettes' as palettes;
 
-.placeholder-box {
-  height: 200px;
-  background-color: palettes.$dim-gray;
-}

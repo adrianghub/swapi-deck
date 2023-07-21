@@ -6,6 +6,7 @@ import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
 import { PlayersState } from '../../store/game-wizard.store';
 import { sameValueValidator } from '../../validators/sameValue.validator';
+import { links } from 'apps/client/src/app/shared/constants/game.constants';
 
 export interface PlayersNamesValues {
   playerOne: FormControl<string>;
@@ -129,7 +130,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
 
       this.gameWizardFacade.updatePlayers(players);
 
-      this.router.navigateByUrl('wizard/cards-type');
+      this.router.navigateByUrl(links.wizard.cardsType);
     }
   }
 

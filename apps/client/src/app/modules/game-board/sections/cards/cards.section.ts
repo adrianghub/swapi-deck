@@ -15,19 +15,11 @@ import { shuffleCards } from './cards.utils';
 
     <ng-template #cards>
       <ng-container *ngFor="let card of shuffledCards$ | async as cards">
-        <sdeck-people-card
+        <sdeck-game-card
           class="card"
-          *ngIf="isSwapiPerson(card)"
           [card]="card"
-          (click)="selectCard(card)"
           [class.selected]="isSelected(card) | async"
-        />
-        <sdeck-starship-card
-          class="card"
-          *ngIf="isSwapiStarship(card)"
-          [card]="card"
           (click)="selectCard(card)"
-          [class.selected]="isSelected(card) | async"
         />
       </ng-container>
     </ng-template> `,

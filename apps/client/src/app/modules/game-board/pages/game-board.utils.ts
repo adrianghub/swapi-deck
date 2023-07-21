@@ -8,7 +8,7 @@ export function determineWinner(
   selectedCards: Map<string, SwapiPerson | SwapiStarship>,
   players: PlayersState,
   handleWinnerFn: (name: string, playerPosition: PlayerPosition) => void
-) {
+): 'draw' | void {
   const cardsArray = Array.from(selectedCards.values());
 
   const [playerOneCard, playerTwoCard] = cardsArray;
@@ -21,7 +21,9 @@ export function determineWinner(
     handleWinnerFn(players.playerTwo.name, 'playerTwo');
   }
 
-  return result;
+  if (result === 0) {
+    return 'draw';
+  }
 }
 
 export function compareMass(

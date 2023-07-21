@@ -7,7 +7,7 @@ export const gameBoardRoutes: Routes = [
   {
     path: '',
     component: GameBoardLayout,
-    canActivate: [hasCardTypeDefinedGuard],
+    // canActivate: [hasCardTypeDefinedGuard],
     children: [
       {
         path: '',

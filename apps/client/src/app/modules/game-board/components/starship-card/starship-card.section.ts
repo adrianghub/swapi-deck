@@ -10,7 +10,7 @@ import { SwapiStarship } from './../../models/swapi.model';
         <mat-card-subtitle>{{ card.MGLT }}</mat-card-subtitle>
       </mat-card-header>
 
-      <div class="placeholder-box"></div>
+      <ng-content select="[placeholder]" />
     </mat-card>
   `,
   styleUrls: ['./starship-card.section.scss'],
