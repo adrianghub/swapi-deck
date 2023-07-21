@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, of, tap } from 'rxjs';
+import { PlayerPosition } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import {
   SwapiParamsType,
@@ -14,6 +15,11 @@ export interface SwapiMeta {
   next: string | null;
   previous: string | null;
   page?: number;
+}
+
+export interface WinnerState {
+  name: string;
+  position: PlayerPosition;
 }
 
 export class LoadCards {
@@ -35,8 +41,10 @@ export class UpdateSelectedCards {
   ) {}
 }
 
-export class UpdatePlayerTurn {
-  static readonly type = '[Game Board] Update Player Turn';
+export class UpdateNextTurn {
+  static readonly type = '[Game Board] Update Next Turn';
+
+  constructor(public nextTurn: PlayerPosition) {}
 }
 
 export class ResetGameBoardState {
@@ -50,7 +58,8 @@ export interface GameBoardModel {
   meta: SwapiMeta;
   loading: boolean;
   selectedCards: Map<string, SwapiPerson | SwapiStarship>;
-  isSecondPlayerTurn?: boolean;
+  nextTurn: PlayerPosition;
+  winner?: WinnerState;
 }
 
 export const initialState = {
@@ -61,21 +70,12 @@ export const initialState = {
     count: 0,
   },
   selectedCards: new Map(),
-  isSecondPlayerTurn: false,
+  nextTurn: 'playerTwo' as PlayerPosition,
 };
 
 @State<GameBoardModel>({
   name: 'gameBoard',
-  defaults: {
-    loading: false,
-    meta: {
-      next: null,
-      previous: null,
-      count: 0,
-    },
-    selectedCards: new Map(),
-    isSecondPlayerTurn: false,
-  },
+  defaults: initialState,
 })
 @Injectable()
 export class GameBoardState {
@@ -112,8 +112,8 @@ export class GameBoardState {
   }
 
   @Selector([GameBoardState])
-  static isSecondPlayerTurn(state: GameBoardModel) {
-    return state.isSecondPlayerTurn;
+  static nextTurn(state: GameBoardModel) {
+    return state.nextTurn;
   }
 
   @Action(LoadCards)
@@ -152,23 +152,23 @@ export class GameBoardState {
   @Action(UpdateSelectedCards)
   updateSelectedCards(
     ctx: StateContext<GameBoardModel>,
-    action: UpdateSelectedCards
+    { card, playerName }: UpdateSelectedCards
   ) {
     ctx.patchState({
-      selectedCards: new Map(ctx.getState().selectedCards).set(
-        action.card.url,
-        {
-          ...action.card,
-          selectedBy: action.playerName,
-        }
-      ),
+      selectedCards: new Map(ctx.getState().selectedCards).set(card.url, {
+        ...card,
+        selectedBy: playerName,
+      }),
     });
   }
 
-  @Action(UpdatePlayerTurn)
-  updatePlayerTurn(ctx: StateContext<GameBoardModel>) {
+  @Action(UpdateNextTurn)
+  updatePlayerTurn(
+    ctx: StateContext<GameBoardModel>,
+    { nextTurn }: UpdateNextTurn
+  ) {
     ctx.patchState({
-      isSecondPlayerTurn: !ctx.getState().isSecondPlayerTurn,
+      nextTurn,
     });
   }
 

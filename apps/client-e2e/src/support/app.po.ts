@@ -1,1 +1,1 @@
-export const getAppName = () => cy.get('h1');
+export const getAppSlogan = () => cy.get('.regular-title-medium');

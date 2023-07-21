@@ -17,18 +17,19 @@ import {
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
 import { GameWizardFacade } from '../game-wizard/store/game-wizard.facade';
+import { CardsSkeletonComponent } from './components/cards-skeleton/cards-skeleton.component';
+import { PeopleCardComponent } from './components/people-card/people-card.section';
+import { StarshipCardComponent } from './components/starship-card/starship-card.section';
 import { GameResultsDialog } from './dialogs/game-results/game-results.dialog';
 import { gameBoardRoutes } from './game-board.routes';
 import { GameBoardLayout } from './layouts/game-board/game-board.layout';
 import { GameBoardPage } from './pages/game-board.page';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { CardsSection } from './sections/cards/cards.section';
-import { CardsSkeletonComponent } from './sections/cards/components/cards-skeleton/cards-skeleton.component';
-import { PeopleCardComponent } from './sections/cards/components/people-card/people-card.section';
-import { StarshipCardComponent } from './sections/cards/components/starship-card/starship-card.section';
 import { GameBoardFacade } from './store/game-board.facade';
 import { GameBoardRepository } from './store/game-board.repository';
 import { GameBoardState } from './store/game-board.store';
+import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { GameBoardState } from './store/game-board.store';
     CardsSkeletonComponent,
     GameResultsDialog,
     HighlightPipe,
+    CardsPaginationComponent,
   ],
   imports: [
     CommonModule,

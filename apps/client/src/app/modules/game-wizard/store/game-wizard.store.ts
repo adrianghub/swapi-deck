@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { CardsType } from '../../../shared/models/game.model';
-
-export type PlayerPosition = 'playerOne' | 'playerTwo';
+import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
+import {
+  GameBoardModel,
+  GameBoardState,
+  WinnerState,
+} from '../../game-board/store/game-board.store';
 
 export interface PlayerState {
   name: string;
@@ -31,9 +34,16 @@ export class UpdatePlayerScore {
   constructor(public playerPosition: PlayerPosition) {}
 }
 
+export class UpdateWinner {
+  static readonly type = '[Game Board] Update Winner';
+
+  constructor(public winner: WinnerState | null) {}
+}
+
 export interface GameWizardModel {
   players: PlayersState;
-  cardsType?: CardsType;
+  cardsType: CardsType | null;
+  winner: WinnerState | null;
 }
 
 @State<GameWizardModel>({
@@ -50,6 +60,8 @@ export interface GameWizardModel {
         score: 0,
       },
     },
+    cardsType: null,
+    winner: null,
   },
 })
 @Injectable()
@@ -62,6 +74,11 @@ export class GameWizardState {
   @Selector([GameWizardState])
   static cardsType(state: GameWizardModel) {
     return state.cardsType;
+  }
+
+  @Selector([GameBoardState])
+  static winner(state: GameBoardModel) {
+    return state.winner;
   }
 
   @Action(UpdatePlayers)
@@ -108,6 +125,19 @@ export class GameWizardState {
             score: ++ctx.getState().players.playerTwo.score,
           },
         },
+      });
+    }
+  }
+
+  @Action(UpdateWinner)
+  updateWinner(ctx: StateContext<GameBoardModel>, { winner }: UpdateWinner) {
+    if (!winner) {
+      ctx.patchState({
+        winner: undefined,
+      });
+    } else {
+      ctx.patchState({
+        winner,
       });
     }
   }

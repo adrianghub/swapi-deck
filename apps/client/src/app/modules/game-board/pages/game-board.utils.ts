@@ -1,15 +1,27 @@
+import { PlayerPosition } from '../../../shared/models/game.model';
+import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiPerson } from '../models/swapi.model';
 import { SwapiStarship } from './../models/swapi.model';
 
 export function determineWinner(
-  selectedCards: Map<string, SwapiPerson | SwapiStarship>
+  selectedCards: Map<string, SwapiPerson | SwapiStarship>,
+  players: PlayersState,
+  handleWinnerFn: (name: string, playerPosition: PlayerPosition) => void
 ) {
   const cardsArray = Array.from(selectedCards.values());
 
   const [playerOneCard, playerTwoCard] = cardsArray;
 
-  return compareMass(playerOneCard, playerTwoCard);
+  const result = compareMass(playerOneCard, playerTwoCard);
+
+  if (result > 0) {
+    handleWinnerFn(players.playerOne.name, 'playerOne');
+  } else if (result < 0) {
+    handleWinnerFn(players.playerTwo.name, 'playerTwo');
+  }
+
+  return result;
 }
 
 export function compareMass(

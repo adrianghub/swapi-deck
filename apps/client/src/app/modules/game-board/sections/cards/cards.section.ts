@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { numberOfPlayers } from 'apps/client/src/app/shared/constants/game.constants';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { Observable, map, take } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
 import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
+import { shuffleCards } from './cards.utils';
 
 @Component({
   selector: 'sdeck-cards',
@@ -13,7 +14,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
     </ng-container>
 
     <ng-template #cards>
-      <ng-container *ngFor="let card of cards$ | async as cards">
+      <ng-container *ngFor="let card of shuffledCards$ | async as cards">
         <sdeck-people-card
           class="card"
           *ngIf="isSwapiPerson(card)"
@@ -32,7 +33,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
     </ng-template> `,
   styleUrls: ['./cards.section.scss'],
 })
-export class CardsSection extends Subscribable {
+export class CardsSection extends Subscribable implements OnInit {
   @Input({ required: true }) cards$!: Observable<
     (SwapiStarshipDto | SwapiPersonDto)[]
   >;
@@ -43,6 +44,12 @@ export class CardsSection extends Subscribable {
   >;
 
   @Output() selected = new EventEmitter<SwapiPersonDto | SwapiStarshipDto>();
+
+  shuffledCards$!: Observable<(SwapiStarshipDto | SwapiPersonDto)[]>;
+
+  ngOnInit(): void {
+    this.shuffledCards$ = this.cards$.pipe(map((cards) => shuffleCards(cards)));
+  }
 
   protected selectCard(card: SwapiStarshipDto | SwapiPersonDto) {
     this.subs.push(

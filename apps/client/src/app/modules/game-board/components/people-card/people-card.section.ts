@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SwapiPersonDto } from '../../../../models/swapi.dto';
+import { SwapiPerson } from '../../models/swapi.model';
 
 @Component({
   selector: 'sdeck-people-card',
@@ -14,5 +14,5 @@ import { SwapiPersonDto } from '../../../../models/swapi.dto';
   styleUrls: ['./people-card.section.scss'],
 })
 export class PeopleCardComponent {
-  @Input({ required: true }) card!: SwapiPersonDto;
+  @Input({ required: true }) card!: SwapiPerson;
 }

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { PlayerPosition } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import {
   SwapiParamsType,
@@ -12,7 +13,7 @@ import {
   LoadCards,
   ResetGameBoardState,
   SwapiMeta,
-  UpdatePlayerTurn,
+  UpdateNextTurn,
   UpdateSelectedCards,
 } from './game-board.store';
 
@@ -38,8 +39,8 @@ export class GameBoardFacade {
     Map<string, SwapiPerson | SwapiStarship>
   >;
 
-  @Select(GameBoardState.isSecondPlayerTurn)
-  isSecondPlayerTurn$!: Observable<boolean>;
+  @Select(GameBoardState.nextTurn)
+  nextTurn$!: Observable<PlayerPosition>;
 
   loadCards(params: SwapiParamsType): void {
     this.store.dispatch(new LoadCards(params));
@@ -52,8 +53,10 @@ export class GameBoardFacade {
     this.store.dispatch(new UpdateSelectedCards(card, playerName));
   }
 
-  updatePlayerTurn(): void {
-    this.store.dispatch(new UpdatePlayerTurn());
+  updateNextTurn(nextTurn: PlayerPosition): void {
+    console.log('currentTurn', nextTurn);
+
+    this.store.dispatch(new UpdateNextTurn(nextTurn));
   }
 
   resetGameState(): void {

@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { CardsType } from '../../../shared/models/game.model';
+import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
+import { WinnerState } from '../../game-board/store/game-board.store';
 import {
   GameWizardState,
-  PlayerPosition,
   PlayersState,
   UpdateCardsType,
   UpdatePlayerScore,
   UpdatePlayers,
+  UpdateWinner,
 } from './game-wizard.store';
 
 @Injectable()
@@ -17,6 +18,7 @@ export class GameWizardFacade {
 
   @Select(GameWizardState.players) players$!: Observable<PlayersState>;
   @Select(GameWizardState.cardsType) cardsType$!: Observable<CardsType>;
+  @Select(GameWizardState.winner) winner$!: Observable<WinnerState>;
 
   updatePlayers(players: PlayersState): void {
     this.store.dispatch(new UpdatePlayers(players));
@@ -28,6 +30,10 @@ export class GameWizardFacade {
 
   updatePlayerScore(playerPosition: PlayerPosition): void {
     this.store.dispatch(new UpdatePlayerScore(playerPosition));
+  }
+
+  updateWinner(winner: WinnerState | null): void {
+    this.store.dispatch(new UpdateWinner(winner));
   }
 
   resetWizardState(): void {
