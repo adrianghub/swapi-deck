@@ -1,8 +1,6 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PlayerPosition } from 'apps/client/src/app/shared/models/game.model';
 import { PlayersState } from '../../../game-wizard/store/game-wizard.store';
-import { PeopleCardComponent } from '../../components/people-card/people-card.section';
-import { StarshipCardComponent } from '../../components/starship-card/starship-card.section';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { WinnerState } from '../../store/game-board.store';
 
@@ -28,7 +26,7 @@ import { WinnerState } from '../../store/game-board.store';
         <sdeck-game-card
           class="selected-card wide-box"
           [card]="selectedCard"
-          [preview]="true"
+          customPlaceholderWidth="400"
         />
       </ng-container>
 
@@ -42,9 +40,6 @@ import { WinnerState } from '../../store/game-board.store';
   styleUrls: ['./cards-aside.section.scss'],
 })
 export class CardsAsideSection {
-  @ViewChild('peopleCard') peopleCard!: PeopleCardComponent;
-  @ViewChild('starshipCard') starshipCard!: StarshipCardComponent;
-
   @Input() nextTurn!: PlayerPosition;
   @Input() players!: PlayersState | undefined;
   @Input() winner!: WinnerState;

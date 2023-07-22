@@ -4,7 +4,6 @@ import { numberOfPlayers } from 'apps/client/src/app/shared/constants/game.const
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { Observable, map, take } from 'rxjs';
 import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
-import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 import { shuffleCards } from './cards.utils';
 
 @Component({
@@ -55,9 +54,6 @@ export class CardsSection extends Subscribable implements OnInit {
       })
     );
   }
-
-  isSwapiPerson = isSwapiPerson;
-  isSwapiStarship = isSwapiStarship;
 
   protected isSelected(
     card: SwapiStarshipDto | SwapiPersonDto

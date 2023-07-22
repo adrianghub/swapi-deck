@@ -258,7 +258,7 @@ export class GameBoardPage
     //   ],
     //   this.gameResultsDialog,
     //   this.playAgain.bind(this),
-    //   this.quitGame.bind(this),
+    //   this.quitGame.bind(this)
     // );
 
     console.log('GameBoardPage.ngAfterViewInit');

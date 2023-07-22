@@ -2,11 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
+import { links } from 'apps/client/src/app/shared/constants/game.constants';
 import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
 import { PlayersState } from '../../store/game-wizard.store';
 import { sameValueValidator } from '../../validators/sameValue.validator';
-import { links } from 'apps/client/src/app/shared/constants/game.constants';
 
 export interface PlayersNamesValues {
   playerOne: FormControl<string>;
@@ -100,7 +100,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
   ngOnInit() {
     this.subs.push(
       this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
-        if (players.playerOne.name && players.playerTwo.name) {
+        if (players?.playerOne?.name && players?.playerTwo?.name) {
           this.playerOne.setValue(players.playerOne.name);
           this.playerTwo.setValue(players.playerTwo.name);
 

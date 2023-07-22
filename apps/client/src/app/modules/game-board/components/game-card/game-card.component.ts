@@ -4,23 +4,38 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 
 @Component({
   selector: 'sdeck-game-card',
-  template: `<sdeck-people-card *ngIf="isSwapiPerson(card)" [card]="card">
-      <div placeholder class="placeholder-box" [class.hight-box]="preview">
-        <ng-content select="[placeholder-content]" /></div
-    ></sdeck-people-card>
-    <sdeck-starship-card *ngIf="isSwapiStarship(card)" [card]="card">
-      <div
-        placeholder
-        class="placeholder-box"
-        [class.hight-box]="preview"
-      ></div>
-    </sdeck-starship-card>`,
+  template: `
+    <ng-container *ngIf="isSwapiPerson(card)">
+      <sdeck-card
+        [customPlaceholderWidth]="customPlaceholderWidth"
+        [fitPlaceholderContent]="fitPlaceholderContent"
+        [title]="card.name"
+        [subtitle]="card.gender"
+      >
+        <ng-content placeholder-content select="[placeholder-content-person]"
+      /></sdeck-card>
+    </ng-container>
+
+    <ng-container *ngIf="isSwapiStarship(card)">
+      <sdeck-card
+        [customPlaceholderWidth]="customPlaceholderWidth"
+        [fitPlaceholderContent]="fitPlaceholderContent"
+        [title]="card.name"
+        [subtitle]="card.model"
+      >
+        <ng-content
+          placeholder-content
+          select="[placeholder-content-starship]"
+        />
+      </sdeck-card>
+    </ng-container>
+  `,
   styleUrls: ['./game-card.component.scss'],
 })
 export class GameCardComponent {
   @Input() card!: SwapiPersonDto | SwapiStarshipDto;
-  @Input() preview = false;
-  @Input() winnerCard = false;
+  @Input() customPlaceholderWidth!: string;
+  @Input() fitPlaceholderContent = false;
 
   isSwapiPerson = isSwapiPerson;
   isSwapiStarship = isSwapiStarship;

@@ -17,35 +17,33 @@ import {
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
 import { GameWizardFacade } from '../game-wizard/store/game-wizard.facade';
+import { CardComponent } from './components/card/card.component';
+import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
 import { CardsSkeletonComponent } from './components/cards-skeleton/cards-skeleton.component';
-import { PeopleCardComponent } from './components/people-card/people-card.section';
-import { StarshipCardComponent } from './components/starship-card/starship-card.section';
-import { GameResultsDialog } from './dialogs/game-results/game-results.dialog';
+import { GameCardComponent } from './components/game-card/game-card.component';
+import { GameResultsDialog } from './dialogs/game-results/game-result.dialog';
 import { gameBoardRoutes } from './game-board.routes';
 import { GameBoardLayout } from './layouts/game-board/game-board.layout';
 import { GameBoardPage } from './pages/game-board.page';
 import { HighlightPipe } from './pipes/highlight.pipe';
+import { CardsAsideSection } from './sections/cards-aside/cards-aside.section';
 import { CardsSection } from './sections/cards/cards.section';
 import { GameBoardFacade } from './store/game-board.facade';
 import { GameBoardRepository } from './store/game-board.repository';
 import { GameBoardState } from './store/game-board.store';
-import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
-import { CardsAsideSection } from './sections/cards-aside/cards-aside.section';
-import { GameCardComponent } from './components/game-card/game-card.component';
 
 @NgModule({
   declarations: [
     GameBoardLayout,
     GameBoardPage,
     CardsSection,
-    PeopleCardComponent,
-    StarshipCardComponent,
     CardsSkeletonComponent,
     GameResultsDialog,
     HighlightPipe,
     CardsPaginationComponent,
     CardsAsideSection,
-    GameCardComponent
+    GameCardComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,

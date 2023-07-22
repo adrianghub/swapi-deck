@@ -6,6 +6,14 @@
   justify-content: space-evenly;
   width: 100%;
   margin: 24px 0;
+  gap: 24px;
+}
+
+.attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 16px;
 }
 
 .winning-card {
@@ -13,12 +21,17 @@
   border-radius: 4px;
 }
 
-.winning-attribute {
-  font-size: 2.5rem;
-}
+.key-attribute {
+  font-weight: bold;
+  font-size: 1.5rem;
 
-.attributes {
-  margin: 24px 16px;
+  &--win {
+    color: #5bfd5b;
+  }
+
+  &--lose {
+    color: #ff5d5d;
+  }
 }
 
 .header {
