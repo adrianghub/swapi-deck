@@ -26,7 +26,9 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
       ></p>
 
       <ng-template #draw>
-        <p class="semi-bold-title-large header">It's a draw!</p>
+        <p class="semi-bold-title-large header">
+          {{ 'gameBoard.dialog.result.draw' | translate }}
+        </p>
       </ng-template>
 
       <div class="card-container">

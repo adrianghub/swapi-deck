@@ -5,23 +5,21 @@ import { SwapiPerson } from '../models/swapi.model';
 import { SwapiStarship } from './../models/swapi.model';
 
 export function determineWinner(
+  nextTurn: PlayerPosition,
   selectedCards: Map<string, SwapiPerson | SwapiStarship>,
   players: PlayersState,
   handleWinnerFn: (name: string, playerPosition: PlayerPosition) => void
 ): 'draw' | void {
   const cardsArray = Array.from(selectedCards.values());
-
   const [playerOneCard, playerTwoCard] = cardsArray;
-
   const result = compareMass(playerOneCard, playerTwoCard);
 
   if (result > 0) {
-    handleWinnerFn(players.playerOne.name, 'playerOne');
+    handleWinnerFn(players[nextTurn].name, nextTurn);
   } else if (result < 0) {
-    handleWinnerFn(players.playerTwo.name, 'playerTwo');
-  }
-
-  if (result === 0) {
+    const opponentTurn = nextTurn === 'playerOne' ? 'playerTwo' : 'playerOne';
+    handleWinnerFn(players[opponentTurn].name, opponentTurn);
+  } else {
     return 'draw';
   }
 }

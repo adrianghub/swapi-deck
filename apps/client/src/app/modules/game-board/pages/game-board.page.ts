@@ -53,7 +53,7 @@ import { determineWinner } from './game-board.utils';
             [type]="type"
             [selectedCards$]="gameBoardFacade.selectedCards$"
             (selected)="updateGameStatus($event)"
-            class="cards"
+            class="game-cards"
           />
         </div>
 
@@ -126,6 +126,7 @@ export class GameBoardPage extends Subscribable implements OnInit {
 
         if (selectedCards?.size === numberOfPlayers) {
           const result = determineWinner(
+            this.nextTurn,
             selectedCards,
             this.players,
             this.handleWinner.bind(this)

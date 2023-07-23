@@ -18,8 +18,6 @@ export class GameBoardService {
     playAgain: () => void,
     quitGame: () => void
   ): void {
-    console.log('openGameResultsDialog', selectedCards);
-
     this.dialog
       .open(DialogComponent, {
         data: {
