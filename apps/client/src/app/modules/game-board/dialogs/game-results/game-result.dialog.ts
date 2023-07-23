@@ -11,7 +11,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 @Component({
   selector: 'sdeck-game-results',
   template: `
-    <div *ngIf="data.input$ | async as result" class="game-results">
+    <div *ngIf="data.input$ | async as selectedCards" class="game-results">
       <p
         class="regular-title-large header"
         *ngIf="winner$ | async as winner; else draw"
@@ -25,11 +25,11 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
       </ng-template>
 
       <div class="card-container">
-        <ng-container *ngFor="let card of $any(result.selectedCards)">
+        <ng-container *ngFor="let card of $any(selectedCards)">
           <sdeck-game-card
             [card]="card"
             [customPlaceholderWidth]="
-              card.selectedBy === (winner$ | async)?.name ? '400' : ''
+              card.selectedBy === (winner$ | async)?.name ? '330' : ''
             "
             [fitPlaceholderContent]="
               card.selectedBy !== (winner$ | async)?.name
@@ -81,12 +81,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
   styleUrls: ['./game-result.dialog.scss'],
 })
 export class GameResultsDialog {
-  @Input() data!: DialogData<
-    {
-      selectedCards: SwapiPerson[] | SwapiStarship[];
-    },
-    boolean
-  >;
+  @Input() data!: DialogData<SwapiPerson[] | SwapiStarship[], boolean>;
   winningAttr!: 'mass' | 'crew';
 
   protected gameWizardFacade = inject(GameWizardFacade);

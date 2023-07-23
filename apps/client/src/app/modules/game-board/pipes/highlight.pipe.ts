@@ -13,7 +13,7 @@ export class HighlightPipe implements PipeTransform {
     for (const match of matches) {
       result = result.replace(
         match[0],
-        `<p class="highlight-text">${match[1]}</p>`
+        `<span class="highlight-text">${match[1]}</span>`
       );
     }
 

@@ -58,7 +58,7 @@ import { determineWinner } from './game-board.utils';
           [loading$]="gameBoardFacade.loading$"
           [meta]="meta"
           [pagesTotal]="pagesTotal"
-          (pageChanged)="loadCards(this.type, $event)"
+          (pageChanged)="loadCards(type, $event)"
         />
       </div>
 
@@ -67,7 +67,6 @@ import { determineWinner } from './game-board.utils';
         <sdeck-cards-aside
           [nextTurn]="nextTurn"
           [players]="players"
-          [winner]="winner"
           [selectedCard]="selectedCard"
         />
       </div>
@@ -146,11 +145,6 @@ export class GameBoardPage
       this.loadCards(type);
 
       this.type = type;
-
-      this.gameCards$ =
-        type === 'people'
-          ? this.gameBoardFacade.peopleCards$
-          : this.gameBoardFacade.starshipsCards$;
     });
   }
 
@@ -176,6 +170,11 @@ export class GameBoardPage
 
   protected loadCards(type: CardsType, url?: string): void {
     this.gameBoardFacade.loadCards({ type, url });
+
+    this.gameCards$ =
+      type === 'people'
+        ? this.gameBoardFacade.peopleCards$
+        : this.gameBoardFacade.starshipsCards$;
   }
 
   protected updateGameStatus(card: SwapiPersonDto | SwapiStarshipDto): void {
@@ -194,7 +193,6 @@ export class GameBoardPage
     selectedCards: Map<string, SwapiPerson | SwapiStarship>
   ): void {
     this.gameBoardService.openGameResultsDialog(
-      this.type,
       Array.from(selectedCards.values()),
       this.gameResultsDialog,
       this.playAgain.bind(this),

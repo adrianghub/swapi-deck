@@ -2,19 +2,23 @@ import { Component, Input } from '@angular/core';
 import { PlayerPosition } from 'apps/client/src/app/shared/models/game.model';
 import { PlayersState } from '../../../game-wizard/store/game-wizard.store';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
-import { WinnerState } from '../../store/game-board.store';
 
 @Component({
   selector: 'sdeck-cards-aside',
-  template: `<div>
-    <p>
-      current turn:
-      {{
+  template: `
+    <p class="regular-title-large">
+      {{ 'game.board.aside.currentTurn' | translate }}
+      <span class="highlight-text">{{
         nextTurn === 'playerOne'
           ? players?.playerTwo?.name
           : players?.playerOne?.name
-      }}
+      }}</span>
     </p>
+
+    <p
+      class="regular-title-medium instruction"
+      [innerHTML]="'game.board.aside.instruction' | translate | highlight"
+    ></p>
 
     <div class="selected-card-wrapper">
       <ng-container *ngIf="selectedCard; else noCardSelected">
@@ -26,7 +30,7 @@ import { WinnerState } from '../../store/game-board.store';
         <sdeck-game-card
           class="selected-card wide-box"
           [card]="selectedCard"
-          customPlaceholderWidth="400"
+          customPlaceholderWidth="250"
         />
       </ng-container>
 
@@ -36,12 +40,11 @@ import { WinnerState } from '../../store/game-board.store';
         </h3>
       </ng-template>
     </div>
-  </div> `,
+  `,
   styleUrls: ['./cards-aside.section.scss'],
 })
 export class CardsAsideSection {
   @Input() nextTurn!: PlayerPosition;
   @Input() players!: PlayersState | undefined;
-  @Input() winner!: WinnerState;
   @Input() selectedCard!: SwapiPerson | SwapiStarship | undefined;
 }

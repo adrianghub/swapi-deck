@@ -1,7 +1,6 @@
 import { Injectable, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, of } from 'rxjs';
-import { CardsType } from '../../../shared/models/game.model';
 import {
   DialogComponent,
   DialogData,
@@ -14,7 +13,6 @@ export class GameBoardService {
   private dialog = inject(MatDialog);
 
   openGameResultsDialog<T>(
-    type: CardsType,
     selectedCards: T[],
     dialogRef: TemplateRef<MatDialog>,
     playAgain: () => void,
@@ -26,7 +24,7 @@ export class GameBoardService {
       .open(DialogComponent, {
         data: {
           templateRef: dialogRef,
-          input$: of({ selectedCards, type }),
+          input$: of(selectedCards),
           labels: {
             title: 'game.board.dialog.results.title',
             submit: 'game.board.dialog.results.submit',

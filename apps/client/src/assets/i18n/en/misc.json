@@ -20,7 +20,7 @@
       }
     },
     "errors": {
-      "LOAD_CARDS_ERROR": "Reclaim the Galaxy, Card by Card! Overcome Obstacles, Retry and Triumph![(Couldn't load cards. Please try again.)]"
+      "LOAD_CARDS_ERROR": "Reclaim the Galaxy, Card by Card! Overcome Obstacles, Retry and Triumph!\n[(Couldn't load cards. Please try again.)]"
     }
   }
 }

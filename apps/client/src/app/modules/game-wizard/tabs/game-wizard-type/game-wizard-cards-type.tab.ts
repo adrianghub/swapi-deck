@@ -60,6 +60,11 @@ export class GameWizardCardsTypeTab extends Subscribable implements OnInit {
     this.subs.push(
       this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((cardsType) => {
         this.cardsTypeControl.setValue(cardsType);
+      }),
+      this.cardsTypeControl.valueChanges.subscribe((cardsType) => {
+        if (!this.cardsTypeControl.invalid && cardsType) {
+          this.gameWizardFacade.updateCardsType(cardsType);
+        }
       })
     );
   }

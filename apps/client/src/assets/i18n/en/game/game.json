@@ -39,8 +39,10 @@
         }
       },
       "aside": {
+        "currentTurn": "Current turn: ",
         "selectedBy": "Card selected by ",
-        "noCardSelected": "No cards selected."
+        "noCardSelected": "No cards selected.",
+        "instruction": "To start a game choose one of the available cards. The player with the highest value of the determining attribute wins the round. For people determing attribute is [mass], for starships [crew]. The game ends when both players select cards. The player with the highest number of wins wins the game.\n[May the Cards Be with You!]"
       }
     }
   }
