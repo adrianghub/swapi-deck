@@ -38,8 +38,8 @@ The app is using ngxs for the state management and it's stateless regarding user
   - [x] Add game wizard
   - [x] Add game board
   - [x] Fetch cards from API
-  - [ ] Add unit tests
-  - [x] Add e2e tests
+  - [x] Add unit tests (wip)
+  - [x] Add e2e tests (wip)
 - Features
   - [x] Select usernames
   - [x] Choose type of cards
