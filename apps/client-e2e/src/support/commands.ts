@@ -13,12 +13,25 @@ declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
     login(email: string, password: string): void;
+    getBySel(
+      selector: string,
+      args?: Partial<Loggable & Timeoutable & Withinable & Shadow>
+    ): Chainable<JQuery<HTMLElement>>;
+    notExistOrNotVisible(selector: string, isNotExist: boolean): void;
   }
 }
 //
 // -- This is a parent command --
 Cypress.Commands.add('login', (email, password) => {
   console.log('Custom command example: Login', email, password);
+});
+
+Cypress.Commands.add('notExistOrNotVisible', (selector, isNotExist) => {
+  cy.get(selector).should(isNotExist ? 'not.exist' : 'not.be.visible');
+});
+
+Cypress.Commands.add('getBySel', (selector, ...args) => {
+  return cy.get(`[data-cy=${selector}]`, ...args);
 });
 //
 // -- This is a child command --

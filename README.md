@@ -18,6 +18,14 @@ or with headed mode
 
 `nx e2e client-e2e --watch`
 
+### Build
+
+`nx build client`
+
+## Disclaimer
+
+The app is using ngxs for the state management and it's stateless regarding user's session. It would be obviously better to save players, scores and overall game progress in session storage but I decided to go with ngxs for the purpose of checking this tool.
+
 ## Plans for developement
 
 - Configuration
@@ -31,7 +39,7 @@ or with headed mode
   - [x] Add game board
   - [x] Fetch cards from API
   - [ ] Add unit tests
-  - [ ] Add e2e tests
+  - [x] Add e2e tests
 - Features
   - [x] Select usernames
   - [x] Choose type of cards
