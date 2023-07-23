@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { PlayerPosition } from '../../../shared/models/game.model';
+import { PlayerPosition, SwapiMeta } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import {
   SwapiParamsType,
@@ -9,13 +9,12 @@ import {
   SwapiStarship,
 } from '../models/swapi.model';
 import {
-  GameBoardState,
   LoadCards,
   ResetGameBoardState,
-  SwapiMeta,
   UpdateNextTurn,
   UpdateSelectedCards,
-} from './game-board.store';
+} from './game-board.actions';
+import { GameBoardState } from './game-board.store';
 
 @Injectable()
 export class GameBoardFacade {

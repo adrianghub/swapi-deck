@@ -17,12 +17,12 @@ export interface PlayersNamesValues {
   selector: 'sdeck-game-names',
   template: `
     <sdeck-game-wizard-layout
-      [headline]="'game.wizard.names.headline' | translate"
+      [headline]="'gameWizard.names.headline' | translate"
     >
       <form [formGroup]="playersForm" class="input-container">
         <sdeck-input
           [control]="playerOne"
-          [label]="'game.wizard.names.playerOne' | translate"
+          [label]="'gameWizard.names.playerOne' | translate"
           [readonly]="isReadOnly('playerOne')"
           (cleared)="unsetPlayerName('playerOne')"
           [focus]="true"
@@ -31,7 +31,7 @@ export interface PlayersNamesValues {
 
         <sdeck-input
           [control]="playerTwo"
-          [label]="'game.wizard.names.playerTwo' | translate"
+          [label]="'gameWizard.names.playerTwo' | translate"
           [readonly]="isReadOnly('playerTwo')"
           (cleared)="unsetPlayerName('playerTwo')"
           data-cy="player-two-input"
@@ -41,7 +41,7 @@ export interface PlayersNamesValues {
       <ng-container actions>
         <sdeck-button
           type="primary"
-          [label]="'game.wizard.actions.mainMenu' | translate"
+          [label]="'gameWizard.actions.mainMenu' | translate"
           (clicked)="router.navigateByUrl('')"
           prefixIcon="arrow-left"
           data-cy="main-menu-button"
@@ -49,7 +49,7 @@ export interface PlayersNamesValues {
 
         <sdeck-button
           type="primary"
-          [label]="'game.wizard.actions.nextStep' | translate"
+          [label]="'gameWizard.actions.nextStep' | translate"
           (clicked)="goToNextStep()"
           suffixIcon="arrow-right"
           [disabled]="playersForm.invalid"

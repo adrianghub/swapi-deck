@@ -26,9 +26,9 @@ export class GameBoardService {
           templateRef: dialogRef,
           input$: of(selectedCards),
           labels: {
-            title: 'game.board.dialog.results.title',
-            submit: 'game.board.dialog.results.submit',
-            cancel: 'game.board.dialog.results.cancel',
+            title: 'gameBoard.dialog.result.title',
+            submit: 'gameBoard.dialog.result.submit',
+            cancel: 'gameBoard.dialog.result.cancel',
           },
           options: {
             disabled: false,

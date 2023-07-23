@@ -35,7 +35,7 @@ import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-card
     CommonModule,
     NgxsModule.forFeature([GameWizardState]),
     RouterModule.forChild(gameWizardRoutes),
-    TranslateModule.forChild(configTranslateModule(['game/game'])),
+    TranslateModule.forChild(configTranslateModule(['game/game-wizard'])),
     FormsModule,
     MatInputModule,
     InputComponent,

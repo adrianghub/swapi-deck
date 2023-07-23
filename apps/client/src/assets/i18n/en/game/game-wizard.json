@@ -1,0 +1,25 @@
+{
+  "gameWizard": {
+    "tab": {
+      "usernames": "First step - Usernames",
+      "cardsType": "Second step - Type of cards"
+    },
+    "actions": {
+      "mainMenu": "Main menu",
+      "previousStep": "Previous step",
+      "nextStep": "Next step",
+      "startGame": "Start the battle!"
+    },
+    "names": {
+      "headline": "How would you like to call your players?",
+      "playerOne": "First player's username",
+      "playerTwo": "Second player's username"
+    },
+    "cardType": {
+      "headline": "What type of cards would you like to play with?",
+      "select": {
+        "label": "Type of cards"
+      }
+    }
+  }
+}

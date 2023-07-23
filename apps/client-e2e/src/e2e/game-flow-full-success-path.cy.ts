@@ -1,4 +1,4 @@
-describe('MainMenuPage', () => {
+describe('GameFlowFullSuccessPath', () => {
   beforeEach(() => {
     cy.visit('/');
   });
@@ -10,7 +10,7 @@ describe('MainMenuPage', () => {
     );
   });
 
-  it('should display the', () => {
+  it('should go with the game flow and display game results', () => {
     cy.getBySel('new-game-button').should('contain', 'New game').click();
 
     cy.url().should('include', '/wizard/names');

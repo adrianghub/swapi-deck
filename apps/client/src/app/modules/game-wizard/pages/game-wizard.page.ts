@@ -17,7 +17,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
         "
         data-cy="game-names-tab-link"
       >
-        {{ 'game.wizard.tab.usernames' | translate }}
+        {{ 'gameWizard.tab.usernames' | translate }}
       </a>
 
       <a
@@ -30,7 +30,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
         "
         data-cy="game-cards-type-tab-link"
       >
-        {{ 'game.wizard.tab.cardsType' | translate }}
+        {{ 'gameWizard.tab.cardsType' | translate }}
       </a>
     </nav>
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

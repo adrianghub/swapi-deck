@@ -7,7 +7,7 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
   selector: 'sdeck-cards-aside',
   template: `
     <p class="regular-title-large">
-      {{ 'game.board.aside.currentTurn' | translate }}
+      {{ 'gameBoard.aside.currentTurn' | translate }}
       <span class="highlight-text">{{
         nextTurn === 'playerOne'
           ? players?.playerTwo?.name
@@ -17,13 +17,13 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
     <p
       class="regular-title-medium instruction"
-      [innerHTML]="'game.board.aside.instruction' | translate | highlight"
+      [innerHTML]="'gameBoard.aside.instruction' | translate | highlight"
     ></p>
 
     <div class="selected-card-wrapper">
       <ng-container *ngIf="selectedCard; else noCardSelected">
         <h3 class="regular-headline-small selected-card-header">
-          {{ 'game.board.aside.selectedBy' | translate }}
+          {{ 'gameBoard.aside.selectedBy' | translate }}
           <span class="highlight-text">{{ selectedCard.selectedBy }}</span>
         </h3>
 
@@ -36,7 +36,7 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
       <ng-template #noCardSelected>
         <h3 class="semi-bold-headline-small selected-card-header">
-          {{ 'game.board.aside.noCardSelected' | translate }}
+          {{ 'gameBoard.aside.noCardSelected' | translate }}
         </h3>
       </ng-template>
     </div>

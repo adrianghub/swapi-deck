@@ -1,16 +1,18 @@
 import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
-import { WinnerState } from '../../game-board/store/game-board.store';
 import {
-  GameWizardState,
-  PlayersState,
+  CardsType,
+  PlayerPosition,
+  WinnerState,
+} from '../../../shared/models/game.model';
+import {
   UpdateCardsType,
   UpdatePlayerScore,
   UpdatePlayers,
   UpdateWinner,
-} from './game-wizard.store';
+} from './game-wizard.actions';
+import { GameWizardState, PlayersState } from './game-wizard.store';
 
 @Injectable()
 export class GameWizardFacade {

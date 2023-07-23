@@ -7,7 +7,7 @@ import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facad
       <ng-container actions>
         <div class="players">
           <p class="regular-title-large">
-            {{ 'game.board.score' | translate }}
+            {{ 'gameBoard.score' | translate }}
           </p>
 
           <span class="separator"></span>

@@ -9,16 +9,21 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 
 @Component({
-  selector: 'sdeck-game-results',
+  selector: 'sdeck-game-result',
   template: `
     <div *ngIf="data.input$ | async as selectedCards" class="game-results">
       <p
-        class="regular-title-large header"
         *ngIf="winner$ | async as winner; else draw"
-      >
-        The winner is
-        <span class="highlight-text">{{ winner?.name }}!</span>
-      </p>
+        [innerHTML]="
+          'gameBoard.dialog.result.winner'
+            | translate
+              : {
+                  winnerName: winner.name
+                }
+            | highlight
+        "
+        class="regular-title-large header"
+      ></p>
 
       <ng-template #draw>
         <p class="semi-bold-title-large header">It's a draw!</p>
@@ -42,9 +47,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
               placeholder-content-person
               class="attributes"
             >
-              <ng-container *ngTemplateOutlet="template">
-                dwajdkdjaidjaijda
-              </ng-container>
+              <ng-container *ngTemplateOutlet="template" />
             </div>
 
             <div
@@ -52,9 +55,7 @@ import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
               placeholder-content-starship
               class="attributes"
             >
-              <ng-container *ngTemplateOutlet="template">
-                wkdioadkadajdaikdjwaidjwaid
-              </ng-container>
+              <ng-container *ngTemplateOutlet="template" />
             </div>
 
             <ng-template #template>

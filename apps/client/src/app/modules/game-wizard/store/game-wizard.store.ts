@@ -1,43 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
+import { CardsType, WinnerState } from '../../../shared/models/game.model';
 import {
   GameBoardModel,
   GameBoardState,
-  WinnerState,
 } from '../../game-board/store/game-board.store';
+import {
+  UpdateCardsType,
+  UpdatePlayerScore,
+  UpdatePlayers,
+  UpdateWinner,
+} from './game-wizard.actions';
 
-export interface PlayerState {
+interface PlayerState {
   name: string;
   score: number;
 }
+
 export interface PlayersState {
   playerOne: PlayerState;
   playerTwo: PlayerState;
-}
-
-export class UpdatePlayers {
-  static readonly type = '[Game Wizard] Update Players';
-
-  constructor(public players: PlayersState) {}
-}
-
-export class UpdateCardsType {
-  static readonly type = '[Game Wizard] Update Cards Type';
-
-  constructor(public cardsType: CardsType) {}
-}
-
-export class UpdatePlayerScore {
-  static readonly type = '[Game Wizard] Update Player Score';
-
-  constructor(public playerPosition: PlayerPosition) {}
-}
-
-export class UpdateWinner {
-  static readonly type = '[Game Board] Update Winner';
-
-  constructor(public winner: WinnerState | null) {}
 }
 
 export interface GameWizardModel {
@@ -49,7 +31,6 @@ export interface GameWizardModel {
 @State<GameWizardModel>({
   name: 'gameWizard',
   defaults: {
-    // TODO: remove before production (currently used for testing purposes)
     players: {
       playerOne: {
         name: '',

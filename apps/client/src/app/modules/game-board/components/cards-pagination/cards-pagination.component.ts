@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SwapiMeta } from 'apps/client/src/app/shared/models/game.model';
 import { Observable } from 'rxjs';
-import { SwapiMeta } from '../../store/game-board.store';
 
 @Component({
   selector: 'sdeck-cards-pagination',

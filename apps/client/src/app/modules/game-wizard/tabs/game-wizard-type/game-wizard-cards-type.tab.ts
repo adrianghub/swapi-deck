@@ -11,20 +11,20 @@ import { GameWizardFacade } from '../../store/game-wizard.facade';
   selector: 'sdeck-game-cards-type',
   template: `
     <sdeck-game-wizard-layout
-      [headline]="'game.wizard.cardType.headline' | translate"
+      [headline]="'gameWizard.cardType.headline' | translate"
       data-cy="game-cards-type-tab"
     >
       <sdeck-select
         [control]="cardsTypeControl"
         [options]="cardsTypes"
-        [label]="'game.wizard.cardType.select.label' | translate"
+        [label]="'gameWizard.cardType.select.label' | translate"
         data-cy="cards-type-select"
       />
 
       <ng-container actions>
         <sdeck-button
           type="primary"
-          [label]="'game.wizard.actions.previousStep' | translate"
+          [label]="'gameWizard.actions.previousStep' | translate"
           (clicked)="router.navigateByUrl(links.wizard.names)"
           prefixIcon="arrow-left"
           [disabled]="
@@ -36,7 +36,7 @@ import { GameWizardFacade } from '../../store/game-wizard.facade';
 
         <sdeck-button
           type="primary"
-          [label]="'game.wizard.actions.startGame' | translate"
+          [label]="'gameWizard.actions.startGame' | translate"
           (clicked)="router.navigateByUrl(links.board.gameBoard)"
           [disabled]="cardsTypeControl.invalid"
           data-cy="start-game-button"

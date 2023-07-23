@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   OnInit,
   TemplateRef,
@@ -15,14 +14,18 @@ import {
   links,
   numberOfPlayers,
 } from '../../../shared/constants/game.constants';
-import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
+import {
+  CardsType,
+  PlayerPosition,
+  SwapiMeta,
+  WinnerState,
+} from '../../../shared/models/game.model';
 import { GameWizardFacade } from '../../game-wizard/store/game-wizard.facade';
 import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import { GameBoardService } from '../services/game-board.service';
 import { GameBoardFacade } from '../store/game-board.facade';
-import { SwapiMeta, WinnerState } from '../store/game-board.store';
 import { determineWinner } from './game-board.utils';
 
 @Component({
@@ -34,13 +37,13 @@ import { determineWinner } from './game-board.utils';
         <div class="cards-board">
           <ng-container *ngIf="gameBoardFacade.errorMessage$ | async as error">
             <p
-              class="regular-title-large"
+              class="regular-title-large error-message"
               [innerHTML]="'misc.errors.' + error | translate | highlight"
             ></p>
           </ng-container>
 
           <h1 *ngIf="type" class="regular-headline-medium headline">
-            {{ 'game.board.cards.type.' + type | translate }}
+            {{ 'gameBoard.cards.type.' + type | translate }}
             <span *ngIf="meta?.count">({{ meta.count }})</span>
           </h1>
 
@@ -73,16 +76,13 @@ import { determineWinner } from './game-board.utils';
     </div>
 
     <ng-template #gameResultsDialog let-data>
-      <sdeck-game-results [data]="data" />
+      <sdeck-game-result [data]="data" data-cy="game-result-dialog" />
     </ng-template>
   `,
   styleUrls: ['./game-board.page.scss'],
   providers: [GameBoardService],
 })
-export class GameBoardPage
-  extends Subscribable
-  implements OnInit, AfterViewInit
-{
+export class GameBoardPage extends Subscribable implements OnInit {
   @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
 
   protected type!: CardsType;
@@ -235,29 +235,5 @@ export class GameBoardPage
 
   private countTotalPages(meta: SwapiMeta) {
     this.pagesTotal = Math.ceil(meta?.count / itemsPerPage);
-  }
-
-  ngAfterViewInit(): void {
-    // TODO: remove before production (currently used for testing purposes)
-    // this.gameBoardService.openGameResultsDialog(
-    //   'people',
-    //   [
-    //     {
-    //       name: '33BBY',
-    //       mass: '32',
-    //       selectedBy: 'maciek',
-    //     } as SwapiPerson,
-    //     {
-    //       name: '33BBY',
-    //       mass: '52',
-    //       selectedBy: 'adam',
-    //     } as SwapiPerson,
-    //   ],
-    //   this.gameResultsDialog,
-    //   this.playAgain.bind(this),
-    //   this.quitGame.bind(this)
-    // );
-
-    console.log('GameBoardPage.ngAfterViewInit');
   }
 }

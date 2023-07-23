@@ -1,4 +1,8 @@
-<h2 *ngIf="data.labels.title" class="semi-bold-headline-medium header">
+<h2
+  *ngIf="data.labels.title"
+  class="semi-bold-headline-medium header"
+  data-cy="dialog-title"
+>
   {{ data.labels.title! | translate }}
 </h2>
 
@@ -16,6 +20,7 @@
       [label]="data.labels.submit | translate"
       data-test-id="dialog-submit"
       (clicked)="data.submitCallbackFn()"
+      data-cy="dialog-submit"
     />
 
     <sdeck-button
@@ -24,6 +29,7 @@
       [label]="data.labels.cancel | translate"
       data-test-id="dialog-cancel"
       (clicked)="data.cancelCallbackFn()"
+      data-cy="dialog-cancel"
     />
   </div>
 </div>

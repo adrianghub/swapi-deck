@@ -49,7 +49,7 @@ import { GameBoardState } from './store/game-board.store';
     CommonModule,
     NgxsModule.forFeature([GameBoardState]),
     RouterModule.forChild(gameBoardRoutes),
-    TranslateModule.forChild(configTranslateModule(['game/game'])),
+    TranslateModule.forChild(configTranslateModule(['game/game-board'])),
     FormsModule,
     MatInputModule,
     InputComponent,
