@@ -4,19 +4,21 @@ import { Router } from '@angular/router';
 import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { take } from 'rxjs';
+import { cardsTypes, links } from '../../../../shared/constants/game.constants';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
-import { cardsTypes, links } from './../../../../shared/constants/game.constants';
 
 @Component({
-  selector: 'sdeck-game-names',
+  selector: 'sdeck-game-cards-type',
   template: `
     <sdeck-game-wizard-layout
       [headline]="'game.wizard.cardType.headline' | translate"
+      data-cy="game-cards-type-tab"
     >
       <sdeck-select
         [control]="cardsTypeControl"
         [options]="cardsTypes"
         [label]="'game.wizard.cardType.select.label' | translate"
+        data-cy="cards-type-select"
       />
 
       <ng-container actions>
@@ -29,13 +31,15 @@ import { cardsTypes, links } from './../../../../shared/constants/game.constants
             (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
             (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
           "
+          data-cy="previous-step-button"
         />
 
         <sdeck-button
           type="primary"
           [label]="'game.wizard.actions.startGame' | translate"
-          (clicked)="this.router.navigateByUrl(links.board.gameBoard)"
+          (clicked)="router.navigateByUrl(links.board.gameBoard)"
           [disabled]="cardsTypeControl.invalid"
+          data-cy="start-game-button"
         />
       </ng-container>
     </sdeck-game-wizard-layout>
@@ -56,11 +60,6 @@ export class GameWizardCardsTypeTab extends Subscribable implements OnInit {
     this.subs.push(
       this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((cardsType) => {
         this.cardsTypeControl.setValue(cardsType);
-      }),
-      this.cardsTypeControl.valueChanges.subscribe((cardsType) => {
-        if (!this.cardsTypeControl.invalid && cardsType) {
-          this.gameWizardFacade.updateCardsType(cardsType);
-        }
       })
     );
   }

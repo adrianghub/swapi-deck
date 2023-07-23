@@ -9,7 +9,7 @@ import { shuffleCards } from './cards.utils';
 @Component({
   selector: 'sdeck-cards',
   template: `<ng-container *ngIf="loading$ | async; else cards">
-      <sdeck-cards-skeleton />
+      <sdeck-cards-skeleton data-cy="cards-skeleton" />
     </ng-container>
 
     <ng-template #cards>
@@ -19,6 +19,7 @@ import { shuffleCards } from './cards.utils';
           [card]="card"
           [class.selected]="isSelected(card) | async"
           (click)="selectCard(card)"
+          data-cy="game-card"
         />
       </ng-container>
     </ng-template> `,

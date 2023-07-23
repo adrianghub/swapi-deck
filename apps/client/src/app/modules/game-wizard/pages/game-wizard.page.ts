@@ -15,6 +15,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
           (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
           (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
         "
+        data-cy="game-names-tab-link"
       >
         {{ 'game.wizard.tab.usernames' | translate }}
       </a>
@@ -27,6 +28,7 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
           !(gameWizardFacade.players$ | async)?.playerOne?.name &&
           !(gameWizardFacade.players$ | async)?.playerTwo?.name
         "
+        data-cy="game-cards-type-tab-link"
       >
         {{ 'game.wizard.tab.cardsType' | translate }}
       </a>

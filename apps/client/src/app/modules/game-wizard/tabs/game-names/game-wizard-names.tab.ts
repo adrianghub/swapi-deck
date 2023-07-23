@@ -26,6 +26,7 @@ export interface PlayersNamesValues {
           [readonly]="isReadOnly('playerOne')"
           (cleared)="unsetPlayerName('playerOne')"
           [focus]="true"
+          data-cy="player-one-input"
         ></sdeck-input>
 
         <sdeck-input
@@ -33,6 +34,7 @@ export interface PlayersNamesValues {
           [label]="'game.wizard.names.playerTwo' | translate"
           [readonly]="isReadOnly('playerTwo')"
           (cleared)="unsetPlayerName('playerTwo')"
+          data-cy="player-two-input"
         ></sdeck-input>
       </form>
 
@@ -42,6 +44,7 @@ export interface PlayersNamesValues {
           [label]="'game.wizard.actions.mainMenu' | translate"
           (clicked)="router.navigateByUrl('')"
           prefixIcon="arrow-left"
+          data-cy="main-menu-button"
         ></sdeck-button>
 
         <sdeck-button
@@ -50,6 +53,7 @@ export interface PlayersNamesValues {
           (clicked)="goToNextStep()"
           suffixIcon="arrow-right"
           [disabled]="playersForm.invalid"
+          data-cy="next-step-button"
         ></sdeck-button>
       </ng-container>
     </sdeck-game-wizard-layout>

@@ -26,6 +26,7 @@ import { links } from '../../../shared/constants/game.constants';
         <sdeck-button
           [label]="'misc.mainMenu.actions.newGame' | translate"
           (clicked)="startNewGame()"
+          data-cy="new-game-button"
         />
       </div>
     </div>

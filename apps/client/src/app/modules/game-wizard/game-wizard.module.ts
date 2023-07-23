@@ -21,7 +21,7 @@ import { GameWizardPage } from './pages/game-wizard.page';
 import { GameWizardFacade } from './store/game-wizard.facade';
 import { GameWizardState } from './store/game-wizard.store';
 import { GameWizardNamesTab } from './tabs/game-names/game-wizard-names.tab';
-import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-type.tab';
+import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-cards-type.tab';
 
 @NgModule({
   declarations: [

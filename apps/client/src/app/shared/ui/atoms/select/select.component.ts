@@ -23,13 +23,17 @@ import { ButtonComponent } from '../button/button.component';
     <mat-form-field class="form-field" appearance="outline">
       <mat-label>{{ label }}</mat-label>
 
-      <div class="wrapper">
+      <div class="select-container">
         <mat-select
           [formControl]="control"
           [placeholder]="placeholder ?? ''"
           [attr.aria-label]="label ?? ''"
         >
-          <mat-option *ngFor="let option of options" [value]="option">
+          <mat-option
+            *ngFor="let option of options"
+            [value]="option"
+            [attr.data-cy]="'select-option-' + option"
+          >
             {{ 'misc.select.option.' + option | translate }}
           </mat-option>
         </mat-select>

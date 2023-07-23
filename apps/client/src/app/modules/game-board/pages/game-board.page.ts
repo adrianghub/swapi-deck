@@ -58,9 +58,7 @@ import { determineWinner } from './game-board.utils';
           [loading$]="gameBoardFacade.loading$"
           [meta]="meta"
           [pagesTotal]="pagesTotal"
-          (pageChanged)="
-            gameBoardFacade.loadCards({ type: this.type, url: $event })
-          "
+          (pageChanged)="loadCards(this.type, $event)"
         />
       </div>
 
@@ -145,8 +143,14 @@ export class GameBoardPage
 
   private subscribeToCardType(): Subscription {
     return this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((type) => {
+      this.loadCards(type);
+
       this.type = type;
-      this.loadGameCards(type);
+
+      this.gameCards$ =
+        type === 'people'
+          ? this.gameBoardFacade.peopleCards$
+          : this.gameBoardFacade.starshipsCards$;
     });
   }
 
@@ -170,13 +174,8 @@ export class GameBoardPage
     });
   }
 
-  private loadGameCards(type: CardsType): void {
-    this.gameBoardFacade.loadCards({ type });
-
-    this.gameCards$ =
-      type === 'people'
-        ? this.gameBoardFacade.peopleCards$
-        : this.gameBoardFacade.starshipsCards$;
+  protected loadCards(type: CardsType, url?: string): void {
+    this.gameBoardFacade.loadCards({ type, url });
   }
 
   protected updateGameStatus(card: SwapiPersonDto | SwapiStarshipDto): void {
