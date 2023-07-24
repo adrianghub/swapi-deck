@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve:dev": "nx run-many --target=serve --projects=client,api"
+    "serve:dev": "nx run-many --target=serve --projects=client,api",
+    "e2e:client-e2e": "nx e2e client-e2e",
+    "test:client": "nx test client",
+    "test:client:coverage": "nx test client --codeCoverage",
+    "lint": "nx lint client"
   },
   "private": true,
   "dependencies": {

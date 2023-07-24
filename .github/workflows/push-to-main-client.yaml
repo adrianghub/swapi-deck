@@ -1,0 +1,30 @@
+name: CI Client
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.12.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint with ESLint
+        run: npm run lint
+
+      - name: Run unit tests with Jest
+        run: npm run test:client
+
+      - name: Run e2e tests with Cypress
+        run: npm run e2e:client-e2e
