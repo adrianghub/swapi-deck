@@ -1,4 +1,4 @@
-# SWAPI Deck
+# SWAPI Deck - Assignment
 
 Project idea prototype
 
