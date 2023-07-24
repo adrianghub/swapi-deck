@@ -54,6 +54,7 @@ import { determineWinner } from './game-board.utils';
             [selectedCards$]="gameBoardFacade.selectedCards$"
             (selected)="updateGameStatus($event)"
             class="game-cards"
+            data-cy="game-cards"
           />
         </div>
 

@@ -1,5 +1,4 @@
 import { PlayerPosition } from '../../../shared/models/game.model';
-import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import { compareMass, determineWinner } from './game-board.utils';
 
@@ -44,7 +43,7 @@ describe('compareMass', () => {
 describe('determineWinner', () => {
   const mockPlayerOne = { name: 'Player One', score: 0 };
   const mockPlayerTwo = { name: 'Player Two', score: 0 };
-  const mockPlayers: PlayersState = {
+  const mockPlayers = {
     playerOne: mockPlayerOne,
     playerTwo: mockPlayerTwo,
   };
@@ -56,6 +55,11 @@ describe('determineWinner', () => {
     winnerPosition = playerPosition;
   };
 
+  beforeEach(() => {
+    winnerName = null;
+    winnerPosition = null;
+  });
+
   it('should determine player one as the winner when result > 0', () => {
     const mockPerson1 = { mass: '80' } as SwapiPerson;
     const mockPerson2 = { mass: '60' } as SwapiPerson;
@@ -64,7 +68,12 @@ describe('determineWinner', () => {
       ['playerTwo', mockPerson2],
     ]);
 
-    determineWinner(selectedCards, mockPlayers, mockHandleWinnerFn);
+    determineWinner(
+      'playerOne',
+      selectedCards,
+      mockPlayers,
+      mockHandleWinnerFn
+    );
 
     expect(winnerName).toBe(mockPlayerOne.name);
     expect(winnerPosition).toBe('playerOne');
@@ -78,9 +87,34 @@ describe('determineWinner', () => {
       ['playerTwo', mockStarship2],
     ]);
 
-    determineWinner(selectedCards, mockPlayers, mockHandleWinnerFn);
+    determineWinner(
+      'playerOne',
+      selectedCards,
+      mockPlayers,
+      mockHandleWinnerFn
+    );
 
     expect(winnerName).toBe(mockPlayerTwo.name);
     expect(winnerPosition).toBe('playerTwo');
+  });
+
+  it('should return "draw" when result is 0', () => {
+    const mockPerson1 = { mass: '80' } as SwapiPerson;
+    const mockPerson2 = { mass: '80' } as SwapiPerson;
+    const selectedCards = new Map<string, SwapiPerson>([
+      ['playerOne', mockPerson1],
+      ['playerTwo', mockPerson2],
+    ]);
+
+    const result = determineWinner(
+      'playerOne',
+      selectedCards,
+      mockPlayers,
+      mockHandleWinnerFn
+    );
+
+    expect(winnerName).toBeNull();
+    expect(winnerPosition).toBeNull();
+    expect(result).toBe('draw');
   });
 });
