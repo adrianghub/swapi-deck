@@ -1,17 +1,16 @@
 # SWAPI Deck - Assignment
 
-Project idea prototype
+#### Project idea prototype
 
 
-![Project idea prototype screenshot](https://github.com/adrianghub/swapi-deck/assets/44274979/58de4cb1-28f3-4f0f-a0e0-471483c54d30)
+![Project idea prototype screenshot](https://github.com/adrianghub/swapi-deck/assets/44274979/58190740-0e0a-4894-bdb0-6cd7081c1e61)
+
+<br/><br/>
+
+#### Current project implementation progress
 
 
-
-
-Current project implementation progress
-
-
-![Current project progress screenshots presentation](https://github.com/adrianghub/swapi-deck/assets/44274979/3030eea6-eeec-4620-aba5-bd5482f80e0b)
+![Current project progress screenshots presentation](https://github.com/adrianghub/swapi-deck/assets/44274979/905d1935-50cf-43bd-bea0-a53fac862775)
 
 
 
