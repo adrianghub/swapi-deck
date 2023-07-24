@@ -6,7 +6,11 @@ Project idea prototype
 ![Project idea prototype screenshot](https://github.com/adrianghub/swapi-deck/assets/44274979/58de4cb1-28f3-4f0f-a0e0-471483c54d30)
 
 
+
+
 Current project implementation progress
+
+
 ![Current project progress screenshots presentation](https://github.com/adrianghub/swapi-deck/assets/44274979/3030eea6-eeec-4620-aba5-bd5482f80e0b)
 
 
