@@ -7,7 +7,13 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable, Subscription, distinctUntilChanged, take } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  distinctUntilChanged,
+  take,
+} from 'rxjs';
 import { Subscribable } from '../../../core/subscribable.abstract';
 import {
   itemsPerPage,
@@ -18,7 +24,6 @@ import {
   CardsType,
   PlayerPosition,
   SwapiMeta,
-  WinnerState,
 } from '../../../shared/models/game.model';
 import { GameWizardFacade } from '../../game-wizard/store/game-wizard.facade';
 import { PlayersState } from '../../game-wizard/store/game-wizard.store';
@@ -44,7 +49,9 @@ import { determineWinner } from './game-board.utils';
 
           <h1 *ngIf="type" class="regular-headline-medium headline">
             {{ 'gameBoard.cards.type.' + type | translate }}
-            <span *ngIf="meta?.count">({{ meta.count }})</span>
+            <span *ngIf="(gameBoardFacade.meta$ | async)?.count as count"
+              >({{ count }})</span
+            >
           </h1>
 
           <sdeck-cards
@@ -60,7 +67,7 @@ import { determineWinner } from './game-board.utils';
 
         <sdeck-cards-pagination
           [loading$]="gameBoardFacade.loading$"
-          [meta]="meta"
+          [meta$]="gameBoardFacade.meta$"
           [pagesTotal]="pagesTotal"
           (pageChanged)="loadCards(type, $event)"
         />
@@ -87,12 +94,10 @@ export class GameBoardPage extends Subscribable implements OnInit {
   @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
 
   protected type!: CardsType;
-  protected meta!: SwapiMeta;
   protected pagesTotal!: number;
   protected gameCards$!: Observable<SwapiStarshipDto[] | SwapiPersonDto[]>;
   protected selectedCard!: SwapiPerson | SwapiStarship | undefined;
   protected players!: PlayersState;
-  protected winner!: WinnerState;
   protected nextTurn!: PlayerPosition;
 
   protected gameBoardFacade = inject(GameBoardFacade);
@@ -101,14 +106,14 @@ export class GameBoardPage extends Subscribable implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
-    this.subs.push(
-      this.subscribeToPlayers(),
-      this.subscribeToSelectedCards(),
-      this.subscribeToCardType(),
-      this.subscribeToNextTurn(),
-      this.subscribeToWinner(),
-      this.subscribeToMetaData()
-    );
+    this.setupGameSubscriptions();
+  }
+
+  private setupGameSubscriptions(): void {
+    this.subscribeToPlayers();
+    this.subscribeToCardType();
+    this.subscribeToSelectedCards();
+    this.subscribeToBoardData();
   }
 
   private subscribeToPlayers(): Subscription {
@@ -117,57 +122,59 @@ export class GameBoardPage extends Subscribable implements OnInit {
     });
   }
 
-  private subscribeToSelectedCards(): Subscription {
-    return this.gameBoardFacade.selectedCards$
-      .pipe(distinctUntilChanged())
-      .subscribe((selectedCards) => {
-        if (selectedCards?.size === 1) {
-          this.selectedCard = selectedCards.values().next().value;
-        }
-
-        if (selectedCards?.size === numberOfPlayers) {
-          const result = determineWinner(
-            this.nextTurn,
-            selectedCards,
-            this.players,
-            this.handleWinner.bind(this)
-          );
-
-          if (result === 'draw') {
-            this.handleDraw();
+  private subscribeToSelectedCards(): void {
+    this.subs.push(
+      this.gameBoardFacade.selectedCards$
+        .pipe(distinctUntilChanged())
+        .subscribe((selectedCards) => {
+          if (selectedCards?.size === 1) {
+            this.selectedCard = selectedCards.values().next().value;
           }
 
-          this.openGameResultsDialog(selectedCards);
-        }
-      });
+          if (selectedCards?.size === numberOfPlayers) {
+            const result = determineWinner(
+              this.nextTurn,
+              selectedCards,
+              this.players,
+              this.handleWinner.bind(this)
+            );
+
+            if (result === 'draw') {
+              this.handleDraw();
+            }
+
+            this.openGameResultsDialog(selectedCards);
+          }
+        })
+    );
   }
 
-  private subscribeToCardType(): Subscription {
-    return this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((type) => {
+  private subscribeToCardType(): void {
+    this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((type) => {
       this.loadCards(type);
 
       this.type = type;
     });
   }
 
-  private subscribeToNextTurn(): Subscription {
-    return this.gameBoardFacade.nextTurn$.subscribe((nextTurn) => {
-      this.nextTurn = nextTurn;
-    });
-  }
+  private subscribeToBoardData(): void {
+    this.subs.push(
+      combineLatest([
+        this.gameBoardFacade.meta$,
+        this.gameBoardFacade.nextTurn$,
+        this.gameWizardFacade.winner$,
+      ]).subscribe(([meta, nextTurn, winner]) => {
+        this.nextTurn = nextTurn;
 
-  private subscribeToWinner(): Subscription {
-    return this.gameWizardFacade.winner$.subscribe((winner) => {
-      this.winner = winner;
-    });
-  }
+        if (winner) {
+          this.gameBoardFacade.updateNextTurn(winner.position);
+        } else {
+          this.nextTurn = nextTurn;
+        }
 
-  private subscribeToMetaData(): Subscription {
-    return this.gameBoardFacade.meta$.subscribe((meta) => {
-      this.meta = meta;
-
-      this.countTotalPages(meta);
-    });
+        this.countTotalPages(meta);
+      })
+    );
   }
 
   protected loadCards(type: CardsType, url?: string): void {
@@ -222,7 +229,6 @@ export class GameBoardPage extends Subscribable implements OnInit {
 
   private playAgain(): void {
     this.gameBoardFacade.resetGameState();
-    this.gameBoardFacade.updateNextTurn(this.winner?.position);
     this.gameWizardFacade.updateWinner(null);
 
     this.router.navigateByUrl(links.wizard.cardsType);
