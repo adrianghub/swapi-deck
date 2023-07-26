@@ -1,8 +1,4 @@
-.headline {
-  margin-bottom: 32px;
-}
-
-.container {
+.wizard-layout-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +8,11 @@
   padding: 0 24px;
 }
 
-.footer {
+.wizard-layout-headline {
+  margin-bottom: 32px;
+}
+
+.wizard-layout-footer {
   display: flex;
   justify-content: space-between;
 }

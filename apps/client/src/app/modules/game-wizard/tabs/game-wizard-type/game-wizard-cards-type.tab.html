@@ -1,0 +1,33 @@
+<sdeck-game-wizard-layout
+  [headline]="'gameWizard.cardType.headline' | translate"
+  data-cy="game-cards-type-tab"
+>
+  <sdeck-select
+    [control]="cardsTypeControl"
+    [options]="cardsTypes"
+    [label]="'gameWizard.cardType.select.label' | translate"
+    data-cy="cards-type-select"
+  />
+
+  <ng-container actions>
+    <sdeck-button
+      type="primary"
+      prefixIcon="arrow-left"
+      [label]="'gameWizard.actions.previousStep' | translate"
+      (clicked)="router.navigateByUrl(links.wizard.names)"
+      [disabled]="
+      (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
+      (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
+    "
+      data-cy="previous-step-button"
+    />
+
+    <sdeck-button
+      type="primary"
+      [label]="'gameWizard.actions.startGame' | translate"
+      (clicked)="router.navigateByUrl(links.board.gameBoard)"
+      [disabled]="cardsTypeControl.invalid"
+      data-cy="start-game-button"
+    />
+  </ng-container>
+</sdeck-game-wizard-layout>

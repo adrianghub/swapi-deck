@@ -1,0 +1,11 @@
+<div class="wizard-layout-container">
+  <h2 class="semi-bold-headline-medium wizard-layout-headline">
+    {{ headline }}
+  </h2>
+
+  <ng-content />
+</div>
+
+<div class="wizard-layout-footer">
+  <ng-content select="[actions]" />
+</div>
