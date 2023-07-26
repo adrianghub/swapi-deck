@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { PlayerPosition, SwapiMeta } from '../../../shared/models/game.model';
+import { PlayerPosition } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import {
+  SwapiMeta,
   SwapiParamsType,
   SwapiPerson,
   SwapiStarship,

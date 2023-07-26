@@ -46,3 +46,10 @@ export interface SwapiBaseDto {
   edited: string;
   url: string;
 }
+
+export interface SwapiMetaDto {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  page?: number;
+}

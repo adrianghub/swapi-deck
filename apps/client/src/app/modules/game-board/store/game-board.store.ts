@@ -1,13 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, of, tap } from 'rxjs';
-import {
-  PlayerPosition,
-  SwapiMeta,
-  WinnerState,
-} from '../../../shared/models/game.model';
+import { PlayerPosition, WinnerState } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
-import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
+import { SwapiMeta, SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import {
   LoadCards,
   ResetGameBoardState,

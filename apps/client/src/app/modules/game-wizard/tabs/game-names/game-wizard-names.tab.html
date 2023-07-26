@@ -1,0 +1,50 @@
+<sdeck-game-wizard-layout [headline]="'gameWizard.names.headline' | translate">
+  <form [formGroup]="playersForm" class="input-container">
+    <sdeck-input
+      [control]="playerOne"
+      [label]="'gameWizard.names.playerOne' | translate"
+      [readonly]="isReadOnly('playerOne')"
+      (cleared)="unsetPlayerName('playerOne')"
+      [focus]="true"
+      data-cy="player-one-input"
+    ></sdeck-input>
+
+    <sdeck-input
+      [control]="playerTwo"
+      [label]="'gameWizard.names.playerTwo' | translate"
+      [readonly]="isReadOnly('playerTwo')"
+      (cleared)="unsetPlayerName('playerTwo')"
+      data-cy="player-two-input"
+    ></sdeck-input>
+  </form>
+
+  <ng-container actions>
+    <sdeck-button
+      type="primary"
+      [label]="'gameWizard.actions.mainMenu' | translate"
+      (clicked)="router.navigateByUrl('')"
+      prefixIcon="arrow-left"
+      data-cy="main-menu-button"
+    ></sdeck-button>
+
+    <sdeck-button
+      type="primary"
+      [label]="'gameWizard.actions.nextStep' | translate"
+      (clicked)="goToNextStep()"
+      suffixIcon="arrow-right"
+      [disabled]="playersForm.invalid"
+      data-cy="next-step-button"
+    ></sdeck-button>
+  </ng-container>
+
+  <p
+    *ngIf="
+    playersForm.getError('sameValues') &&
+    !playersForm.controls.playerOne.errors &&
+    !playersForm.controls.playerTwo.errors
+  "
+    class="same-values-message"
+  >
+    {{ 'misc.validationError.sameValues' | translate }}
+  </p>
+</sdeck-game-wizard-layout>

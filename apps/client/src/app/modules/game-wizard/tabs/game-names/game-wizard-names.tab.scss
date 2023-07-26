@@ -1,4 +1,10 @@
+@use '_palettes' as palettes;
+
 .input-container {
   display: flex;
   gap: 32px;
+}
+
+.same-values-message {
+  color: palettes.$error-message-color;
 }

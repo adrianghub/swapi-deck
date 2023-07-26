@@ -1,12 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscribable } from 'apps/client/src/app/core/subscribable.abstract';
 import { links } from 'apps/client/src/app/shared/constants/game.constants';
 import { take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
 import { PlayersState } from '../../store/game-wizard.store';
-import { sameValueValidator } from '../../validators/sameValue.validator';
+import { sameValueValidator } from '../../validators/sameValues.validator';
 
 export interface PlayersNamesValues {
   playerOne: FormControl<string>;
@@ -15,53 +19,12 @@ export interface PlayersNamesValues {
 
 @Component({
   selector: 'sdeck-game-names',
-  template: `
-    <sdeck-game-wizard-layout
-      [headline]="'gameWizard.names.headline' | translate"
-    >
-      <form [formGroup]="playersForm" class="input-container">
-        <sdeck-input
-          [control]="playerOne"
-          [label]="'gameWizard.names.playerOne' | translate"
-          [readonly]="isReadOnly('playerOne')"
-          (cleared)="unsetPlayerName('playerOne')"
-          [focus]="true"
-          data-cy="player-one-input"
-        ></sdeck-input>
-
-        <sdeck-input
-          [control]="playerTwo"
-          [label]="'gameWizard.names.playerTwo' | translate"
-          [readonly]="isReadOnly('playerTwo')"
-          (cleared)="unsetPlayerName('playerTwo')"
-          data-cy="player-two-input"
-        ></sdeck-input>
-      </form>
-
-      <ng-container actions>
-        <sdeck-button
-          type="primary"
-          [label]="'gameWizard.actions.mainMenu' | translate"
-          (clicked)="router.navigateByUrl('')"
-          prefixIcon="arrow-left"
-          data-cy="main-menu-button"
-        ></sdeck-button>
-
-        <sdeck-button
-          type="primary"
-          [label]="'gameWizard.actions.nextStep' | translate"
-          (clicked)="goToNextStep()"
-          suffixIcon="arrow-right"
-          [disabled]="playersForm.invalid"
-          data-cy="next-step-button"
-        ></sdeck-button>
-      </ng-container>
-    </sdeck-game-wizard-layout>
-  `,
+  templateUrl: './game-wizard-names.tab.html',
   styleUrls: ['./game-wizard-names.tab.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameWizardNamesTab extends Subscribable implements OnInit {
-  playersForm = new FormGroup<PlayersNamesValues>(
+export class GameWizardNamesTab implements OnInit {
+  protected playersForm = new FormGroup<PlayersNamesValues>(
     {
       playerOne: new FormControl('', {
         nonNullable: true,
@@ -83,38 +46,36 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     { validators: [sameValueValidator] }
   );
 
-  get playerOne() {
+  protected get playerOne() {
     return this.playersForm.controls.playerOne;
   }
 
-  get playerTwo() {
+  protected get playerTwo() {
     return this.playersForm.controls.playerTwo;
   }
 
-  readonlyFields: { [key: string]: boolean } = {
+  private readonlyFields: { [key: string]: boolean } = {
     playerOne: false,
     playerTwo: false,
   };
 
-  currentPlayers: PlayersState | undefined;
+  private currentPlayers: PlayersState | undefined;
 
   private gameWizardFacade = inject(GameWizardFacade);
   protected router = inject(Router);
 
   ngOnInit() {
-    this.subs.push(
-      this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
-        if (players?.playerOne?.name && players?.playerTwo?.name) {
-          this.playerOne.setValue(players.playerOne.name);
-          this.playerTwo.setValue(players.playerTwo.name);
+    this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
+      if (players?.playerOne?.name && players?.playerTwo?.name) {
+        this.playerOne.setValue(players.playerOne.name);
+        this.playerTwo.setValue(players.playerTwo.name);
 
-          this.currentPlayers = players;
+        this.currentPlayers = players;
 
-          this.setReadOnly('playerOne', true);
-          this.setReadOnly('playerTwo', true);
-        }
-      })
-    );
+        this.setReadOnly('playerOne', true);
+        this.setReadOnly('playerTwo', true);
+      }
+    });
   }
 
   protected goToNextStep() {
@@ -123,12 +84,12 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
         playerOne: {
           ...this.currentPlayers?.playerOne,
           name: this.playerOne.value.trim(),
-          score: 0,
+          score: this.currentPlayers?.playerOne.score || 0,
         },
         playerTwo: {
           ...this.currentPlayers?.playerTwo,
           name: this.playerTwo.value.trim(),
-          score: 0,
+          score: this.currentPlayers?.playerTwo.score || 0,
         },
       };
 
@@ -142,7 +103,10 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
     return this.readonlyFields[player];
   }
 
-  private setReadOnly(player: keyof PlayersNamesValues, value: boolean): void {
+  protected setReadOnly(
+    player: keyof PlayersNamesValues,
+    value: boolean
+  ): void {
     this.readonlyFields = {
       ...this.readonlyFields,
       [player]: value,
@@ -156,7 +120,7 @@ export class GameWizardNamesTab extends Subscribable implements OnInit {
 
     players[player] = {
       name: '',
-      score: 0,
+      score: players[player]?.score || 0,
     };
 
     this.gameWizardFacade.updatePlayers(players);

@@ -1,4 +1,4 @@
-import { SwapiPersonDto, SwapiStarshipDto } from './swapi.dto';
+import { SwapiMetaDto, SwapiPersonDto, SwapiStarshipDto } from './swapi.dto';
 
 export interface SwapiParamsType {
   type: string;
@@ -12,3 +12,5 @@ export interface SwapiStarship extends SwapiStarshipDto {
 export interface SwapiPerson extends SwapiPersonDto {
   selectedBy: string;
 }
+
+export type SwapiMeta = SwapiMetaDto;

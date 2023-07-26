@@ -20,15 +20,11 @@ import {
   links,
   numberOfPlayers,
 } from '../../../shared/constants/game.constants';
-import {
-  CardsType,
-  PlayerPosition,
-  SwapiMeta,
-} from '../../../shared/models/game.model';
+import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
 import { GameWizardFacade } from '../../game-wizard/store/game-wizard.facade';
 import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
-import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
+import { SwapiMeta, SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import { GameBoardService } from '../services/game-board.service';
 import { GameBoardFacade } from '../store/game-board.facade';
 import { determineWinner } from './game-board.utils';

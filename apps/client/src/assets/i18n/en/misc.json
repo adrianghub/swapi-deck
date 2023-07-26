@@ -11,7 +11,8 @@
     "validationError": {
       "required": "This field is required.",
       "minlength": "Minimum length is 3 characters.",
-      "maxlength": "Maximum length is 16 characters."
+      "maxlength": "Maximum length is 16 characters.",
+      "sameValues": "The values must be different."
     },
     "select": {
       "option": {
