@@ -3,7 +3,7 @@
   class="semi-bold-headline-medium header"
   data-cy="dialog-title"
 >
-  {{ data.labels.title! | translate }}
+  {{ data.labels.title | translate }}
 </h2>
 
 <div class="template" mat-dialog-content>
@@ -16,9 +16,8 @@
   <div class="buttons">
     <sdeck-button
       [mat-dialog-close]="data.result"
-      [disabled]="data.options.disabled"
       [label]="data.labels.submit | translate"
-      data-test-id="dialog-submit"
+      [disabled]="data.options.disabled"
       (clicked)="data.submitCallbackFn()"
       data-cy="dialog-submit"
     />
@@ -27,7 +26,6 @@
       color="accent"
       [mat-dialog-close]=""
       [label]="data.labels.cancel | translate"
-      data-test-id="dialog-cancel"
       (clicked)="data.cancelCallbackFn()"
       data-cy="dialog-cancel"
     />
