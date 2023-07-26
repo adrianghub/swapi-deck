@@ -14,32 +14,7 @@ import { buttonSizes, iconSizes } from './button.config';
 @Component({
   standalone: true,
   selector: 'sdeck-button',
-  template: ` <button
-    mat-button
-    class="button"
-    [ngClass]="{ active: active, 'icon-only': !label }"
-    [color]="type"
-    [style]="buttonCssVariables"
-    [disabled]="disabled"
-    (click)="onClick()"
-  >
-    <div [ngClass]="{ content: label }">
-      <i-feather
-        *ngIf="prefixIcon"
-        [name]="prefixIcon"
-        [style]="iconCssVariables"
-      />
-
-      <span>{{ label }}</span>
-
-      <i-feather
-        *ngIf="suffixIcon"
-        [name]="suffixIcon"
-        [style]="iconCssVariables"
-        class="suffix-icon"
-      />
-    </div>
-  </button>`,
+  templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIf, NgClass, MatButtonModule, IconsModule],
@@ -55,7 +30,7 @@ export class ButtonComponent {
 
   @Output() clicked = new EventEmitter<Event>();
 
-  protected get buttonCssVariables(): string {
+  get buttonCssVariables(): string {
     if (this.label) {
       return `
       --fontSize: ${buttonSizes[this.size].fontSize};
@@ -68,13 +43,13 @@ export class ButtonComponent {
     }
   }
 
-  protected get iconCssVariables(): string {
+  get iconCssVariables(): string {
     return `
       --iconWidth: ${iconSizes[this.size].iconWidth};
     `;
   }
 
-  protected onClick(): void {
+  onClick(): void {
     if (!this.disabled) {
       this.clicked.emit();
     }

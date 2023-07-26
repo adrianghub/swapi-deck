@@ -3,15 +3,12 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,39 +21,7 @@ type InputType = 'text';
 @Component({
   standalone: true,
   selector: 'sdeck-input',
-  template: `
-    <mat-form-field class="form-field" appearance="outline">
-      <mat-label>{{ label }}</mat-label>
-
-      <i-feather matPrefix *ngIf="icon" [name]="icon" class="icon"></i-feather>
-
-      <div class="wrapper">
-        <input
-          #input
-          matInput
-          [type]="type"
-          [formControl]="control"
-          [placeholder]="placeholder ?? ''"
-          [attr.aria-label]="label ?? ''"
-          [readonly]="readonly"
-        />
-
-        <sdeck-button
-          *ngIf="control.value"
-          prefixIcon="x"
-          size="small"
-          class="clear"
-          (clicked)="control.reset(); cleared.emit($event)"
-        />
-      </div>
-
-      <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-
-      <mat-error *ngIf="(control.errors | keyvalue)?.[0] as error">
-        <span>{{ 'misc.validationError.' + error.key | translate }}</span>
-      </mat-error>
-    </mat-form-field>
-  `,
+  templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -70,7 +35,7 @@ type InputType = 'text';
     IconsModule,
   ],
 })
-export class InputComponent<T> implements OnInit, AfterViewInit {
+export class InputComponent<T> implements AfterViewInit {
   @ViewChild('input') inputRef!: ElementRef;
 
   @Input() type: InputType = 'text';
@@ -82,18 +47,7 @@ export class InputComponent<T> implements OnInit, AfterViewInit {
   @Input() readonly = false;
   @Input() focus = false;
 
-  @Output() changed = new EventEmitter<T | null>();
   @Output() cleared = new EventEmitter<Event>();
-
-  constructor(private destroyRef: DestroyRef) {}
-
-  ngOnInit() {
-    this.control.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.changed.emit(value);
-      });
-  }
 
   ngAfterViewInit() {
     if (this.focus) {

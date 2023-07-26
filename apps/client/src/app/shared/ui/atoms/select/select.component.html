@@ -1,0 +1,25 @@
+<mat-form-field class="form-field" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+
+  <div class="select-container">
+    <mat-select
+      [formControl]="control"
+      [placeholder]="placeholder ?? ''"
+      [attr.aria-label]="label ?? ''"
+    >
+      <mat-option
+        *ngFor="let option of options"
+        [value]="option"
+        [attr.data-cy]="'select-option-' + option"
+      >
+        {{ 'misc.select.option.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </div>
+
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
+  <mat-error *ngIf="(control.errors | keyvalue)?.[0] as error">
+    <span>{{ 'misc.validationError.' + error.key | translate }}</span>
+  </mat-error>
+</mat-form-field>

@@ -1,5 +1,10 @@
 import { NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, Inject, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  TemplateRef,
+} from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,6 +40,7 @@ export interface DialogData<I, R> {
     NgIf,
     NgTemplateOutlet,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogComponent<I, R> {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData<I, R>) {}

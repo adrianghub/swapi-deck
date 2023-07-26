@@ -13,8 +13,8 @@ export const numberOfPlayers = 2;
 export const links = {
   base: '/',
   wizard: {
-    cardsType: '/wizard/cards-type',
-    names: '/wizard/names',
+    cardsType: '/game-wizard/cards-type',
+    names: '/game-wizard/names',
   },
   board: {
     gameBoard: '/game-board',

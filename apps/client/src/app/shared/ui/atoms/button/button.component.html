@@ -1,0 +1,26 @@
+<button
+  mat-button
+  class="button"
+  [ngClass]="{ active: active, 'icon-only': !label }"
+  [color]="type"
+  [style]="buttonCssVariables"
+  [disabled]="disabled"
+  (click)="onClick()"
+>
+  <div [ngClass]="{ content: label }">
+    <i-feather
+      *ngIf="prefixIcon"
+      [name]="prefixIcon"
+      [style]="iconCssVariables"
+    />
+
+    <span>{{ label }}</span>
+
+    <i-feather
+      *ngIf="suffixIcon"
+      [name]="suffixIcon"
+      [style]="iconCssVariables"
+      class="suffix-icon"
+    />
+  </div>
+</button>

@@ -1,0 +1,31 @@
+<mat-form-field class="form-field" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+
+  <i-feather matPrefix *ngIf="icon" [name]="icon" class="icon"></i-feather>
+
+  <div class="input-container">
+    <input
+      #input
+      matInput
+      [type]="type"
+      [formControl]="control"
+      [placeholder]="placeholder ?? ''"
+      [attr.aria-label]="label ?? ''"
+      [readonly]="readonly"
+    />
+
+    <sdeck-button
+      *ngIf="control.value"
+      prefixIcon="x"
+      size="small"
+      class="clear"
+      (clicked)="control.reset(); cleared.emit($event)"
+    />
+  </div>
+
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
+  <mat-error *ngIf="(control.errors | keyvalue)?.[0] as error">
+    <span>{{ 'misc.validationError.' + error.key | translate }}</span>
+  </mat-error>
+</mat-form-field>

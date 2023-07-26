@@ -12,7 +12,7 @@ export const appRoutes: Route[] = [
         component: MainMenuPage,
       },
       {
-        path: 'wizard',
+        path: 'game-wizard',
         loadChildren: () =>
           import('./modules/game-wizard/game-wizard.module').then(
             (m) => m.GameWizardModule
