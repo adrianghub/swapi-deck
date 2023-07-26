@@ -4,8 +4,6 @@ describe('GameFlowFullSuccessPath', () => {
   });
 
   it('should display the slogan', () => {
-    cy.visit('/');
-
     cy.get('.regular-title-medium.slogan').should(
       'contain',
       'May the Cards Be with You!'
@@ -15,7 +13,7 @@ describe('GameFlowFullSuccessPath', () => {
   it('should navigate to player name input page and verify input validation', () => {
     cy.getBySel('new-game-button').should('contain', 'New game').click();
 
-    cy.url().should('include', '/wizard/names');
+    cy.url().should('include', '/game-wizard/names');
 
     cy.getBySel('game-cards-type-tab-link').should(
       'have.class',
@@ -58,7 +56,7 @@ describe('GameFlowFullSuccessPath', () => {
 
     cy.getBySel('next-step-button').click();
 
-    cy.url().should('include', '/wizard/cards-type');
+    cy.url().should('include', '/game-wizard/cards-type');
 
     cy.getBySel('game-cards-type-tab-link').should(
       'not.have.class',
