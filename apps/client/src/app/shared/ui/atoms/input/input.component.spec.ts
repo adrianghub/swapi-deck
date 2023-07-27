@@ -63,7 +63,7 @@ describe('InputComponent', () => {
   });
 
   it('should have no focus by default', () => {
-    expect(component.focus).toBeFalsy();
+    expect(component.autofocus).toBeFalsy();
   });
 
   it('should have text type', () => {

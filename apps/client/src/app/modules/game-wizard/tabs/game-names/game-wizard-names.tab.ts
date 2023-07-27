@@ -6,13 +6,16 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { links } from 'apps/client/src/app/shared/constants/game.constants';
-import { take } from 'rxjs';
+import {
+  links,
+  playerMaxNameLength,
+  playerMinNameLength,
+} from 'apps/client/src/app/shared/constants/game.constants';
+import { Observable, map, take } from 'rxjs';
 import { GameWizardFacade } from '../../store/game-wizard.facade';
-import { PlayersState } from '../../store/game-wizard.store';
 import { sameValueValidator } from '../../validators/sameValues.validator';
 
-export interface PlayersNamesValues {
+interface PlayersNamesValues {
   playerOne: FormControl<string>;
   playerTwo: FormControl<string>;
 }
@@ -24,105 +27,76 @@ export interface PlayersNamesValues {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameWizardNamesTab implements OnInit {
-  protected playersForm = new FormGroup<PlayersNamesValues>(
+  public playersForm = new FormGroup<PlayersNamesValues>(
     {
       playerOne: new FormControl('', {
         nonNullable: true,
         validators: [
           Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(16),
+          Validators.minLength(playerMinNameLength),
+          Validators.maxLength(playerMaxNameLength),
         ],
       }),
       playerTwo: new FormControl('', {
         nonNullable: true,
         validators: [
           Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(16),
+          Validators.minLength(playerMinNameLength),
+          Validators.maxLength(playerMaxNameLength),
         ],
       }),
     },
     { validators: [sameValueValidator] }
   );
 
-  protected get playerOne() {
+  public get playerOne() {
     return this.playersForm.controls.playerOne;
   }
 
-  protected get playerTwo() {
+  public get playerTwo() {
     return this.playersForm.controls.playerTwo;
   }
 
-  private readonlyFields: { [key: string]: boolean } = {
-    playerOne: false,
-    playerTwo: false,
-  };
+  protected gameWizardFacade = inject(GameWizardFacade);
+  public router = inject(Router);
 
-  private currentPlayers: PlayersState | undefined;
-
-  private gameWizardFacade = inject(GameWizardFacade);
-  protected router = inject(Router);
+  players$!: Observable<{ playerOne: string; playerTwo: string } | undefined>;
 
   ngOnInit() {
-    this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
-      if (players?.playerOne?.name && players?.playerTwo?.name) {
-        this.playerOne.setValue(players.playerOne.name);
-        this.playerTwo.setValue(players.playerTwo.name);
+    this.players$ = this.gameWizardFacade.players$.pipe(
+      take(1),
+      map((players) => ({
+        playerOne: players?.playerOne?.name || '',
+        playerTwo: players?.playerTwo?.name || '',
+      }))
+    );
 
-        this.currentPlayers = players;
+    this.setInitialControlsValues();
+  }
 
-        this.setReadOnly('playerOne', true);
-        this.setReadOnly('playerTwo', true);
+  setInitialControlsValues() {
+    this.players$.subscribe((players) => {
+      if (players?.playerOne && players?.playerTwo) {
+        this.playerOne.setValue(players.playerOne);
+        this.playerTwo.setValue(players.playerTwo);
       }
     });
   }
 
-  protected goToNextStep() {
-    if (!this.playersForm.invalid) {
-      const players: PlayersState = {
-        playerOne: {
-          ...this.currentPlayers?.playerOne,
-          name: this.playerOne.value.trim(),
-          score: this.currentPlayers?.playerOne.score || 0,
-        },
-        playerTwo: {
-          ...this.currentPlayers?.playerTwo,
-          name: this.playerTwo.value.trim(),
-          score: this.currentPlayers?.playerTwo.score || 0,
-        },
-      };
+  goToNextStep() {
+    this.gameWizardFacade.updatePlayerName(
+      'playerOne',
+      this.playerOne.value.trim()
+    );
+    this.gameWizardFacade.updatePlayerName(
+      'playerTwo',
+      this.playerTwo.value.trim()
+    );
 
-      this.gameWizardFacade.updatePlayers(players);
-
-      this.router.navigateByUrl(links.wizard.cardsType);
-    }
-  }
-
-  protected isReadOnly(player: keyof PlayersNamesValues): boolean {
-    return this.readonlyFields[player];
-  }
-
-  protected setReadOnly(
-    player: keyof PlayersNamesValues,
-    value: boolean
-  ): void {
-    this.readonlyFields = {
-      ...this.readonlyFields,
-      [player]: value,
-    };
+    this.router.navigateByUrl(links.wizard.cardsType);
   }
 
   protected unsetPlayerName(player: keyof PlayersNamesValues) {
-    this.setReadOnly(player, false);
-
-    const players = {} as PlayersState;
-
-    players[player] = {
-      name: '',
-      score: players[player]?.score || 0,
-    };
-
-    this.gameWizardFacade.updatePlayers(players);
+    this.gameWizardFacade.updatePlayerName(player, '');
   }
 }

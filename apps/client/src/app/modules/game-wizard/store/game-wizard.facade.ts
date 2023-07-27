@@ -8,8 +8,8 @@ import {
 } from '../../../shared/models/game.model';
 import {
   UpdateCardsType,
+  UpdatePlayerName,
   UpdatePlayerScore,
-  UpdatePlayers,
   UpdateWinner,
 } from './game-wizard.actions';
 import { GameWizardState, PlayersState } from './game-wizard.store';
@@ -22,8 +22,8 @@ export class GameWizardFacade {
   @Select(GameWizardState.cardsType) cardsType$!: Observable<CardsType>;
   @Select(GameWizardState.winner) winner$!: Observable<WinnerState>;
 
-  updatePlayers(players: PlayersState): void {
-    this.store.dispatch(new UpdatePlayers(players));
+  updatePlayerName(playerPosition: PlayerPosition, name: string): void {
+    this.store.dispatch(new UpdatePlayerName(playerPosition, name));
   }
 
   updateCardsType(cardsType: CardsType): void {

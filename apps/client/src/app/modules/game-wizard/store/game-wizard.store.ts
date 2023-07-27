@@ -7,8 +7,8 @@ import {
 } from '../../game-board/store/game-board.store';
 import {
   UpdateCardsType,
+  UpdatePlayerName,
   UpdatePlayerScore,
-  UpdatePlayers,
   UpdateWinner,
 } from './game-wizard.actions';
 
@@ -62,13 +62,19 @@ export class GameWizardState {
     return state.winner;
   }
 
-  @Action(UpdatePlayers)
-  updatePlayersNames(
+  @Action(UpdatePlayerName)
+  updatePlayerName(
     ctx: StateContext<GameWizardModel>,
-    { players }: UpdatePlayers
+    { playerPosition, name }: UpdatePlayerName
   ) {
     ctx.patchState({
-      players,
+      players: {
+        ...ctx.getState().players,
+        [playerPosition]: {
+          ...ctx.getState().players[playerPosition],
+          name,
+        },
+      },
     });
   }
 

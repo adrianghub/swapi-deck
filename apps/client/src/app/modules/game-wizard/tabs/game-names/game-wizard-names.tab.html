@@ -4,7 +4,7 @@
       <sdeck-input
         [control]="playerOne"
         [label]="'gameWizard.names.playerOne' | translate"
-        [readonly]="isReadOnly('playerOne')"
+        [readonly]="!!(players$ | async)?.playerOne"
         [autofocus]="true"
         (cleared)="unsetPlayerName('playerOne')"
         data-cy="player-one-input"
@@ -13,20 +13,13 @@
       <sdeck-input
         [control]="playerTwo"
         [label]="'gameWizard.names.playerTwo' | translate"
-        [readonly]="isReadOnly('playerTwo')"
+        [readonly]="!!(players$ | async)?.playerTwo"
         (cleared)="unsetPlayerName('playerTwo')"
         data-cy="player-two-input"
       ></sdeck-input>
     </div>
 
-    <p
-      *ngIf="
-playersForm.getError('sameValues') &&
-!playersForm.controls.playerOne.errors &&
-!playersForm.controls.playerTwo.errors
-"
-      class="same-values-message"
-    >
+    <p *ngIf="playersForm.getError('sameValues')" class="same-values-message">
       {{ 'misc.validationError.sameValues' | translate }}
     </p>
   </form>
@@ -35,7 +28,7 @@ playersForm.getError('sameValues') &&
     <sdeck-button
       type="primary"
       [label]="'gameWizard.actions.mainMenu' | translate"
-      (clicked)="router.navigateByUrl('')"
+      (clicked)="router.navigateByUrl('/')"
       prefixIcon="arrow-left"
       data-cy="main-menu-button"
     ></sdeck-button>

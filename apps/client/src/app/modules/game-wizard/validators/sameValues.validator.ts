@@ -6,7 +6,7 @@ export function sameValueValidator(
   const playerOneValue = control.get('playerOne')?.value;
   const playerTwoValue = control.get('playerTwo')?.value;
 
-  if (playerOneValue === '' && playerTwoValue === '') {
+  if (playerOneValue?.length < 3 && playerTwoValue?.length < 3) {
     return null;
   }
 

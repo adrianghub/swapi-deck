@@ -3,12 +3,11 @@ import {
   PlayerPosition,
   WinnerState,
 } from '../../../shared/models/game.model';
-import { PlayersState } from './game-wizard.store';
 
-export class UpdatePlayers {
-  static readonly type = '[Game Wizard] Update Players';
+export class UpdatePlayerName {
+  static readonly type = '[Game Wizard] Update Player Name';
 
-  constructor(public players: PlayersState) {}
+  constructor(public playerPosition: PlayerPosition, public name: string) {}
 }
 
 export class UpdateCardsType {

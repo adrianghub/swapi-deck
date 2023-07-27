@@ -10,6 +10,9 @@ export const itemsPerPage = 10;
 
 export const numberOfPlayers = 2;
 
+export const playerMinNameLength = 3;
+export const playerMaxNameLength = 16;
+
 export const links = {
   base: '/',
   wizard: {
