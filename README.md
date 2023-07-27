@@ -1,5 +1,7 @@
 # SWAPI Deck - Assignment
 
+This project is built to showcase a sample of my Angular skills for developing real-world applications, featuring NGXS for state management, Jest for unit/integration tests, and Cypress for end-to-end tests. Expands as I'm expanding my knowledge within the frontend area.
+
 #### Project idea prototype
 
 
