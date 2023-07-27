@@ -5,6 +5,11 @@
   gap: 32px;
 }
 
+.names-form {
+  position: relative;
+}
+
 .same-values-message {
+  position: absolute;
   color: palettes.$error-message-color;
 }

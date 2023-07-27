@@ -1,6 +1,5 @@
 import { KeyValuePipe, NgIf } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -35,9 +34,7 @@ type InputType = 'text';
     IconsModule,
   ],
 })
-export class InputComponent<T> implements AfterViewInit {
-  @ViewChild('input') inputRef!: ElementRef;
-
+export class InputComponent<T> {
   @Input() type: InputType = 'text';
   @Input({ required: true }) control!: FormControl<T | null>;
   @Input() label?: string;
@@ -45,15 +42,14 @@ export class InputComponent<T> implements AfterViewInit {
   @Input() placeholder?: string;
   @Input() hint?: string;
   @Input() readonly = false;
-  @Input() focus = false;
+  @Input() autofocus = false;
 
   @Output() cleared = new EventEmitter<Event>();
 
-  ngAfterViewInit() {
-    if (this.focus) {
-      setTimeout(() => {
-        this.inputRef.nativeElement.focus();
-      }, 0);
+  @ViewChild('input', { static: false })
+  set input(element: ElementRef<HTMLInputElement>) {
+    if (element && this.autofocus) {
+      element.nativeElement.focus();
     }
   }
 }
