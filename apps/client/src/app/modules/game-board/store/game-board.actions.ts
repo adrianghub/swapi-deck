@@ -3,13 +3,9 @@ import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiParamsType } from '../models/swapi.model';
 
 export class LoadCards {
-  static readonly type = '[Game Board] Load People Cards';
+  static readonly type = '[Game Board] Load Cards';
 
   constructor(public params: SwapiParamsType) {}
-}
-
-export class LoadStarshipsCards {
-  static readonly type = '[Game Board] Load Starships Cards';
 }
 
 export class UpdateSelectedCards {

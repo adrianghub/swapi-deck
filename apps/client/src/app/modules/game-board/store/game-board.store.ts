@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { catchError, of, tap } from 'rxjs';
+import { catchError, tap } from 'rxjs';
 import { PlayerPosition, WinnerState } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiMeta, SwapiPerson, SwapiStarship } from '../models/swapi.model';
@@ -79,33 +79,33 @@ export class GameBoardState {
 
   @Action(LoadCards)
   loadCards(ctx: StateContext<GameBoardModel>, action: LoadCards) {
+    const { type, url } = action.params;
+    const page = url ? parseInt(url.split('page=')[1]) : 1;
+    const cardsKey = type === 'people' ? 'peopleCards' : 'starshipsCards';
+    const existingData = ctx.getState()[cardsKey];
+
+    if (existingData && !url) {
+      ctx.patchState({ loading: false });
+      return;
+    }
+
     ctx.patchState({ loading: true });
 
-    const { url, type } = action.params;
-    const page = url ? parseInt(url.split('page=')[1]) : 1;
-
-    return this.gameBoardRepository.getSwapiData(action.params).pipe(
+    return this.gameBoardRepository.getSwapiData({ type, url }).pipe(
       tap((res) => {
-        const newState: Partial<GameBoardModel> = {
+        ctx.patchState({
           meta: { ...res, page },
           loading: false,
-        };
-
-        if (type === 'people') {
-          newState.peopleCards = res.results as SwapiPersonDto[];
-        } else if (type === 'starships') {
-          newState.starshipsCards = res.results as SwapiStarshipDto[];
-        }
-
-        ctx.patchState(newState);
+          [cardsKey]: res.results,
+        });
       }),
       catchError((error) => {
         console.error(error);
         ctx.patchState({
           loading: false,
-          errorMessage: 'LOAD_CARDS_ERROR',
+          errorMessage: `LOAD_${type.toUpperCase()}_CARDS_ERROR`,
         });
-        return of([]);
+        return [];
       })
     );
   }
