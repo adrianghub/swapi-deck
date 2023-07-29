@@ -25,15 +25,24 @@ export class GameBoardFacade {
     SwapiPersonDto[]
   >;
 
-  @Select(GameBoardState.starshipsCards) starshipsCards$!: Observable<
-    SwapiStarshipDto[]
-  >;
+  @Select(GameBoardState.starshipsCards)
+  starshipsCards$!: Observable<SwapiStarshipDto[]>;
 
   @Select(GameBoardState.loading) loading$!: Observable<boolean>;
 
   @Select(GameBoardState.errorMessage) errorMessage$!: Observable<string>;
 
-  @Select(GameBoardState.meta) meta$!: Observable<SwapiMeta>;
+  @Select(GameBoardState.paginationData)
+  paginationData$!: Observable<SwapiMeta>;
+
+  @Select(GameBoardState.cardsTotal)
+  cardsTotal$!: Observable<number>;
+
+  @Select(GameBoardState.pagesTotal)
+  pagesTotal$!: Observable<number>;
+
+  @Select(GameBoardState.currentPage)
+  currentPage$!: Observable<number>;
 
   @Select(GameBoardState.selectedCards) selectedCards$!: Observable<
     Map<string, SwapiPerson | SwapiStarship>

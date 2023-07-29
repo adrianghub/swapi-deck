@@ -69,9 +69,9 @@ export class GameWizardState {
   ) {
     ctx.patchState({
       players: {
-        ...ctx.getState().players,
+        ...ctx.getState()?.players,
         [playerPosition]: {
-          ...ctx.getState().players[playerPosition],
+          ...ctx.getState()?.players[playerPosition],
           name,
         },
       },

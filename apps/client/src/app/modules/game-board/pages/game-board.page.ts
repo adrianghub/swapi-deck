@@ -7,16 +7,9 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {
-  Observable,
-  Subscription,
-  combineLatest,
-  distinctUntilChanged,
-  take,
-} from 'rxjs';
+import { Observable, combineLatest, distinctUntilChanged, take } from 'rxjs';
 import { Subscribable } from '../../../core/subscribable.abstract';
 import {
-  itemsPerPage,
   links,
   numberOfPlayers,
 } from '../../../shared/constants/game.constants';
@@ -24,7 +17,7 @@ import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
 import { GameWizardFacade } from '../../game-wizard/store/game-wizard.facade';
 import { PlayersState } from '../../game-wizard/store/game-wizard.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
-import { SwapiMeta, SwapiPerson, SwapiStarship } from '../models/swapi.model';
+import { SwapiPerson, SwapiStarship } from '../models/swapi.model';
 import { GameBoardService } from '../services/game-board.service';
 import { GameBoardFacade } from '../store/game-board.facade';
 import { determineWinner } from './game-board.utils';
@@ -36,35 +29,40 @@ import { determineWinner } from './game-board.utils';
       <!-- Cards Board Section -->
       <div class="main-content">
         <div class="cards-board">
-          <ng-container *ngIf="gameBoardFacade.errorMessage$ | async as error">
+          <ng-container
+            *ngIf="gameBoardFacade.errorMessage$ | async as error; else content"
+          >
             <p
               class="regular-title-large error-message"
               [innerHTML]="'misc.errors.' + error | translate | highlight"
             ></p>
           </ng-container>
 
-          <h1 *ngIf="type" class="regular-headline-medium headline">
-            {{ 'gameBoard.cards.type.' + type | translate }}
-            <span *ngIf="(gameBoardFacade.meta$ | async)?.count as count"
-              >({{ count }})</span
-            >
-          </h1>
+          <ng-template #content>
+            <h1 *ngIf="type" class="regular-headline-medium headline">
+              {{ 'gameBoard.cards.type.' + type | translate }}
+              <span *ngIf="gameBoardFacade.cardsTotal$ | async as cardsTotal"
+                >({{ cardsTotal }})</span
+              >
+            </h1>
 
-          <sdeck-cards
-            [cards$]="gameCards$"
-            [loading$]="gameBoardFacade.loading$"
-            [type]="type"
-            [selectedCards$]="gameBoardFacade.selectedCards$"
-            (selected)="updateGameStatus($event)"
-            class="game-cards"
-            data-cy="game-cards"
-          />
+            <sdeck-cards
+              [cards$]="gameCards$"
+              [loading$]="gameBoardFacade.loading$"
+              [type]="type"
+              [selectedCards$]="gameBoardFacade.selectedCards$"
+              (selected)="updateGameStatus($event)"
+              class="game-cards"
+              data-cy="game-cards"
+            />
+          </ng-template>
         </div>
 
         <sdeck-cards-pagination
           [loading$]="gameBoardFacade.loading$"
-          [meta$]="gameBoardFacade.meta$"
-          [pagesTotal]="pagesTotal"
+          [meta$]="gameBoardFacade.paginationData$"
+          [pagesTotal$]="gameBoardFacade.pagesTotal$"
+          [currentPage$]="gameBoardFacade.currentPage$"
           (pageChanged)="loadCards(type, $event)"
         />
       </div>
@@ -74,7 +72,7 @@ import { determineWinner } from './game-board.utils';
         <sdeck-cards-aside
           [nextTurn]="nextTurn"
           [players]="players"
-          [selectedCard]="selectedCard"
+          [selectedCards$]="gameBoardFacade.selectedCards$"
         />
       </div>
     </div>
@@ -106,16 +104,42 @@ export class GameBoardPage extends Subscribable implements OnInit {
   }
 
   private setupGameSubscriptions(): void {
-    this.subscribeToPlayers();
-    this.subscribeToCardType();
-    this.subscribeToSelectedCards();
+    this.subscribeToWizardData();
     this.subscribeToBoardData();
+    this.subscribeToSelectedCards();
   }
 
-  private subscribeToPlayers(): Subscription {
-    return this.gameWizardFacade.players$.pipe(take(1)).subscribe((players) => {
-      this.players = players;
-    });
+  private subscribeToWizardData(): void {
+    this.subs.push(
+      combineLatest([
+        this.gameWizardFacade.players$,
+        this.gameWizardFacade.cardsType$,
+      ])
+        .pipe(take(1))
+        .subscribe(([players, cardsType]) => {
+          this.players = players;
+          this.type = cardsType;
+
+          this.loadCards(cardsType);
+        })
+    );
+  }
+
+  private subscribeToBoardData(): void {
+    this.subs.push(
+      combineLatest([
+        this.gameBoardFacade.nextTurn$,
+        this.gameWizardFacade.winner$,
+      ]).subscribe(([nextTurn, winner]) => {
+        this.nextTurn = nextTurn;
+
+        if (winner) {
+          this.gameBoardFacade.updateNextTurn(winner.position);
+        } else {
+          this.nextTurn = nextTurn;
+        }
+      })
+    );
   }
 
   private subscribeToSelectedCards(): void {
@@ -123,10 +147,6 @@ export class GameBoardPage extends Subscribable implements OnInit {
       this.gameBoardFacade.selectedCards$
         .pipe(distinctUntilChanged())
         .subscribe((selectedCards) => {
-          if (selectedCards?.size === 1) {
-            this.selectedCard = selectedCards.values().next().value;
-          }
-
           if (selectedCards?.size === numberOfPlayers) {
             const result = determineWinner(
               this.nextTurn,
@@ -142,34 +162,6 @@ export class GameBoardPage extends Subscribable implements OnInit {
             this.openGameResultsDialog(selectedCards);
           }
         })
-    );
-  }
-
-  private subscribeToCardType(): void {
-    this.gameWizardFacade.cardsType$.pipe(take(1)).subscribe((type) => {
-      this.loadCards(type);
-
-      this.type = type;
-    });
-  }
-
-  private subscribeToBoardData(): void {
-    this.subs.push(
-      combineLatest([
-        this.gameBoardFacade.meta$,
-        this.gameBoardFacade.nextTurn$,
-        this.gameWizardFacade.winner$,
-      ]).subscribe(([meta, nextTurn, winner]) => {
-        this.nextTurn = nextTurn;
-
-        if (winner) {
-          this.gameBoardFacade.updateNextTurn(winner.position);
-        } else {
-          this.nextTurn = nextTurn;
-        }
-
-        this.countTotalPages(meta);
-      })
     );
   }
 
@@ -218,7 +210,6 @@ export class GameBoardPage extends Subscribable implements OnInit {
 
   private handleDraw() {
     this.gameWizardFacade.updateWinner(null);
-
     this.gameWizardFacade.updatePlayerScore('playerOne');
     this.gameWizardFacade.updatePlayerScore('playerTwo');
   }
@@ -235,9 +226,5 @@ export class GameBoardPage extends Subscribable implements OnInit {
     this.gameBoardFacade.resetGameState();
 
     this.router.navigateByUrl(links.base);
-  }
-
-  private countTotalPages(meta: SwapiMeta) {
-    this.pagesTotal = Math.ceil(meta?.count / itemsPerPage);
   }
 }

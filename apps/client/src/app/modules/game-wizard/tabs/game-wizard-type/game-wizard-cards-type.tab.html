@@ -25,7 +25,7 @@
     <sdeck-button
       type="primary"
       [label]="'gameWizard.actions.startGame' | translate"
-      (clicked)="router.navigateByUrl(links.board.gameBoard)"
+      (clicked)="navigateToNextStep()"
       [disabled]="cardsTypeControl.invalid"
       data-cy="start-game-button"
     />

@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { SwapiMeta } from '../../models/swapi.model';
 
@@ -13,8 +19,11 @@ import { SwapiMeta } from '../../models/swapi.model';
         prefixIcon="arrow-left"
       />
 
-      <p class="regular-body-large" *ngIf="meta?.page">
-        {{ meta!.page }} of {{ pagesTotal }}
+      <p
+        *ngIf="(currentPage$ | async) && (pagesTotal$ | async)"
+        class="regular-body-large"
+      >
+        {{ currentPage$ | async }} of {{ pagesTotal$ | async }}
       </p>
 
       <sdeck-button
@@ -26,11 +35,14 @@ import { SwapiMeta } from '../../models/swapi.model';
     </ng-container>
   `,
   styleUrls: ['./cards-pagination.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsPaginationComponent {
   @Input() meta$!: Observable<SwapiMeta | undefined>;
-  @Input() pagesTotal: number | undefined;
-  @Input() loading$!: Observable<boolean>;
+  @Input() pagesTotal$!: Observable<number | undefined>;
+  @Input() currentPage$!: Observable<number | undefined>;
+  @Input() loading$!: Observable<boolean | undefined>;
+  @Input() error$!: Observable<string | undefined>;
 
   @Output() pageChanged = new EventEmitter<string>();
 

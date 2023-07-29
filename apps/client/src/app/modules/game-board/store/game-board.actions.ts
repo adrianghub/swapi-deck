@@ -1,4 +1,4 @@
-import { PlayerPosition } from '../../../shared/models/game.model';
+import { CardsType, PlayerPosition } from '../../../shared/models/game.model';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiParamsType } from '../models/swapi.model';
 
@@ -21,6 +21,12 @@ export class UpdateNextTurn {
   static readonly type = '[Game Board] Update Next Turn';
 
   constructor(public nextTurn: PlayerPosition) {}
+}
+
+export class UpdateCardsType {
+  static readonly type = '[Game Board] Update Cards Type';
+
+  constructor(public cardsType: CardsType) {}
 }
 
 export class ResetGameBoardState {

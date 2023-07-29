@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PlayerPosition } from 'apps/client/src/app/shared/models/game.model';
+import { Observable } from 'rxjs';
 import { PlayersState } from '../../../game-wizard/store/game-wizard.store';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
@@ -21,7 +22,12 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
     ></p>
 
     <div class="selected-card-wrapper">
-      <ng-container *ngIf="selectedCard; else noCardSelected">
+      <ng-container
+        *ngIf="
+          (selectedCards$ | async)?.values()?.next()?.value as selectedCard;
+          else noCardSelected
+        "
+      >
         <h3 class="regular-headline-small selected-card-header">
           {{ 'gameBoard.aside.selectedBy' | translate }}
           <span class="highlight-text">{{ selectedCard.selectedBy }}</span>
@@ -46,5 +52,7 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 export class CardsAsideSection {
   @Input() nextTurn!: PlayerPosition;
   @Input() players!: PlayersState | undefined;
-  @Input() selectedCard!: SwapiPerson | SwapiStarship | undefined;
+  @Input({ required: true }) selectedCards$!: Observable<
+    Map<string, SwapiPerson | SwapiStarship>
+  >;
 }

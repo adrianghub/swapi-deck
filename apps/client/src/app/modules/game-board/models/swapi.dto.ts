@@ -48,7 +48,6 @@ export interface SwapiBaseDto {
 }
 
 export interface SwapiMetaDto {
-  count: number;
   next: string | null;
   previous: string | null;
   page?: number;

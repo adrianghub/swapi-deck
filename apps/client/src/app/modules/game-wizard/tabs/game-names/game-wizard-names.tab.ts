@@ -86,11 +86,11 @@ export class GameWizardNamesTab implements OnInit {
   goToNextStep() {
     this.gameWizardFacade.updatePlayerName(
       'playerOne',
-      this.playerOne.value.trim()
+      this.playerOne?.value.trim()
     );
     this.gameWizardFacade.updatePlayerName(
       'playerTwo',
-      this.playerTwo.value.trim()
+      this.playerTwo?.value.trim()
     );
 
     this.router.navigateByUrl(links.wizard.cardsType);
