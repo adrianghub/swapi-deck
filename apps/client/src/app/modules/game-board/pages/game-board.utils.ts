@@ -1,5 +1,5 @@
 import { PlayerPosition } from '../../../shared/models/game.model';
-import { PlayersState } from '../../game-wizard/store/game-wizard.store';
+import { PlayersState } from '../../../store/game.store';
 import { SwapiPersonDto, SwapiStarshipDto } from '../models/swapi.dto';
 import { SwapiPerson } from '../models/swapi.model';
 import { SwapiStarship } from './../models/swapi.model';

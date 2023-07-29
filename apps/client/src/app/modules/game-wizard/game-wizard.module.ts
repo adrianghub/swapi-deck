@@ -14,12 +14,13 @@ import {
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
 import { SelectComponent } from '../../shared/ui/atoms/select/select.component';
+import { GameFacade } from '../../store/game.facade';
+import { GameRepository } from '../../store/game.repository';
+import { GameState } from '../../store/game.store';
 import { MatTabRouterLinkActiveDirective } from './directives/routerLinkActive.directive';
 import { gameWizardRoutes } from './game-wizard.routes';
 import { GameWizardLayout } from './layout/game-wizard/game-wizard.layout';
 import { GameWizardPage } from './pages/game-wizard.page';
-import { GameWizardFacade } from './store/game-wizard.facade';
-import { GameWizardState } from './store/game-wizard.store';
 import { GameWizardNamesTab } from './tabs/game-names/game-wizard-names.tab';
 import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-cards-type.tab';
 
@@ -33,7 +34,7 @@ import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-card
   ],
   imports: [
     CommonModule,
-    NgxsModule.forFeature([GameWizardState]),
+    NgxsModule.forFeature([GameState]),
     RouterModule.forChild(gameWizardRoutes),
     TranslateModule.forChild(configTranslateModule(['game/game-wizard'])),
     FormsModule,
@@ -45,7 +46,7 @@ import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-card
     ButtonComponent,
     SelectComponent,
   ],
-  providers: [GameWizardFacade],
+  providers: [GameFacade, GameRepository],
 })
 export class GameWizardModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {

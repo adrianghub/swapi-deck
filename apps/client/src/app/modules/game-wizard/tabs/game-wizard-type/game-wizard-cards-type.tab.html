@@ -16,8 +16,8 @@
       [label]="'gameWizard.actions.previousStep' | translate"
       (clicked)="router.navigateByUrl(links.wizard.names)"
       [disabled]="
-      (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
-      (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
+      (gameFacade.players$ | async)?.playerOne?.score! > 0 ||
+      (gameFacade.players$ | async)?.playerTwo?.score! > 0
     "
       data-cy="previous-step-button"
     />

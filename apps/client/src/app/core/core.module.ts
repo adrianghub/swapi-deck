@@ -10,8 +10,8 @@ import {
 import { MainMenuPage } from './pages/main-menu/main-menu.page';
 
 import { MatDividerModule } from '@angular/material/divider';
-import { GameWizardFacade } from '../modules/game-wizard/store/game-wizard.facade';
 import { ButtonComponent } from '../shared/ui/atoms/button/button.component';
+import { GameFacade } from '../store/game.facade';
 import { LayoutHeaderComponent } from './layouts/components/layout-header/layout-header.component';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { LayoutHeaderComponent } from './layouts/components/layout-header/layout
     ButtonComponent,
     LayoutHeaderComponent,
   ],
-  providers: [GameWizardFacade],
+  providers: [GameFacade],
 })
 export class CoreModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {

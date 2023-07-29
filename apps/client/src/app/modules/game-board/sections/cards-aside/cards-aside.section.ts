@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { PlayerPosition } from 'apps/client/src/app/shared/models/game.model';
+import { PlayersState } from 'apps/client/src/app/store/game.store';
 import { Observable } from 'rxjs';
-import { PlayersState } from '../../../game-wizard/store/game-wizard.store';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
 @Component({

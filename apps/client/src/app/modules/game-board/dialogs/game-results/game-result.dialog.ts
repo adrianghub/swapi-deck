@@ -4,7 +4,7 @@ import {
   getSwapiStarship,
 } from 'apps/client/src/app/shared/constants/game.constants';
 import { DialogData } from 'apps/client/src/app/shared/ui/organisms/dialog/dialog.component';
-import { GameWizardFacade } from '../../../game-wizard/store/game-wizard.facade';
+import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 
@@ -87,9 +87,9 @@ export class GameResultsDialog {
   @Input() data!: DialogData<SwapiPerson[] | SwapiStarship[], boolean>;
   winningAttr!: 'mass' | 'crew';
 
-  protected gameWizardFacade = inject(GameWizardFacade);
+  protected gameFacade = inject(GameFacade);
 
-  winner$ = this.gameWizardFacade.winner$;
+  winner$ = this.gameFacade.winner$;
 
   isSwapiPerson = isSwapiPerson;
   isSwapiStarship = isSwapiStarship;

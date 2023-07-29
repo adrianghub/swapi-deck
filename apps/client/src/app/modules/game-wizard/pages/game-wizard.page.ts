@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { GameWizardFacade } from './../store/game-wizard.facade';
+import { GameFacade } from '../../../store/game.facade';
 
 @Component({
   selector: 'sdeck-game-wizard-page',
@@ -12,8 +12,8 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
         routerLink="names"
         routerLinkActive
         [disabled]="
-          (gameWizardFacade.players$ | async)?.playerOne?.score! > 0 ||
-          (gameWizardFacade.players$ | async)?.playerTwo?.score! > 0
+          (gameFacade.players$ | async)?.playerOne?.score! > 0 ||
+          (gameFacade.players$ | async)?.playerTwo?.score! > 0
         "
         data-cy="game-names-tab-link"
       >
@@ -25,8 +25,8 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
         routerLink="cards-type"
         routerLinkActive
         [disabled]="
-          !(gameWizardFacade.players$ | async)?.playerOne?.name &&
-          !(gameWizardFacade.players$ | async)?.playerTwo?.name
+          !(gameFacade.players$ | async)?.playerOne?.name &&
+          !(gameFacade.players$ | async)?.playerTwo?.name
         "
         data-cy="game-cards-type-tab-link"
       >
@@ -40,5 +40,5 @@ import { GameWizardFacade } from './../store/game-wizard.facade';
   styleUrls: ['./game-wizard.page.scss'],
 })
 export class GameWizardPage {
-  protected gameWizardFacade = inject(GameWizardFacade);
+  protected gameFacade = inject(GameFacade);
 }

@@ -11,8 +11,8 @@ import {
   playerMaxNameLength,
   playerMinNameLength,
 } from 'apps/client/src/app/shared/constants/game.constants';
+import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { Observable, map, take } from 'rxjs';
-import { GameWizardFacade } from '../../store/game-wizard.facade';
 import { sameValueValidator } from '../../validators/sameValues.validator';
 
 interface PlayersNamesValues {
@@ -57,13 +57,13 @@ export class GameWizardNamesTab implements OnInit {
     return this.playersForm.controls.playerTwo;
   }
 
-  protected gameWizardFacade = inject(GameWizardFacade);
+  protected gameFacade = inject(GameFacade);
   public router = inject(Router);
 
   players$!: Observable<{ playerOne: string; playerTwo: string } | undefined>;
 
   ngOnInit() {
-    this.players$ = this.gameWizardFacade.players$.pipe(
+    this.players$ = this.gameFacade.players$.pipe(
       take(1),
       map((players) => ({
         playerOne: players?.playerOne?.name || '',
@@ -84,19 +84,13 @@ export class GameWizardNamesTab implements OnInit {
   }
 
   goToNextStep() {
-    this.gameWizardFacade.updatePlayerName(
-      'playerOne',
-      this.playerOne?.value.trim()
-    );
-    this.gameWizardFacade.updatePlayerName(
-      'playerTwo',
-      this.playerTwo?.value.trim()
-    );
+    this.gameFacade.updatePlayerName('playerOne', this.playerOne?.value.trim());
+    this.gameFacade.updatePlayerName('playerTwo', this.playerTwo?.value.trim());
 
     this.router.navigateByUrl(links.wizard.cardsType);
   }
 
   protected unsetPlayerName(player: keyof PlayersNamesValues) {
-    this.gameWizardFacade.updatePlayerName(player, '');
+    this.gameFacade.updatePlayerName(player, '');
   }
 }

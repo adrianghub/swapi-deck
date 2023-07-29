@@ -16,7 +16,9 @@ import {
 } from '../../core/module.abstract';
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
-import { GameWizardFacade } from '../game-wizard/store/game-wizard.facade';
+import { GameFacade } from '../../store/game.facade';
+import { GameRepository } from '../../store/game.repository';
+import { GameState } from '../../store/game.store';
 import { CardComponent } from './components/card/card.component';
 import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
 import { CardsSkeletonComponent } from './components/cards-skeleton/cards-skeleton.component';
@@ -28,9 +30,6 @@ import { GameBoardPage } from './pages/game-board.page';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { CardsAsideSection } from './sections/cards-aside/cards-aside.section';
 import { CardsSection } from './sections/cards/cards.section';
-import { GameBoardFacade } from './store/game-board.facade';
-import { GameBoardRepository } from './store/game-board.repository';
-import { GameBoardState } from './store/game-board.store';
 
 @NgModule({
   declarations: [
@@ -47,7 +46,7 @@ import { GameBoardState } from './store/game-board.store';
   ],
   imports: [
     CommonModule,
-    NgxsModule.forFeature([GameBoardState]),
+    NgxsModule.forFeature([GameState]),
     RouterModule.forChild(gameBoardRoutes),
     TranslateModule.forChild(configTranslateModule(['game/game-board'])),
     FormsModule,
@@ -60,7 +59,7 @@ import { GameBoardState } from './store/game-board.store';
     ButtonComponent,
     NgxSkeletonLoaderModule,
   ],
-  providers: [GameBoardRepository, GameBoardFacade, GameWizardFacade],
+  providers: [GameRepository, GameFacade],
 })
 export class GameBoardModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facade';
+import { GameFacade } from 'apps/client/src/app/store/game.facade';
 
 @Component({
   selector: 'sdeck-game-board-layout',
@@ -13,15 +13,15 @@ import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facad
           <span class="separator"></span>
 
           <p class="regular-title-large">
-            {{ (gameWizardFacade.players$ | async)?.playerOne?.name }}:
+            {{ (gameFacade.players$ | async)?.playerOne?.name }}:
             <strong>{{
-              (gameWizardFacade.players$ | async)?.playerOne?.score ?? 0
+              (gameFacade.players$ | async)?.playerOne?.score ?? 0
             }}</strong>
           </p>
           <p class="regular-title-large">
-            {{ (gameWizardFacade.players$ | async)?.playerTwo?.name }}:
+            {{ (gameFacade.players$ | async)?.playerTwo?.name }}:
             <strong>{{
-              (gameWizardFacade.players$ | async)?.playerTwo?.score ?? 0
+              (gameFacade.players$ | async)?.playerTwo?.score ?? 0
             }}</strong>
           </p>
         </div>
@@ -32,5 +32,5 @@ import { GameWizardFacade } from './../../../game-wizard/store/game-wizard.facad
   styleUrls: ['./game-board.layout.scss'],
 })
 export class GameBoardLayout {
-  protected gameWizardFacade = inject(GameWizardFacade);
+  protected gameFacade = inject(GameFacade);
 }

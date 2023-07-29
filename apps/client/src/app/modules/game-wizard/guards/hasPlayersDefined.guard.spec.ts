@@ -1,7 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { GameWizardFacade } from '../store/game-wizard.facade';
+import { GameFacade } from '../../../store/game.facade';
 import { hasPlayersDefinedGuard } from './hasPlayersDefined.guard';
 
 describe('hasPlayersDefinedGuard', () => {
@@ -24,7 +24,7 @@ describe('hasPlayersDefinedGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: GameWizardFacade,
+          provide: GameFacade,
           useValue: gameWizardMock,
         },
         {

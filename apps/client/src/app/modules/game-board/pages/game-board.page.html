@@ -1,0 +1,53 @@
+<div class="wrapper">
+  <div class="main-content">
+    <div class="cards-board">
+      <ng-container
+        *ngIf="gameFacade.errorMessage$ | async as error; else content"
+      >
+        <p
+          class="regular-title-large error-message"
+          [innerHTML]="'misc.errors.' + error | translate | highlight"
+        ></p>
+      </ng-container>
+
+      <ng-template #content>
+        <h1 *ngIf="type" class="regular-headline-medium headline">
+          {{ 'gameBoard.cards.type.' + type | translate }}
+          <span *ngIf="gameFacade.cardsTotal$ | async as cardsTotal"
+            >({{ cardsTotal }})</span
+          >
+        </h1>
+
+        <sdeck-cards
+          [cards$]="gameCards$"
+          [loading$]="gameFacade.loading$"
+          [type]="type"
+          [selectedCards$]="gameFacade.selectedCards$"
+          (selected)="updateGameStatus($event)"
+          class="game-cards"
+          data-cy="game-cards"
+        />
+      </ng-template>
+    </div>
+
+    <sdeck-cards-pagination
+      [loading$]="gameFacade.loading$"
+      [meta$]="gameFacade.paginationData$"
+      [pagesTotal$]="gameFacade.pagesTotal$"
+      [currentPage$]="gameFacade.currentPage$"
+      (pageChanged)="loadCards(type, $event)"
+    />
+  </div>
+
+  <div class="aside">
+    <sdeck-cards-aside
+      [nextTurn]="nextTurn"
+      [players]="players"
+      [selectedCards$]="gameFacade.selectedCards$"
+    />
+  </div>
+</div>
+
+<ng-template #gameResultsDialog let-data>
+  <sdeck-game-result [data]="data" data-cy="game-result-dialog" />
+</ng-template>

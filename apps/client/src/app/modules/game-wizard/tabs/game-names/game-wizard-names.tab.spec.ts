@@ -7,15 +7,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { links } from 'apps/client/src/app/shared/constants/game.constants';
 import { ButtonComponent } from 'apps/client/src/app/shared/ui/atoms/button/button.component';
 import { InputComponent } from 'apps/client/src/app/shared/ui/atoms/input/input.component';
+import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { of } from 'rxjs';
 import { GameWizardLayout } from '../../layout/game-wizard/game-wizard.layout';
-import { GameWizardFacade } from '../../store/game-wizard.facade';
 import { GameWizardNamesTab } from './game-wizard-names.tab';
 
 describe('GameWizardNamesTab', () => {
   let component: GameWizardNamesTab;
   let fixture: ComponentFixture<GameWizardNamesTab>;
-  let gameWizardFacadeMock: Partial<GameWizardFacade>;
+  let gameWizardFacadeMock: Partial<GameFacade>;
   let routerMock: Router;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('GameWizardNamesTab', () => {
       ],
       declarations: [GameWizardNamesTab, GameWizardLayout],
       providers: [
-        { provide: GameWizardFacade, useValue: gameWizardFacadeMock },
+        { provide: GameFacade, useValue: gameWizardFacadeMock },
         { provide: Router, useValue: { navigateByUrl: jest.fn() } },
       ],
     }).compileComponents();

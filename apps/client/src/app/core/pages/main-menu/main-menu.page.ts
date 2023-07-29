@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameWizardFacade } from '../../../modules/game-wizard/store/game-wizard.facade';
 import { links } from '../../../shared/constants/game.constants';
+import { GameFacade } from '../../../store/game.facade';
 
 @Component({
   selector: 'sdeck-main-menu',
@@ -16,8 +16,7 @@ import { links } from '../../../shared/constants/game.constants';
 
         <sdeck-button
           *ngIf="
-            (gameWizardFacade.players$ | async) &&
-            (gameWizardFacade.cardsType$ | async)
+            (gameFacade.players$ | async) && (gameFacade.cardsType$ | async)
           "
           [label]="'misc.mainMenu.actions.continue' | translate"
           (clicked)="router.navigateByUrl('game-board')"
@@ -35,10 +34,10 @@ import { links } from '../../../shared/constants/game.constants';
 })
 export class MainMenuPage {
   protected router = inject(Router);
-  protected gameWizardFacade = inject(GameWizardFacade);
+  protected gameFacade = inject(GameFacade);
 
   startNewGame() {
-    this.gameWizardFacade.resetWizardState();
+    this.gameFacade.resetGameState();
 
     this.router.navigateByUrl(links.wizard.names);
   }
