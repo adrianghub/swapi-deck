@@ -20,6 +20,7 @@ import {
   ResetGameBoardState,
   ResetGameState,
   UpdateCardsType,
+  UpdateMeta,
   UpdateNextTurn,
   UpdatePlayerName,
   UpdatePlayerScore,
@@ -76,6 +77,10 @@ export class GameFacade {
     playerName: string
   ): void {
     this.store.dispatch(new UpdateSelectedCards(card, playerName));
+  }
+
+  updateMeta(type: CardsType): void {
+    this.store.dispatch(new UpdateMeta(type));
   }
 
   updateNextTurn(nextTurn: PlayerPosition): void {

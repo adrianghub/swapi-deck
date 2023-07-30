@@ -30,7 +30,6 @@ import { determineWinner } from './game-board.utils';
 export class GameBoardPage extends Subscribable implements OnInit {
   @ViewChild('gameResultsDialog') gameResultsDialog!: TemplateRef<MatDialog>;
 
-  protected type!: CardsType;
   protected pagesTotal!: number;
   protected gameCards$!: Observable<SwapiStarshipDto[] | SwapiPersonDto[]>;
   protected selectedCard!: SwapiPerson | SwapiStarship | undefined;
@@ -57,7 +56,8 @@ export class GameBoardPage extends Subscribable implements OnInit {
         .pipe(take(1))
         .subscribe(([players, cardsType]) => {
           this.players = players;
-          this.type = cardsType;
+
+          this.gameFacade.updateMeta(cardsType);
 
           this.loadCards(cardsType);
         })

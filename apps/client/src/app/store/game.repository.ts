@@ -7,16 +7,14 @@ import {
   SwapiPersonDto,
   SwapiStarshipDto,
 } from '../modules/game-board/models/swapi.dto';
-import { SwapiParamsType } from '../modules/game-board/models/swapi.model';
+import { SwapiParams } from '../modules/game-board/models/swapi.model';
 
 @Injectable()
 export class GameRepository {
   getSwapiData({
     type,
     url,
-  }: SwapiParamsType): Observable<
-    SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>
-  > {
+  }: SwapiParams): Observable<SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>> {
     return this.http.get<SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>>(
       url ? url : `${environment.swapiApiUrl}/${type}`
     );

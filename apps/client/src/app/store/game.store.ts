@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State } from '@ngxs/store';
 import {
-  SwapiPersonDto,
-  SwapiStarshipDto,
-} from '../modules/game-board/models/swapi.dto';
-import {
   SwapiPerson,
   SwapiStarship,
 } from '../modules/game-board/models/swapi.model';
@@ -14,6 +10,20 @@ import {
   WinnerState,
 } from '../shared/models/game.model';
 import { GameEffects } from './game.effects';
+
+interface CardPagination {
+  next: string | null;
+  previous: string | null;
+}
+
+export interface CardData<T> {
+  [key: number]: {
+    cards: T[];
+    pagination: CardPagination;
+  };
+  count?: number | null;
+  showMeta: boolean;
+}
 
 interface PlayerState {
   name: string;
@@ -26,27 +36,9 @@ export interface PlayersState {
 }
 
 export interface GameModel {
-  peopleCardsData?: {
-    [key: number]: {
-      pagination: {
-        next: string | null;
-        previous: string | null;
-      };
-      cards: SwapiPersonDto[];
-    };
-    count: number | null;
-  };
-  starshipsCardsData?: {
-    [key: number]: {
-      pagination: {
-        next: string | null;
-        previous: string | null;
-      };
-      cards: SwapiStarshipDto[];
-    };
-  };
+  peopleCardsData?: CardData<SwapiPerson>;
+  starshipsCardsData?: CardData<SwapiStarship>;
   page: number;
-  count: number | null;
   loading: boolean;
   errorMessage?: string;
   selectedCards: Map<string, SwapiPerson | SwapiStarship>;
@@ -56,9 +48,8 @@ export interface GameModel {
   winner: WinnerState | null;
 }
 
-export const initialState = {
+export const initialState: GameModel = {
   page: 1,
-  count: null,
   loading: false,
   selectedCards: new Map(),
   nextTurn: 'playerTwo' as PlayerPosition,

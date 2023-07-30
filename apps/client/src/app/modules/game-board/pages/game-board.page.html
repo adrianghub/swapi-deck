@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" *ngIf="gameFacade.cardsType$ | async as type">
   <div class="main-content">
     <div class="cards-board">
       <ng-container
@@ -11,7 +11,7 @@
       </ng-container>
 
       <ng-template #content>
-        <h1 *ngIf="type" class="regular-headline-medium headline">
+        <h1 class="regular-headline-medium headline">
           {{ 'gameBoard.cards.type.' + type | translate }}
           <span *ngIf="gameFacade.cardsTotal$ | async as cardsTotal"
             >({{ cardsTotal }})</span

@@ -1,6 +1,10 @@
 import { Selector } from '@ngxs/store';
-import { itemsPerPage } from '../shared/constants/game.constants';
 import { GameModel, GameState } from './game.store';
+import {
+  getPagesTotal,
+  getSelectedCardData,
+  getTotalCount,
+} from './game.utils';
 
 export class GameSelectors {
   @Selector([GameState])
@@ -38,18 +42,10 @@ export class GameSelectors {
 
   @Selector([GameState])
   static paginationData(state: GameModel) {
-    if (state.peopleCardsData) {
-      return state.peopleCardsData[state.page].pagination;
-    }
-
-    if (state.starshipsCardsData) {
-      return state.starshipsCardsData[state.page].pagination;
-    }
-
-    return {
-      next: null,
-      previous: null,
-    };
+    const cardData = getSelectedCardData(state);
+    return cardData
+      ? cardData[state.page].pagination
+      : { next: null, previous: null };
   }
 
   @Selector([GameState])
@@ -63,17 +59,13 @@ export class GameSelectors {
   }
 
   @Selector([GameState])
-  static pagesTotal(state: GameModel) {
-    if (!state.count) {
-      return null;
-    }
-
-    return Math.ceil(state.count / itemsPerPage);
+  static pagesTotal(state: GameModel): number | null {
+    return getPagesTotal(state);
   }
 
   @Selector([GameState])
-  static cardsTotal(state: GameModel) {
-    return state.count;
+  static cardsTotal(state: GameModel): number | null {
+    return getTotalCount(state);
   }
 
   @Selector([GameState])

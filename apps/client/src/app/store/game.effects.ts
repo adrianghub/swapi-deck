@@ -6,6 +6,7 @@ import {
   ResetGameBoardState,
   ResetGameState,
   UpdateCardsType,
+  UpdateMeta,
   UpdateNextTurn,
   UpdatePlayerName,
   UpdatePlayerScore,
@@ -14,6 +15,7 @@ import {
 } from './game.actions';
 import { GameRepository } from './game.repository';
 import { GameModel, initialState } from './game.store';
+import { updateShowMeta } from './game.utils';
 
 @Injectable()
 export class GameEffects {
@@ -38,20 +40,23 @@ export class GameEffects {
 
     return this.gameRepository.getSwapiData({ type, url }).pipe(
       tap((res) => {
+        const cardData = {
+          cards: res.results,
+          pagination: {
+            next: res.next,
+            previous: res.previous,
+          },
+          showMeta: true,
+        };
+
         ctx.patchState({
           ...ctx.getState(),
           [cardsKey]: {
             ...ctx.getState()[cardsKey],
-            [page]: {
-              pagination: {
-                next: res.next,
-                previous: res.previous,
-              },
-              cards: res.results,
-            },
+            [page]: cardData,
+            count: res.count,
           },
           page,
-          count: res.count,
           loading: false,
         });
       }),
@@ -79,6 +84,11 @@ export class GameEffects {
     });
   }
 
+  @Action(UpdateMeta)
+  updateMeta(ctx: StateContext<GameModel>, { type }: UpdateMeta) {
+    updateShowMeta(ctx, type);
+  }
+
   @Action(UpdateNextTurn)
   updatePlayerTurn(ctx: StateContext<GameModel>, { nextTurn }: UpdateNextTurn) {
     ctx.patchState({
@@ -92,6 +102,8 @@ export class GameEffects {
       ...initialState,
       players: ctx.getState().players,
       cardsType: ctx.getState().cardsType,
+      peopleCardsData: ctx.getState().peopleCardsData,
+      starshipsCardsData: ctx.getState().starshipsCardsData,
     });
   }
 
@@ -131,39 +143,25 @@ export class GameEffects {
     ctx: StateContext<GameModel>,
     { playerPosition }: UpdatePlayerScore
   ) {
-    if (playerPosition === 'playerOne') {
-      ctx.patchState({
-        players: {
-          ...ctx.getState().players,
-          playerOne: {
-            ...ctx.getState().players.playerOne,
-            score: ++ctx.getState().players.playerOne.score,
-          },
+    const playerKey =
+      playerPosition === 'playerOne' ? 'playerOne' : 'playerTwo';
+
+    ctx.setState((state) => ({
+      ...state,
+      players: {
+        ...state.players,
+        [playerKey]: {
+          ...state.players[playerKey],
+          score: state.players[playerKey].score + 1,
         },
-      });
-    } else {
-      ctx.patchState({
-        players: {
-          ...ctx.getState().players,
-          playerTwo: {
-            ...ctx.getState().players.playerTwo,
-            score: ++ctx.getState().players.playerTwo.score,
-          },
-        },
-      });
-    }
+      },
+    }));
   }
 
   @Action(UpdateWinner)
   updateWinner(ctx: StateContext<GameModel>, { winner }: UpdateWinner) {
-    if (!winner) {
-      ctx.patchState({
-        winner: undefined,
-      });
-    } else {
-      ctx.patchState({
-        winner,
-      });
-    }
+    ctx.patchState({
+      winner,
+    });
   }
 }

@@ -23,6 +23,12 @@ export class UpdateSelectedCards {
   ) {}
 }
 
+export class UpdateMeta {
+  static readonly type = '[Game] Update Meta';
+
+  constructor(public type: CardsType) {}
+}
+
 export class UpdateNextTurn {
   static readonly type = '[Game] Update Next Turn';
 
