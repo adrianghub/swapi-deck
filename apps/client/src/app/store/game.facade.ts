@@ -1,113 +1,174 @@
-import { Injectable, inject } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { dispatch } from '@ngneat/effects';
+import { select } from '@ngneat/elf';
 import {
   SwapiPersonDto,
   SwapiStarshipDto,
 } from '../modules/game-board/models/swapi.dto';
-import {
-  SwapiMeta,
-  SwapiPerson,
-  SwapiStarship,
-} from '../modules/game-board/models/swapi.model';
 import {
   CardsType,
   PlayerPosition,
   WinnerState,
 } from '../shared/models/game.model';
 import {
-  LoadCards,
-  ResetGameBoardState,
-  ResetGameState,
-  UpdateCardsType,
-  UpdateMeta,
-  UpdateNextTurn,
-  UpdatePlayerName,
-  UpdatePlayerScore,
-  UpdateSelectedCards,
-  UpdateWinner,
+  loadCardsLoading,
+  updateMeta,
+  updateSelectedCards,
 } from './game.actions';
-import { GameSelectors } from './game.selectors';
-import { PlayersState } from './game.store';
+import { gameStore, initialState } from './game.store';
+import {
+  getPagesTotal,
+  getSelectedCardData,
+  getTotalCount,
+} from './game.utils';
 
 @Injectable()
 export class GameFacade {
-  private store = inject(Store);
+  loading$ = gameStore.pipe(select((state) => state.loading));
+  errorMessage$ = gameStore.pipe(select((state) => state.errorMessage));
+  players$ = gameStore.pipe(select((state) => state.players));
+  cardsType$ = gameStore.pipe(select((state) => state.cardsType));
+  winner$ = gameStore.pipe(select((state) => state.winner));
+  peopleCards$ = gameStore.pipe(
+    select((state) => {
+      if (!state.peopleCardsData) {
+        return [];
+      }
 
-  @Select(GameSelectors.players) players$!: Observable<PlayersState>;
-  @Select(GameSelectors.cardsType) cardsType$!: Observable<CardsType>;
-  @Select(GameSelectors.winner) winner$!: Observable<WinnerState>;
+      return state.peopleCardsData[state.page].cards;
+    })
+  );
+  starshipsCards$ = gameStore.pipe(
+    select((state) => {
+      if (!state.starshipsCardsData) {
+        return [];
+      }
 
-  @Select(GameSelectors.peopleCards) peopleCards$!: Observable<
-    SwapiPersonDto[]
-  >;
+      return state.starshipsCardsData[state.page].cards;
+    })
+  );
+  paginationData$ = gameStore.pipe(
+    select((state) => {
+      const cardData = getSelectedCardData(state);
+      return cardData
+        ? cardData[state.page]?.pagination
+        : { next: null, previous: null };
+    })
+  );
+  cardsTotal$ = gameStore.pipe(
+    select((state) => {
+      return getTotalCount(state);
+    })
+  );
+  pagesTotal$ = gameStore.pipe(
+    select((state) => {
+      return getPagesTotal(state);
+    })
+  );
+  currentPage$ = gameStore.pipe(select((state) => state.page));
+  selectedCards$ = gameStore.pipe(select((state) => state.selectedCards));
+  nextTurn$ = gameStore.pipe(select((state) => state.nextTurn));
 
-  @Select(GameSelectors.starshipsCards)
-  starshipsCards$!: Observable<SwapiStarshipDto[]>;
+  loadCards(type: CardsType | null, url?: string): void {
+    const page = url ? +url.split('page=')[1] : gameStore.state.page ?? 1;
+    const cardsKey =
+      type === 'people' ? 'peopleCardsData' : 'starshipsCardsData';
+    const existingData = gameStore.state[cardsKey];
 
-  @Select(GameSelectors.loading) loading$!: Observable<boolean>;
+    if (existingData && existingData[page]) {
+      gameStore.update((state) => ({
+        ...state,
+        page,
+      }));
 
-  @Select(GameSelectors.errorMessage) errorMessage$!: Observable<string>;
+      return;
+    }
 
-  @Select(GameSelectors.paginationData)
-  paginationData$!: Observable<SwapiMeta>;
-
-  @Select(GameSelectors.cardsTotal)
-  cardsTotal$!: Observable<number>;
-
-  @Select(GameSelectors.pagesTotal)
-  pagesTotal$!: Observable<number>;
-
-  @Select(GameSelectors.currentPage)
-  currentPage$!: Observable<number>;
-
-  @Select(GameSelectors.selectedCards) selectedCards$!: Observable<
-    Map<string, SwapiPerson | SwapiStarship>
-  >;
-
-  @Select(GameSelectors.nextTurn)
-  nextTurn$!: Observable<PlayerPosition>;
-
-  loadCards(type: CardsType, url?: string): void {
-    this.store.dispatch(new LoadCards(type, url));
+    dispatch(loadCardsLoading({ type, url, cardsKey, page }));
   }
 
   updateSelectedCards(
     card: SwapiPersonDto | SwapiStarshipDto,
     playerName: string
   ): void {
-    this.store.dispatch(new UpdateSelectedCards(card, playerName));
+    dispatch(updateSelectedCards({ card, playerName }));
   }
 
-  updateMeta(type: CardsType): void {
-    this.store.dispatch(new UpdateMeta(type));
+  updateMeta(type: CardsType | null): void {
+    dispatch(updateMeta({ type }));
   }
 
   updateNextTurn(nextTurn: PlayerPosition): void {
-    this.store.dispatch(new UpdateNextTurn(nextTurn));
-  }
-
-  resetGameState(): void {
-    this.store.dispatch(new ResetGameState());
+    gameStore.update((state) => {
+      return {
+        ...state,
+        nextTurn,
+      };
+    });
   }
 
   resetGameBoardState(): void {
-    this.store.dispatch(new ResetGameBoardState());
+    gameStore.update((state) => {
+      return {
+        ...initialState,
+        players: state.players,
+        cardsType: state.cardsType,
+        peopleCardsData: state.peopleCardsData,
+        starshipsCardsData: state.starshipsCardsData,
+      };
+    });
+  }
+
+  resetGameState(): void {
+    gameStore.reset();
   }
 
   updatePlayerName(playerPosition: PlayerPosition, name: string): void {
-    this.store.dispatch(new UpdatePlayerName(playerPosition, name));
+    gameStore.update((state) => {
+      return {
+        ...state,
+        players: {
+          ...state?.players,
+          [playerPosition]: {
+            ...state?.players[playerPosition],
+            name,
+          },
+        },
+      };
+    });
   }
 
   updateCardsType(cardsType: CardsType): void {
-    this.store.dispatch(new UpdateCardsType(cardsType));
+    gameStore.update((state) => {
+      return {
+        ...state,
+        cardsType,
+      };
+    });
   }
 
   updatePlayerScore(playerPosition: PlayerPosition): void {
-    this.store.dispatch(new UpdatePlayerScore(playerPosition));
+    const playerKey =
+      playerPosition === 'playerOne' ? 'playerOne' : 'playerTwo';
+
+    gameStore.update((state) => ({
+      ...state,
+      players: {
+        ...state.players,
+        [playerKey]: {
+          ...state.players[playerKey],
+          score: state.players[playerKey].score + 1,
+        },
+      },
+    }));
   }
 
   updateWinner(winner: WinnerState | null): void {
-    this.store.dispatch(new UpdateWinner(winner));
+    gameStore.update((state) => {
+      return {
+        ...state,
+        winner,
+      };
+    });
   }
 }

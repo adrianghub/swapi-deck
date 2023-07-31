@@ -1,68 +1,137 @@
+import { createAction } from '@ngneat/effects';
 import {
+  SwapiApiDto,
   SwapiPersonDto,
   SwapiStarshipDto,
 } from '../modules/game-board/models/swapi.dto';
-import {
-  CardsType,
-  PlayerPosition,
-  WinnerState,
-} from '../shared/models/game.model';
+import { CardsType } from '../shared/models/game.model';
+import { gameStore } from './game.store';
+import { cardDataMap } from './game.utils';
 
-export class LoadCards {
-  static readonly type = '[Game] Load Cards';
+export const loadCardsLoading = createAction(
+  '[Game] Load Cards',
+  ({
+    type,
+    url,
+    cardsKey,
+    page,
+  }: {
+    type: CardsType | null;
+    url?: string;
+    cardsKey: 'peopleCardsData' | 'starshipsCardsData';
+    page: number;
+  }) => {
+    gameStore.update((state) => ({
+      ...state,
+      loading: true,
+    }));
 
-  constructor(public type: CardsType, public url?: string) {}
-}
+    return {
+      cardsKey,
+      cardsType: type,
+      url,
+      page,
+    };
+  }
+);
 
-export class UpdateSelectedCards {
-  static readonly type = '[Game] Update Selected Cards';
+export const loadCardsSuccess = createAction(
+  '[Game] Load Cards Success',
+  ({
+    res,
+    page,
+    cardsKey,
+  }: {
+    res: SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>;
+    page: number;
+    cardsKey: string;
+  }) => {
+    const cardData = {
+      cards: res.results,
+      pagination: {
+        next: res.next,
+        previous: res.previous,
+      },
+      showMeta: true,
+    };
 
-  constructor(
-    public card: SwapiPersonDto | SwapiStarshipDto,
-    public playerName: string
-  ) {}
-}
+    gameStore.update((state) => ({
+      ...state,
+      [cardsKey]: {
+        ...state[cardsKey as 'peopleCardsData' | 'starshipsCardsData'],
+        [page]: cardData,
+        count: res.count,
+      },
+      page,
+      loading: false,
+    }));
 
-export class UpdateMeta {
-  static readonly type = '[Game] Update Meta';
+    return {};
+  }
+);
 
-  constructor(public type: CardsType) {}
-}
+export const loadCardsError = createAction(
+  '[Game] Load Cards Error',
+  ({ cardsType }: { cardsType: CardsType | null }) => {
+    gameStore.update((state) => ({
+      ...state,
+      loading: false,
+      errorMessage: `LOAD_${cardsType?.toUpperCase()}_CARDS_ERROR`,
+    }));
 
-export class UpdateNextTurn {
-  static readonly type = '[Game] Update Next Turn';
+    return {};
+  }
+);
 
-  constructor(public nextTurn: PlayerPosition) {}
-}
+export const updateSelectedCards = createAction(
+  '[Game] Update Selected Cards',
+  ({
+    card,
+    playerName,
+  }: {
+    card: SwapiPersonDto | SwapiStarshipDto;
+    playerName: string;
+  }) => {
+    gameStore.update((state) => {
+      const selectedCards = new Map(state.selectedCards);
+      selectedCards.set(card.url, {
+        ...card,
+        selectedBy: playerName,
+      });
 
-export class ResetGameState {
-  static readonly type = '[Game] Reset';
-}
+      return {
+        ...state,
+        selectedCards,
+      };
+    });
 
-export class ResetGameBoardState {
-  static readonly type = '[Game Board] Reset';
-}
+    return {};
+  }
+);
 
-export class UpdatePlayerName {
-  static readonly type = '[Game] Update Player Name';
+export const updateMeta = createAction(
+  '[Game] Update Meta',
+  ({ type }: { type: CardsType | null }) => {
+    gameStore.update((state) => {
+      const otherType = type === 'people' ? 'starships' : 'people';
 
-  constructor(public playerPosition: PlayerPosition, public name: string) {}
-}
+      if (!type) {
+        return state;
+      }
 
-export class UpdateCardsType {
-  static readonly type = '[Game] Update Cards Type';
+      return {
+        ...state,
+        [cardDataMap[type]]: {
+          ...state[cardDataMap[type]],
+          showMeta: true,
+        },
+        [cardDataMap[otherType]]: {
+          ...state[cardDataMap[otherType]],
+          showMeta: false,
+        },
+      };
+    });
 
-  constructor(public cardsType: CardsType) {}
-}
-
-export class UpdatePlayerScore {
-  static readonly type = '[Game] Update Player Score';
-
-  constructor(public playerPosition: PlayerPosition) {}
-}
-
-export class UpdateWinner {
-  static readonly type = '[Game] Update Winner';
-
-  constructor(public winner: WinnerState | null) {}
-}
+    return {};
+  }
+);

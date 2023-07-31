@@ -1,30 +1,13 @@
-import { StateContext } from '@ngxs/store';
 import { itemsPerPage } from '../shared/constants/game.constants';
 import { CardsType } from '../shared/models/game.model';
 import { CardData, GameModel } from './game.store';
 
-type CardDataKeys = 'peopleCardsData' | 'starshipsCardsData';
-const cardDataMap: Record<CardsType, CardDataKeys> = {
+export const cardDataMap: Record<CardsType, CardDataKeys> = {
   people: 'peopleCardsData',
   starships: 'starshipsCardsData',
 };
 
-export function updateShowMeta(ctx: StateContext<GameModel>, type: CardsType) {
-  const newState: Partial<GameModel> = {};
-  const otherType = type === 'people' ? 'starships' : 'people';
-
-  newState[cardDataMap[type]] = {
-    ...ctx.getState()[cardDataMap[type]],
-    showMeta: true,
-  };
-
-  newState[cardDataMap[otherType]] = {
-    ...ctx.getState()[cardDataMap[otherType]],
-    showMeta: false,
-  };
-
-  ctx.patchState(newState);
-}
+type CardDataKeys = 'peopleCardsData' | 'starshipsCardsData';
 
 export function getSelectedCardData<T>(
   state: GameModel

@@ -6,8 +6,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
+import { initEffects } from '@ngneat/effects';
+import { provideEffects, provideEffectsManager } from '@ngneat/effects-ng';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NgxsModule } from '@ngxs/store';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LayoutHeaderComponent } from '../../core/layouts/components/layout-header/layout-header.component';
 import {
@@ -16,9 +17,9 @@ import {
 } from '../../core/module.abstract';
 import { ButtonComponent } from '../../shared/ui/atoms/button/button.component';
 import { InputComponent } from '../../shared/ui/atoms/input/input.component';
+import { GameEffects } from '../../store/game.effects';
 import { GameFacade } from '../../store/game.facade';
 import { GameRepository } from '../../store/game.repository';
-import { GameState } from '../../store/game.store';
 import { CardComponent } from './components/card/card.component';
 import { CardsPaginationComponent } from './components/cards-pagination/cards-pagination.component';
 import { CardsSkeletonComponent } from './components/cards-skeleton/cards-skeleton.component';
@@ -30,6 +31,8 @@ import { GameBoardPage } from './pages/game-board.page';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { CardsAsideSection } from './sections/cards-aside/cards-aside.section';
 import { CardsSection } from './sections/cards/cards.section';
+
+initEffects();
 
 @NgModule({
   declarations: [
@@ -46,7 +49,6 @@ import { CardsSection } from './sections/cards/cards.section';
   ],
   imports: [
     CommonModule,
-    NgxsModule.forFeature([GameState]),
     RouterModule.forChild(gameBoardRoutes),
     TranslateModule.forChild(configTranslateModule(['game/game-board'])),
     FormsModule,
@@ -59,7 +61,12 @@ import { CardsSection } from './sections/cards/cards.section';
     ButtonComponent,
     NgxSkeletonLoaderModule,
   ],
-  providers: [GameRepository, GameFacade],
+  providers: [
+    GameRepository,
+    GameFacade,
+    provideEffectsManager(),
+    provideEffects(GameEffects),
+  ],
 })
 export class GameBoardModule extends CustomTranslateModule {
   constructor(override translateService: TranslateService) {

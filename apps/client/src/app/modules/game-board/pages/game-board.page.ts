@@ -104,7 +104,7 @@ export class GameBoardPage extends Subscribable implements OnInit {
     );
   }
 
-  protected loadCards(type: CardsType, url?: string): void {
+  protected loadCards(type: CardsType | null, url?: string): void {
     this.gameFacade.loadCards(type, url);
 
     this.gameCards$ =

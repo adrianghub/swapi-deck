@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NgxsModule } from '@ngxs/store';
 import { LayoutHeaderComponent } from '../../core/layouts/components/layout-header/layout-header.component';
 import {
   CustomTranslateModule,
@@ -16,7 +15,6 @@ import { InputComponent } from '../../shared/ui/atoms/input/input.component';
 import { SelectComponent } from '../../shared/ui/atoms/select/select.component';
 import { GameFacade } from '../../store/game.facade';
 import { GameRepository } from '../../store/game.repository';
-import { GameState } from '../../store/game.store';
 import { MatTabRouterLinkActiveDirective } from './directives/routerLinkActive.directive';
 import { gameWizardRoutes } from './game-wizard.routes';
 import { GameWizardLayout } from './layout/game-wizard/game-wizard.layout';
@@ -34,7 +32,6 @@ import { GameWizardCardsTypeTab } from './tabs/game-wizard-type/game-wizard-card
   ],
   imports: [
     CommonModule,
-    NgxsModule.forFeature([GameState]),
     RouterModule.forChild(gameWizardRoutes),
     TranslateModule.forChild(configTranslateModule(['game/game-wizard'])),
     FormsModule,

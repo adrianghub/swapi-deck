@@ -39,7 +39,7 @@ import { SwapiMeta } from '../../models/swapi.model';
 })
 export class CardsPaginationComponent {
   @Input() meta$!: Observable<SwapiMeta | undefined>;
-  @Input() pagesTotal$!: Observable<number | undefined>;
+  @Input() pagesTotal$!: Observable<number | null>;
   @Input() currentPage$!: Observable<number | undefined>;
   @Input() loading$!: Observable<boolean | undefined>;
   @Input() error$!: Observable<string | undefined>;

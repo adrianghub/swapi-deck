@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { State } from '@ngxs/store';
+import { createStore, withProps } from '@ngneat/elf';
 import {
   SwapiPerson,
   SwapiStarship,
@@ -9,7 +8,6 @@ import {
   PlayerPosition,
   WinnerState,
 } from '../shared/models/game.model';
-import { GameEffects } from './game.effects';
 
 interface CardPagination {
   next: string | null;
@@ -67,9 +65,7 @@ export const initialState: GameModel = {
   winner: null,
 };
 
-@State<GameModel>({
-  name: 'game',
-  defaults: initialState,
-})
-@Injectable()
-export class GameState extends GameEffects {}
+export const gameStore = createStore(
+  { name: 'game' },
+  withProps<GameModel>(initialState)
+);

@@ -8,6 +8,7 @@ import {
   SwapiStarshipDto,
 } from '../modules/game-board/models/swapi.dto';
 import { SwapiParams } from '../modules/game-board/models/swapi.model';
+import { CardsType } from '../shared/models/game.model';
 
 @Injectable()
 export class GameRepository {
@@ -16,7 +17,7 @@ export class GameRepository {
     url,
   }: SwapiParams): Observable<SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>> {
     return this.http.get<SwapiApiDto<SwapiPersonDto | SwapiStarshipDto>>(
-      url ? url : `${environment.swapiApiUrl}/${type}`
+      url ? url : `${environment.swapiApiUrl}/${type as CardsType}`
     );
   }
 
