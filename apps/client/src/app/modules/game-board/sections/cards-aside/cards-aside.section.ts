@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { PlayerPosition } from 'apps/client/src/app/shared/models/game.model';
-import { PlayersState } from 'apps/client/src/app/store/game.store';
 import { Observable } from 'rxjs';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
+import { PlayerPosition } from '@/shared/models/game.model';
+import { PlayersState } from '@/store/game.store';
 
 @Component({
   selector: 'sdeck-cards-aside',

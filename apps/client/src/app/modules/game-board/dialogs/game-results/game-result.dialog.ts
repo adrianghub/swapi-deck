@@ -2,9 +2,9 @@ import { Component, Input, inject } from '@angular/core';
 import {
   getSwapiPerson,
   getSwapiStarship,
-} from 'apps/client/src/app/shared/constants/game.constants';
-import { DialogData } from 'apps/client/src/app/shared/ui/organisms/dialog/dialog.component';
-import { GameFacade } from 'apps/client/src/app/store/game.facade';
+} from '@/shared/constants/game.constants';
+import { DialogData } from '@/shared/ui/organisms/dialog/dialog.component';
+import { GameFacade } from '@/store/game.facade';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 

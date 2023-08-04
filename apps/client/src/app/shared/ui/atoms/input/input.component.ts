@@ -1,3 +1,4 @@
+import { IconsModule } from '@/core/icons/icons.module';
 import { KeyValuePipe, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -12,7 +13,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
-import { IconsModule } from 'apps/client/src/app/core/icons/icons.module';
 import { ButtonComponent } from '../button/button.component';
 
 type InputType = 'text';

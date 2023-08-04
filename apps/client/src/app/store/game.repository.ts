@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'apps/client/src/environments/environment';
 import { Observable } from 'rxjs';
 import {
   SwapiApiDto,
@@ -9,6 +8,7 @@ import {
 } from '../modules/game-board/models/swapi.dto';
 import { SwapiParams } from '../modules/game-board/models/swapi.model';
 import { CardsType } from '../shared/models/game.model';
+import { environment } from '@/environments/environment';
 
 @Injectable()
 export class GameRepository {

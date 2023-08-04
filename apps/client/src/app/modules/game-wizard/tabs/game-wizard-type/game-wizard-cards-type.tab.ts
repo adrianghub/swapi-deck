@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CardsType } from 'apps/client/src/app/shared/models/game.model';
-import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { take } from 'rxjs';
-import { cardsTypes, links } from '../../../../shared/constants/game.constants';
+import { CardsType } from '@/shared/models/game.model';
+import { GameFacade } from '@/store/game.facade';
+import { cardsTypes, links } from '@/shared/constants/game.constants';
 
 @Component({
   selector: 'sdeck-game-cards-type',

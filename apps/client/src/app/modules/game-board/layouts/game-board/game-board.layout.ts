@@ -1,5 +1,5 @@
+import { GameFacade } from '@/store/game.facade';
 import { Component, inject } from '@angular/core';
-import { GameFacade } from 'apps/client/src/app/store/game.facade';
 
 @Component({
   selector: 'sdeck-game-board-layout',

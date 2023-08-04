@@ -7,9 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { IconsModule } from 'apps/client/src/app/core/icons/icons.module';
 import type { ButtonSize, ButtonType } from './button.config';
 import { buttonSizes, iconSizes } from './button.config';
+import { IconsModule } from '@/core/icons/icons.module';
 
 @Component({
   standalone: true,

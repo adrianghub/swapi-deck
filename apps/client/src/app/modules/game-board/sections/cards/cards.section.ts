@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CardsType } from 'apps/client/src/app/shared/models/game.model';
 import { Observable, map, take } from 'rxjs';
-import { SwapiPersonDto, SwapiStarshipDto } from '../../models/swapi.dto';
-import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { shuffleCards } from './cards.utils';
+import { CardsType } from '@/shared/models/game.model';
+import { SwapiStarshipDto, SwapiPersonDto } from '../../models/swapi.dto';
+import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
 @Component({
   selector: 'sdeck-cards',

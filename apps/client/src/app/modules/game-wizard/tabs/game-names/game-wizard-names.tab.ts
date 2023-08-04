@@ -1,4 +1,10 @@
 import {
+  playerMinNameLength,
+  playerMaxNameLength,
+  links,
+} from '@/shared/constants/game.constants';
+import { GameFacade } from '@/store/game.facade';
+import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
@@ -6,12 +12,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  links,
-  playerMaxNameLength,
-  playerMinNameLength,
-} from 'apps/client/src/app/shared/constants/game.constants';
-import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { Observable, map, take } from 'rxjs';
 import { sameValueValidator } from '../../validators/sameValues.validator';
 
