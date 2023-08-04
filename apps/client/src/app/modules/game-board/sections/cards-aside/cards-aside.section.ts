@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 import { PlayerPosition } from '@/shared/models/game.model';
@@ -6,48 +6,9 @@ import { PlayersState } from '@/store/game.store';
 
 @Component({
   selector: 'sdeck-cards-aside',
-  template: `
-    <p class="regular-title-large">
-      {{ 'gameBoard.aside.currentTurn' | translate }}
-      <span class="highlight-text">{{
-        nextTurn === 'playerOne'
-          ? players?.playerTwo?.name
-          : players?.playerOne?.name
-      }}</span>
-    </p>
-
-    <p
-      class="regular-title-medium instruction"
-      [innerHTML]="'gameBoard.aside.instruction' | translate | highlight"
-    ></p>
-
-    <div class="selected-card-wrapper">
-      <ng-container
-        *ngIf="
-          (selectedCards$ | async)?.values()?.next()?.value as selectedCard;
-          else noCardSelected
-        "
-      >
-        <h3 class="regular-headline-small selected-card-header">
-          {{ 'gameBoard.aside.selectedBy' | translate }}
-          <span class="highlight-text">{{ selectedCard.selectedBy }}</span>
-        </h3>
-
-        <sdeck-game-card
-          class="selected-card wide-box"
-          [card]="selectedCard"
-          customPlaceholderWidth="250"
-        />
-      </ng-container>
-
-      <ng-template #noCardSelected>
-        <h3 class="semi-bold-headline-small selected-card-header">
-          {{ 'gameBoard.aside.noCardSelected' | translate }}
-        </h3>
-      </ng-template>
-    </div>
-  `,
+  templateUrl: './cards-aside.section.html',
   styleUrls: ['./cards-aside.section.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsAsideSection {
   @Input() nextTurn!: PlayerPosition;

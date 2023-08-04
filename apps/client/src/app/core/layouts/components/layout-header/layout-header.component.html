@@ -1,0 +1,13 @@
+<div class="header" [class.block]="center">
+  <a
+    (click)="router.navigateByUrl(links.base)"
+    class="semi-bold-headline-large"
+  >
+    {{ 'misc.appName' | translate }}
+  </a>
+
+  <div class="actions">
+    <ng-content select="[actions]" />
+  </div>
+</div>
+<mat-divider></mat-divider>

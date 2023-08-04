@@ -4,13 +4,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { links } from 'apps/client/src/app/shared/constants/game.constants';
-import { ButtonComponent } from 'apps/client/src/app/shared/ui/atoms/button/button.component';
-import { InputComponent } from 'apps/client/src/app/shared/ui/atoms/input/input.component';
-import { GameFacade } from 'apps/client/src/app/store/game.facade';
 import { of } from 'rxjs';
 import { GameWizardLayout } from '../../layout/game-wizard/game-wizard.layout';
 import { GameWizardNamesTab } from './game-wizard-names.tab';
+import { links } from '@/shared/constants/game.constants';
+import { ButtonComponent } from '@/shared/ui/atoms/button/button.component';
+import { InputComponent } from '@/shared/ui/atoms/input/input.component';
+import { GameFacade } from '@/store/game.facade';
 
 describe('GameWizardNamesTab', () => {
   let component: GameWizardNamesTab;

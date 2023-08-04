@@ -1,10 +1,17 @@
-import { Injectable, TemplateRef, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { filter, of } from 'rxjs';
 import {
   DialogComponent,
   DialogData,
-} from '../../../shared/ui/organisms/dialog/dialog.component';
+} from '@/shared/ui/organisms/dialog/dialog.component';
+import { Injectable, TemplateRef, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { filter, of } from 'rxjs';
+
+interface GameResultDialogProps<T> {
+  selectedCards: T[];
+  dialogRef: TemplateRef<MatDialog>;
+  playAgain: () => void;
+  quitGame: () => void;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +19,12 @@ import {
 export class GameBoardService {
   private dialog = inject(MatDialog);
 
-  openGameResultsDialog<T>(
-    selectedCards: T[],
-    dialogRef: TemplateRef<MatDialog>,
-    playAgain: () => void,
-    quitGame: () => void
-  ): void {
+  openGameResultsDialog<T>({
+    selectedCards,
+    dialogRef,
+    playAgain,
+    quitGame,
+  }: GameResultDialogProps<T>): void {
     this.dialog
       .open(DialogComponent, {
         data: {

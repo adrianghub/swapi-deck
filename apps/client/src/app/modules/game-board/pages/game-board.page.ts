@@ -128,12 +128,12 @@ export class GameBoardPage extends Subscribable implements OnInit {
   private openGameResultsDialog(
     selectedCards: Map<string, SwapiPerson | SwapiStarship>
   ): void {
-    this.gameBoardService.openGameResultsDialog(
-      Array.from(selectedCards.values()),
-      this.gameResultsDialog,
-      this.playAgain.bind(this),
-      this.quitGame.bind(this)
-    );
+    this.gameBoardService.openGameResultsDialog({
+      selectedCards: Array.from(selectedCards.values()),
+      dialogRef: this.gameResultsDialog,
+      playAgain: this.playAgain.bind(this),
+      quitGame: this.quitGame.bind(this),
+    });
   }
 
   private handleWinner(

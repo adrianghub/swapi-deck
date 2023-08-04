@@ -1,86 +1,16 @@
 import { Component, Input, inject } from '@angular/core';
+import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
+import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 import {
   getSwapiPerson,
   getSwapiStarship,
 } from '@/shared/constants/game.constants';
 import { DialogData } from '@/shared/ui/organisms/dialog/dialog.component';
 import { GameFacade } from '@/store/game.facade';
-import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
-import { isSwapiPerson, isSwapiStarship } from '../../pages/game-board.utils';
 
 @Component({
   selector: 'sdeck-game-result',
-  template: `
-    <div *ngIf="data.input$ | async as selectedCards" class="game-results">
-      <p
-        *ngIf="winner$ | async as winner; else draw"
-        [innerHTML]="
-          'gameBoard.dialog.result.winner'
-            | translate
-              : {
-                  winnerName: winner.name
-                }
-            | highlight
-        "
-        class="regular-title-large header"
-      ></p>
-
-      <ng-template #draw>
-        <p class="semi-bold-title-large header">
-          {{ 'gameBoard.dialog.result.draw' | translate }}
-        </p>
-      </ng-template>
-
-      <div class="card-container">
-        <ng-container *ngFor="let card of $any(selectedCards)">
-          <sdeck-game-card
-            [card]="card"
-            [customPlaceholderWidth]="
-              card.selectedBy === (winner$ | async)?.name ? '330' : ''
-            "
-            [fitPlaceholderContent]="
-              card.selectedBy !== (winner$ | async)?.name
-            "
-            [class.winning-card]="card.selectedBy === (winner$ | async)?.name"
-            class="wide-box"
-          >
-            <div
-              *ngIf="isSwapiPerson(card)"
-              placeholder-content-person
-              class="attributes"
-            >
-              <ng-container *ngTemplateOutlet="template" />
-            </div>
-
-            <div
-              *ngIf="isSwapiStarship(card)"
-              placeholder-content-starship
-              class="attributes"
-            >
-              <ng-container *ngTemplateOutlet="template" />
-            </div>
-
-            <ng-template #template>
-              <p
-                *ngFor="let attr of $any(getCardAttributes(card)) | keyvalue"
-                [class.key-attribute]="attr.key === winningAttr"
-                [class.key-attribute--lose]="
-                  attr.key === winningAttr &&
-                  card.selectedBy !== (winner$ | async)?.name
-                "
-                [class.key-attribute--win]="
-                  attr.key === winningAttr &&
-                  card.selectedBy === (winner$ | async)?.name
-                "
-              >
-                {{ attr.key }}: {{ attr.value }}
-              </p>
-            </ng-template>
-          </sdeck-game-card>
-        </ng-container>
-      </div>
-    </div>
-  `,
+  templateUrl: './game-result.dialog.html',
   styleUrls: ['./game-result.dialog.scss'],
 })
 export class GameResultsDialog {

@@ -17,7 +17,7 @@
 }
 
 .winning-card {
-  border: 4px solid palettes.$yellow;
+  border: 4px solid palettes.$yellow-card-border;
   border-radius: 4px;
 }
 
@@ -26,11 +26,11 @@
   font-size: 1.5rem;
 
   &--win {
-    color: #5bfd5b;
+    color: palettes.$win-value-color;
   }
 
   &--lose {
-    color: #ff5d5d;
+    color: palettes.$lose-value-color;
   }
 }
 

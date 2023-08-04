@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Observable, map, take } from 'rxjs';
 import { shuffleCards } from './cards.utils';
 import { CardsType } from '@/shared/models/game.model';
@@ -7,22 +14,9 @@ import { SwapiPerson, SwapiStarship } from '../../models/swapi.model';
 
 @Component({
   selector: 'sdeck-cards',
-  template: `<ng-container *ngIf="loading$ | async; else cards">
-      <sdeck-cards-skeleton data-cy="cards-skeleton" />
-    </ng-container>
-
-    <ng-template #cards>
-      <ng-container *ngFor="let card of cards$ | async as cards">
-        <sdeck-game-card
-          class="card"
-          [card]="card"
-          [class.selected]="isSelected(card) | async"
-          (click)="selectCard(card)"
-          data-cy="game-card"
-        />
-      </ng-container>
-    </ng-template> `,
+  templateUrl: './cards.section.html',
   styleUrls: ['./cards.section.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardsSection implements OnInit {
   @Input({ required: true }) cards$!: Observable<

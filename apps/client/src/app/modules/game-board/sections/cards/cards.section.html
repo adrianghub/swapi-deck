@@ -1,0 +1,15 @@
+<ng-container *ngIf="loading$ | async; else cards">
+  <sdeck-cards-skeleton data-cy="cards-skeleton" />
+</ng-container>
+
+<ng-template #cards>
+  <ng-container *ngFor="let card of cards$ | async as cards">
+    <sdeck-game-card
+      class="card"
+      [card]="card"
+      [class.selected]="isSelected(card) | async"
+      (click)="selectCard(card)"
+      data-cy="game-card"
+    />
+  </ng-container>
+</ng-template>
